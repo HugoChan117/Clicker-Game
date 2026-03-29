@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍅 TOMATO CLICKER - RESEARCH EDITION</title>
+    <style>
+        @font-face {
+            font-family: 'Barlow';
+            src: url('https://www.bugatti.com/../../../fonts/BUGATTIText-Bold.woff2') format('woff2');
+            font-weight: bold;
+        }
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            font-family: 'Exo 2', 'Barlow', 'Segoe UI', Roboto, system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            background: linear-gradient(25deg, #5e2e0f 0%, #b33b1d 45%, #d45c2c 100%);
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(45deg, rgba(255,120,70,0.05) 0px, rgba(255,90,30,0.1) 50px, transparent 100px);
+            pointer-events: none;
+            animation: drift 22s linear infinite;
+            z-index: 0;
+        }
+        @keyframes drift {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(3%) translateY(2%); }
+        }
+        .full-game {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1500px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(0px);
+            border-radius: 70px 70px 30px 30px;
+            background: rgba(90, 45, 20, 0.4);
+            padding: 12px 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+        }
+        .global-title h1 {
+            font-weight: bold;
+            font-size: 4.8rem;
+            letter-spacing: 6px;
+            color: #ffb347;
+            text-shadow: 5px 5px 0 #b3470c, 8px 8px 0 #7a2e1a, 12px 12px 10px #2a150e;
+            word-break: break-word;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffaa66, #ff5e1a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 0 #8b2c0f;
+            margin-bottom: 5px;
+            transform: scale(1.02);
+            transition: 0.2s;
+            filter: drop-shadow(0 0 15px #ff8c42);
+            animation: titleGlow 2s infinite alternate;
+        }
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 8px #ffaa66); }
+            100% { filter: drop-shadow(0 0 25px #ff6a2b); }
+        }
+        .page-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 8px 0 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: #f5bc8e;
+            border: 3px solid #ffdec2;
+            color: #632e12;
+            font-weight: bold;
+            font-size: 1.3rem;
+            padding: 8px 18px;
+            border-radius: 50px;
+            box-shadow: 0 6px 0 #a24f2a, 0 8px 16px #210f05;
+            cursor: pointer;
+            transition: 0.08s;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            backdrop-filter: blur(4px);
+        }
+        .tab-btn.active {
+            background: #ffbe69;
+            transform: translateY(4px) scale(1.02);
+            box-shadow: 0 2px 0 #b3470c, 0 12px 20px #d95b1a;
+            border-color: #ffcf9a;
+        }
+        .tab-btn.research-tab {
+            background: #b36b3c;
+            border-color: #ffad5c;
+            color: #fff3e0;
+        }
+
+        .page { display: none; width: 100%; flex:1; flex-direction: column; }
+        .page.active-page { display: flex; }
+
+        .global-resource {
+            background: #733d1add;
+            backdrop-filter: blur(8px);
+            border-radius: 50px;
+            padding: 8px 20px;
+            margin: 0 0 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 3px solid #ffb26b;
+            box-shadow: inset 0 -3px 0 #b3470c, 0 8px 0 #733d1a, 0 12px 20px black;
+            color: #ffefd5;
+            font-weight: bold;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 0 #582e14;
+            background-image: linear-gradient(145deg, #b3470c, #6b2f0c);
+        }
+        .global-resource .resource-icon { font-size: 2.5rem; background: #9e4a1f; padding: 5px 30px; border-radius: 40px; border: 3px solid #ffb47b; }
+        .global-resource .resource-value {
+            background: #3e2a14;
+            padding: 6px 30px;
+            border-radius: 4rem;
+            border: 3px solid #ffad70;
+            font-size: 2.5rem;
+            background-image: radial-gradient(circle at 30% 35%, #b3470c, #582e14);
+        }
+
+        .research-points-bar {
+            background: #7a4c2ee0;
+            border-radius: 50px;
+            padding: 8px 25px;
+            margin: 0 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 3px solid #ff9933;
+            box-shadow: 0 6px 0 #a24f2a, 0 8px 16px #210f05;
+            color: #fff2d7;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .research-points-bar .rp-icon {
+            background: #85421f;
+            padding: 5px 25px;
+            border-radius: 40px;
+            border: 2px solid #ff9933;
+        }
+        .buy-rp-btn {
+            background: #ffaa5e;
+            border: 3px solid #ffdec2;
+            padding: 5px 20px;
+            border-radius: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #b3470c;
+            transition: 0.05s;
+        }
+        .buy-rp-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #b3470c;
+        }
+        .buy-rp-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(0.8);
+        }
+
+        .main-click-area { display: flex; flex-direction: column; align-items: center; justify-content: center; flex:1; margin: 10px 0 20px; }
+        .click-area {
+            background: radial-gradient(circle at 40% 30%, #ff7b3a, #c13b1a);
+            width: 320px; height: 320px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 22px 0 #a1421a, 0 40px 40px #2d1408, inset 0 -8px 20px #ffbb77;
+            border: 10px solid #ffdbbc;
+            transition: transform 0.06s, box-shadow 0.1s;
+            cursor: pointer;
+            font-size: 4.2rem; font-weight: bold; color: #4d2b12; text-shadow: 6px 8px 0 #ff9248, 8px 10px 0 #00000040;
+            margin: 10px 0 20px; position: relative; overflow: hidden;
+            animation: pulse-glow 2.2s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 22px 0 #a1421a, 0 40px 40px #2d1408, inset 0 -8px 20px #ffbb77, 0 0 10px #ff8c42; }
+            100% { box-shadow: 0 22px 0 #a1421a, 0 45px 50px #1f0f05, inset 0 -8px 25px #ffd28f, 0 0 35px #ff6a2b; }
+        }
+        .click-area::after {
+            content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%;
+            background: radial-gradient(circle, #ffdbb5 10%, transparent 70%); opacity: 0.4; transform: rotate(30deg);
+        }
+        .click-area {
+            position: relative;
+            overflow: hidden;
+        }
+        .click-area:active {
+            transform: translateY(16px) scale(1.08);
+            box-shadow: 0 6px 0 #7a3012, 0 35px 35px #331a0b, 0 0 60px #ffbb77;
+            transition: transform 0.03s;
+        }
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,200,150,0.9) 0%, rgba(255,100,50,0.4) 50%, transparent 70%);
+            transform: scale(0);
+            animation: ripple-animation 0.5s ease-out;
+            pointer-events: none;
+            width: 100px;
+            height: 100px;
+            margin-left: -50px;
+            margin-top: -50px;
+        }
+        @keyframes ripple-animation {
+            from { transform: scale(0); opacity: 1; }
+            to { transform: scale(4); opacity: 0; }
+        }
+        .click-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 200, 120, 0.5);
+            animation: flash 0.2s ease-out;
+            pointer-events: none;
+            border-radius: 50%;
+        }
+        @keyframes flash {
+            0% { opacity: 0.8; }
+            100% { opacity: 0; }
+        }
+
+        .inline-stats {
+            font-size: 1.8rem; background: #dba882dd; border-radius: 70px; padding: 16px 30px;
+            border: 4px solid #ffcf9a; display: flex; justify-content: center; gap: 40px;
+            color: #4d2b12; font-weight: bold; flex-wrap: wrap; box-shadow: 0 8px 0 #a16740;
+        }
+        .inline-stats span { background: #733d1a; color: #ffefd5; padding: 8px 30px; border-radius: 70px; border: 3px solid #ffb26b; font-size: 1.8rem;}
+
+        .combo-meter {
+            background: #582e14dd; border-radius: 70px; padding: 8px 30px; border: 4px solid #ff9933;
+            font-size: 2.2rem; font-weight: bold; color: #fff2d7; display: flex; align-items: center;
+            gap: 20px; box-shadow: 0 8px 0 #a24f2a, 0 0 20px #ff8c42; margin: 5px 0 15px; backdrop-filter: blur(3px);
+        }
+
+        .research-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: #ad6b41e0;
+            border-radius: 50px;
+            border: 4px solid #ff9933;
+            margin: 15px 0;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .research-card {
+            background: linear-gradient(145deg, #ffdbbc, #e68a4d);
+            border-radius: 30px;
+            padding: 20px;
+            border: 3px solid #ffdec2;
+            box-shadow: 0 8px 0 #b3470c, 0 10px 20px #301505;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .research-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6b2f0c;
+            text-shadow: 2px 2px 0 #ffaa5e;
+            border-bottom: 2px solid #d95b1a;
+            padding-bottom: 5px;
+        }
+        .research-tier-list {
+            font-size: 1.2rem;
+            background: #733d1a;
+            color: #ffad5c;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .research-level {
+            font-size: 1.4rem;
+            background: #733d1a;
+            color: #ffefd5;
+            padding: 5px 15px;
+            border-radius: 40px;
+            display: inline-block;
+            align-self: flex-start;
+        }
+        .research-desc {
+            font-size: 1.2rem;
+            color: #4d2b12;
+        }
+        .research-current {
+            font-size: 1.3rem;
+            background: #b3470c;
+            color: #ffefd5;
+            padding: 5px 10px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .research-cost {
+            font-size: 1.5rem;
+            background: #b3470c;
+            color: #ffefd5;
+            padding: 8px 15px;
+            border-radius: 40px;
+            text-align: center;
+            border: 2px solid #ff9933;
+        }
+        .research-btn {
+            background: #ffaa5e;
+            border: 3px solid #ffdec2;
+            padding: 10px;
+            border-radius: 40px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #b3470c;
+            transition: 0.05s;
+        }
+        .research-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 1px 0 #b3470c;
+        }
+        .research-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(0.8);
+        }
+        .research-max {
+            background: #6b4f3a;
+            color: #ffaa5e;
+            padding: 10px;
+            border-radius: 40px;
+            text-align: center;
+            font-size: 1.4rem;
+            border: 2px solid #ff9933;
+        }
+
+        .achievements-panel { background: #85421fe0; border-radius: 50px; padding: 20px; margin:15px 0; border:4px solid #ffb26b; max-height:300px; overflow-y:auto; }
+        .achievement-entry { background: #733d1a; color:#ffefd5; padding:8px 15px; margin:6px 0; border-radius:30px; display:flex; align-items:center; gap:12px; font-size:1.3rem; border:2px solid #ffaa5e;}
+        
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 15px; margin: 20px 0; }
+        .upgrade-card { background: linear-gradient(160deg, #ffdbbc, #e68a4d); border-radius: 30px 30px 25px 25px; padding: 16px 4px 12px; border: 4px solid #ffdec2; box-shadow: 0 10px 0 #b3470c, 0 10px 20px #2d1408; transition:0.08s; color:#4d2b12; display:flex; flex-direction:column; align-items:center; position:relative; font-size:0.95rem;}
+        .upgrade-card.disabled { opacity:0.4; filter:grayscale(0.8); pointer-events:none; box-shadow:0 6px 0 #a24f2a; transform:translateY(6px);}
+        .upgrade-card.locked-tier { opacity:0.2; filter:grayscale(1); pointer-events:none;}
+        .upgrade-card.prestige-locked { opacity:0.7; filter:grayscale(0.9); background:#6b4f3a; pointer-events:none;}
+        .upgrade-icon { font-size: 2.8rem; }
+        .upgrade-icon img { width: 2.8rem; height: 2.8rem; border-radius: 50%; border: 3px solid #ffb47b; background:#733d1a; object-fit:cover; }
+        .upgrade-name { font-size:1.1rem; background:#7a3f18e0; border-radius:30px; color:#ffefd5; padding:4px 12px; margin:5px 0; font-weight:bold; text-transform:uppercase; }
+        .cost-display { background:#582e14; color:#ffdbb5; padding:4px 15px; border-radius:40px; font-size:1.2rem; border:3px solid #ff9933; margin:6px 0; }
+
+        .prestige-page-panel { background: #c17b4a; border-radius: 70px; padding: 30px; border: 5px solid #ffcf9a; box-shadow: 0 16px 0 #9e4a1f, 0 15px 35px #1f0f05;}
+        .prestige-card { background: #9e4a1fe0; color: #ffefd5; padding: 30px; border-radius: 70px; font-size: 2rem; display:flex; flex-direction:column; align-items:center; gap:15px; border:4px solid #ffaa5e;}
+        .prestige-big-btn { background: #ffaa5e; border:5px solid #ffdec2; padding:20px 60px; border-radius: 70px; font-weight:bold; font-size:2.5rem; box-shadow:0 12px 0 #b3470c,0 12px 25px black; cursor:pointer; }
+        .prestige-big-btn:active { transform:translateY(10px); box-shadow:0 5px 0 #b3470c; }
+        .prestige-big-btn.disabled { opacity:0.5; pointer-events:none; }
+
+        .corn-btn { background:#ffaa5e; border:4px solid #ffdec2; padding:12px 30px; border-radius:70px; font-weight:bold; font-size:1.5rem; box-shadow:0 8px 0 #b3470c; cursor:pointer; margin:0 5px;}
+        .corn-btn:active { transform:translateY(5px); box-shadow:0 3px 0 #b3470c;}
+        .corn-btn.reset { background:#cc6b4a; }
+
+        .floating-crit { position:fixed; font-weight:bold; color:#ffbb77; text-shadow:0 0 20px #ff3300,0 0 30px #ff6600; pointer-events:none; font-size:3.2rem; z-index:9999; animation:floatUp 0.9s ease-out forwards; white-space:nowrap;}
+        @keyframes floatUp {
+            0% { opacity:1; transform:translateY(0) scale(1); }
+            100% { opacity:0; transform:translateY(-150px) scale(1.8); }
+        }
+        .floating-corn {
+            position:fixed; font-weight:bold; color:#ff8811; text-shadow:0 0 15px #ffaa33; pointer-events:none; font-size:2.5rem; z-index:9999; animation:cornFloat 1s ease-out forwards;
+        }
+        @keyframes cornFloat {
+            0% { opacity:1; transform:translateY(0) rotate(0deg); }
+            100% { opacity:0; transform:translateY(-120px) rotate(20deg); }
+        }
+
+        .import-export-panel { display:flex; gap:10px; margin:15px 0; flex-wrap:wrap; justify-content:center;}
+        .import-export-panel input { background:#582e14; border:3px solid #ffb26b; border-radius:70px; padding:12px 20px; font-size:1.2rem; color:#ffefd5; width:300px;}
+
+        .star-compact { font-size:2.2rem; background:#9e4a1f; padding:8px 25px; border-radius:50px; border:2px solid #ffaa5e; letter-spacing:2px;}
+        .extra-stat { font-size:2rem; background:#ffdbbc; padding:18px; border-radius:70px; margin-top:20px; border:3px solid #ffb26b;}
+        .offline-progress { background:#9e4a1f; color:#ffdbb5; padding:15px; border-radius:50px; margin:10px 0; text-align:center; font-size:1.5rem; border:3px solid #ffaa5e; }
+        footer { font-size:1.2rem; color:#ffdec2; text-shadow:2px 2px 0 #582e14;}
+    </style>
+</head>
+<body>
+<div class="full-game">
+    <div class="global-title"><h1>🍅 TOMATO CLICKER - RESEARCH</h1></div>
+
+    <div class="page-tabs">
+        <button class="tab-btn active" id="tabMain">🍅 MAIN</button>
+        <button class="tab-btn" id="tabUpgrade">⬆️ UPGRADE</button>
+        <button class="tab-btn research-tab" id="tabResearch">🔬 RESEARCH</button>
+        <button class="tab-btn" id="tabPrestigePage">✨ PRESTIGE</button>
+        <button class="tab-btn" id="tabAchievements">🏆 ACHIEVE</button>
+        <button class="tab-btn" id="tabStats">📊 SETTINGS</button>
+    </div>
+
+    <div class="global-resource">
+        <span class="resource-icon">🍅</span>
+        <span class="resource-value" id="globalCornDisplay">0</span>
+    </div>
+
+    <!-- Research Points Bar -->
+    <div class="research-points-bar">
+        <span class="rp-icon">🔬 RESEARCH POINTS: <span id="researchPointsDisplay">0</span></span>
+        <span class="buy-rp-btn" id="buyResearchPointBtn">BUY RP (1M🍅)</span>
+    </div>
+
+    <!-- MAIN PAGE -->
+    <div id="pageMain" class="page active-page">
+        <div class="main-click-area">
+            <div class="combo-meter">
+                <span>⚡ INFERNO COMBO</span>
+                <span class="combo-value" id="comboDisplay">0</span>
+                <span id="comboPercentDisplay">(+0%)</span>
+            </div>
+            <div class="click-area" id="clickButton">🍅<br>TOMATO</div>
+            <div class="inline-stats">
+                <span id="clickPowerStatMain">👆 1.0 /click</span>
+                <span id="totalClicksStatMain">🖱️ 0</span>
+            </div>
+            <div class="inline-stats" style="margin-top:10px;">
+                <span id="critChanceDisplay">🎲 Crit: 6.11%</span>
+                <span id="critMultDisplay">💥 Crit x2-1000</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPGRADE PAGE (indices 11,17,23 intact: QUINN, JABEL, AMADEUS) -->
+    <div id="pageUpgrade" class="page">
+        <div class="shop-grid" id="upgradeGrid"></div>
+    </div>
+
+    <!-- RESEARCH PAGE -->
+    <div id="pageResearch" class="page">
+        <div class="research-container" id="researchContainer">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <!-- PRESTIGE PAGE -->
+    <div id="pagePrestige" class="page">
+        <div class="prestige-page-panel">
+            <div class="prestige-card">
+                <div class="star-compact" id="prestigeStarsDisplay">0/10 ★</div>
+                <div style="font-size:2rem;">Base multiplier: <span id="prestigeMultDisplay">x1.000</span></div>
+                <div style="font-size:1.8rem;">With research: <span id="prestigeMultWithResearchDisplay">x1.000</span></div>
+                <div style="font-size:1.8rem;">next cost: <span id="prestigeCostDisplay">3.0M</span> 🍅</div>
+                <div style="font-size:1.8rem;">Cost after research: <span id="prestigeCostAfterResearchDisplay">3.0M</span> 🍅</div>
+                <button class="prestige-big-btn" id="prestigeBtn">✨ PRESTIGE ✨</button>
+                <div style="font-size:1.5rem;">√2 per star, max 10★ · 2 upgrades per star</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACHIEVEMENTS PAGE -->
+    <div id="pageAchievements" class="page">
+        <div class="settings-panel" style="background:#b56f44e0; border-radius:50px; padding:20px;">
+            <h2 style="font-size:2.5rem; color:#ffaa5e;">🏆 ACHIEVEMENTS</h2>
+            <div class="achievements-panel" id="achievementsList">loading...</div>
+        </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div id="pageStats" class="page">
+        <div class="settings-panel" style="background:#e6a16de0; border-radius:50px; padding:25px;">
+            <div class="totals-list" id="statsDetail">loading stats ...</div>
+            <div class="offline-progress" id="offlineProgressDisplay">⏰ Offline: 0 mins collected</div>
+            <div class="import-export-panel">
+                <input type="text" id="importField" placeholder="paste save string" />
+                <button class="corn-btn" id="exportBtn">📤 EXPORT</button>
+                <button class="corn-btn" id="importBtn">📥 IMPORT</button>
+            </div>
+            <div>
+                <button class="corn-btn" id="saveGameBtn">💾 SAVE</button>
+                <button class="corn-btn" id="loadGameBtn">📂 LOAD</button>
+                <button class="corn-btn reset" id="resetGameBtn">⚠️ RESET</button>
+            </div>
+            <div class="storage-info" id="saveStatus">📀 ready</div>
+            <div class="extra-stat" id="statsClickPower">⚡ click power: 0</div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // ---------- RESEARCH SYSTEM ----------
+    let researchPoints = 0;
+    const RESEARCH_POINT_BASE_COST = 1000000;
+    const RESEARCH_POINT_COST_MULT = 1.6;
+
+    // Research definitions (names reskinned, but system identical)
+    const researchItems = [
+        {   // 0
+            id: 'costRed1',
+            name: '🍅 TIER 1 COST REDUCTION',
+            desc: 'Reduces cost of VINE and PICKER',
+            tierIndices: [0, 1],
+            tierNames: ['VINE', 'PICKER'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 1
+            id: 'costRed2',
+            name: '🍅 TIER 2 COST REDUCTION',
+            desc: 'Reduces cost of DRIP and HARVESTER',
+            tierIndices: [2, 3],
+            tierNames: ['DRIP', 'HARVESTER'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 2
+            id: 'costRed3',
+            name: '🍅 TIER 3 COST REDUCTION',
+            desc: 'Reduces cost of REAPER and NANO-PRESS',
+            tierIndices: [4, 5],
+            tierNames: ['REAPER', 'NANO-PRESS'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 3
+            id: 'costRed4',
+            name: '🍅 TIER 4 COST REDUCTION',
+            desc: 'Reduces cost of QUANTUM VAT and FUSION COOKER',
+            tierIndices: [6, 7],
+            tierNames: ['QUANTUM VAT', 'FUSION COOKER'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 4
+            id: 'costRed5',
+            name: '🍅 TIER 5 COST REDUCTION',
+            desc: 'Reduces cost of GALACTIC GARDEN and VOID BLENDER',
+            tierIndices: [8, 9],
+            tierNames: ['GALACTIC GARDEN', 'VOID BLENDER'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 5
+            id: 'costRed6',
+            name: '🍅 TIER 6 COST REDUCTION',
+            desc: 'Reduces cost of COSMIC HOPPER and QUINN',
+            tierIndices: [10, 11],
+            tierNames: ['COSMIC HOPPER', 'QUINN'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 6
+            id: 'costRed7',
+            name: '🍅 TIER 7 COST REDUCTION',
+            desc: 'Reduces cost of STELLAR HARVESTER and COSMIC REAPER',
+            tierIndices: [12, 13],
+            tierNames: ['STELLAR HARVESTER', 'COSMIC REAPER'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 7
+            id: 'costRed8',
+            name: '🍅 TIER 8 COST REDUCTION',
+            desc: 'Reduces cost of VOID ENGINE and STAR FORGE',
+            tierIndices: [14, 15],
+            tierNames: ['VOID ENGINE', 'STAR FORGE'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 8
+            id: 'costRed9',
+            name: '🍅 TIER 9 COST REDUCTION',
+            desc: 'Reduces cost of COSMIC WHALE and JABEL',
+            tierIndices: [16, 17],
+            tierNames: ['COSMIC WHALE', 'JABEL'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 9
+            id: 'costRed10',
+            name: '🍅 TIER 10 COST REDUCTION',
+            desc: 'Reduces cost of COSMIC NEXUS and DIVINE TOMATO',
+            tierIndices: [18, 19],
+            tierNames: ['COSMIC NEXUS', 'DIVINE TOMATO'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 10
+            id: 'costRed11',
+            name: '🍅 TIER 11 COST REDUCTION',
+            desc: 'Reduces cost of COSMIC OVERLORD and TOMATO GOD',
+            tierIndices: [20, 21],
+            tierNames: ['COSMIC OVERLORD', 'TOMATO GOD'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 11
+            id: 'costRed12',
+            name: '🍅 TIER 12 COST REDUCTION',
+            desc: 'Reduces cost of ETHEREAL TOMATO and AMADEUS',
+            tierIndices: [22, 23],
+            tierNames: ['ETHEREAL TOMATO', 'AMADEUS'],
+            type: 'costReduction',
+            maxLevel: 10,
+            costPerLevel: [1,2,3,4,5,6,7,8,9,10],
+            level: 0
+        },
+        {   // 12
+            id: 'autoClicker',
+            name: '⚡ AUTO PICKER',
+            desc: 'Generates 10% of click power per second idle',
+            type: 'autoClicker',
+            maxLevel: 10,
+            costPerLevel: [2,3,5,7,10,13,17,22,28,35],
+            level: 0
+        },
+        {   // 13
+            id: 'critChance',
+            name: '🍀 CRIT CHANCE',
+            desc: '+0.5% crit chance per level (max +5%)',
+            type: 'critChance',
+            maxLevel: 10,
+            costPerLevel: [2,3,5,7,10,13,17,22,28,35],
+            level: 0
+        },
+        {   // 14
+            id: 'critMult',
+            name: '💥 CRIT MULTIPLIER',
+            desc: '+0.1x to all crit multipliers per level',
+            type: 'critMult',
+            maxLevel: 10,
+            costPerLevel: [2,3,5,7,10,13,17,22,28,35],
+            level: 0
+        },
+        {   // 15
+            id: 'prestigeBonus',
+            name: '✨ PRESTIGE BONUS',
+            desc: '+0.05 to prestige multiplier per level',
+            type: 'prestigeBonus',
+            maxLevel: 10,
+            costPerLevel: [2,3,5,7,10,13,17,22,28,35],
+            level: 0
+        },
+        {   // 16
+            id: 'prestigeCostRed',
+            name: '💰 PRESTIGE COST REDUCTION',
+            desc: '-10% prestige cost per level',
+            type: 'prestigeCostReduction',
+            maxLevel: 10,
+            costPerLevel: [2,3,5,7,10,13,17,22,28,35],
+            level: 0
+        },
+        {   // 17
+            id: 'offlineLength',
+            name: '⏰ OFFLINE TIME',
+            desc: '+30 minutes offline earnings (requires Auto Picker lv1)',
+            type: 'offlineLength',
+            maxLevel: 10,
+            costPerLevel: [2,3,5,7,10,13,17,22,28,35],
+            level: 0
+        }
+    ];
+
+    // Prestige max 10
+    let prestigeLevel = 0;
+    const MAX_PRESTIGE = 10;
+    const PRESTIGE_BASE_COST = 3000000;
+    const PRESTIGE_COST_GROWTH = 400;
+
+    // ----- TOMATO & CLICKS -----
+    let tomato = 0.0;          // renamed from corn
+    let totalManualClicks = 0;
+    let lastOfflineTime = Date.now();
+    let pageLoadTime = Date.now();
+
+    // ----- COMBO -----
+    let combo = 0;
+    const MAX_COMBO = 50;
+    const COMBO_DECAY_MS = 350;
+    let comboTimer = null;
+    let lastClickTime = 0;
+
+    // ----- UPGRADES (24) - indices 11,17,23 kept: QUINN, JABEL, AMADEUS (names intact) -----
+    const upgrades = [
+        { id: 'vine',        name: 'VINE',       icon: '🌱', basePower: 1,        baseCost: 20,       desc: '+1/click' },
+        { id: 'picker',      name: 'PICKER',     icon: '🧤', basePower: 12,       baseCost: 400,      desc: '+12/click' },
+        { id: 'drip',        name: 'DRIP',       icon: '💧', basePower: 140,      baseCost: 8000,     desc: '+140/click' },
+        { id: 'harvester',   name: 'HARVESTER',  icon: '🚜', basePower: 1700,     baseCost: 160000,   desc: '+1700/click' },
+        { id: 'reaper',      name: 'REAPER',     icon: '⚙️', basePower: 20000,    baseCost: 3200000,  desc: '+20k/click' },
+        { id: 'nanoPress',   name: 'NANO-PRESS', icon: '🧬', basePower: 240000,   baseCost: 64000000, desc: '+240k/click' },
+        { id: 'quantumVat',  name: 'QUANTUM VAT',icon: '🔮', basePower: 2900000,    baseCost: 1280000000,     desc: '+2.9M/click' },
+        { id: 'fusionCooker',name: 'FUSION COOKER',icon: '⚡', basePower: 35000000,   baseCost: 25600000000,    desc: '+35M/click' },
+        { id: 'galacticGarden',name: 'GALACTIC GARDEN',icon: '🌌', basePower: 450000000,  baseCost: 512000000000,   desc: '+450M/click' },
+        { id: 'voidBlender', name: 'VOID BLENDER', icon: '👾', basePower: 5600000000,   baseCost: 10240000000000,   desc: '+5.6B/click' },
+        { id: 'cosmicHopper',name: 'COSMIC HOPPER', icon: '🛸', basePower: 72000000000,  baseCost: 204800000000000,  desc: '+72B/click' },
+        // index 11: QUINN (kept)
+        { id: 'quinnAvatar', name: 'QUINN', icon: '🦅', basePower: 900000000000, baseCost: 4096000000000000, desc: '+900B/click' },
+        { id: 'stellarHarvester', name: 'STELLAR HARVESTER', icon: '🌠', basePower: 12000000000000, baseCost: 81920000000000000, desc: '+12T/click' },
+        { id: 'cosmicReaper',    name: 'COSMIC REAPER',    icon: '☄️', basePower: 150000000000000, baseCost: 1630000000000000000, desc: '+150T/click' },
+        { id: 'voidEngine', name: 'VOID ENGINE', icon: '🌀', basePower: 2000000000000000, baseCost: 32700000000000000000, desc: '+2Qa/click' },
+        { id: 'starForge',  name: 'STAR FORGE',  icon: '⭐', basePower: 25000000000000000, baseCost: 655000000000000000000, desc: '+25Qa/click' },
+        { id: 'cosmicWhale', name: 'COSMIC WHALE', icon: '🐋', basePower: 300000000000000000, baseCost: 13100000000000000000000, desc: '+300Qa/click' },
+        // index 17: JABEL (kept)
+        { id: 'jabel',       name: 'JABEL',       icon: '👤', basePower: 3600000000000000000, baseCost: 262000000000000000000000, desc: '+3.6Qi/click', imageUrl: 'https://kingshotdata.com/wp-content/uploads/2025/03/jabel.webp' },
+        { id: 'cosmicNexus', name: 'COSMIC NEXUS', icon: '🌐', basePower: 50000000000000000000, baseCost: 5240000000000000000000000, desc: '+50 Qi/click' },
+        { id: 'divineTomato',name: 'DIVINE TOMATO',icon: '👑', basePower: 650000000000000000000, baseCost: 104850000000000000000000000, desc: '+650 Qi/click' },
+        { id: 'cosmicOverlord', name: 'COSMIC OVERLORD', icon: '👁️', basePower: 8000000000000000000000, baseCost: 2090000000000000000000000000, desc: '+8 Sx/click' },
+        { id: 'tomatoGod',      name: 'TOMATO GOD',      icon: '🗿', basePower: 105000000000000000000000, baseCost: 41800000000000000000000000000, desc: '+105 Sx/click' },
+        { id: 'etherealTomato', name: 'ETHEREAL TOMATO', icon: '🌀', basePower: 1.30e24, baseCost: 8.25e29, desc: '+1.30 Sp/click' },
+        // index 23: AMADEUS (kept)
+        { id: 'amadeus',        name: 'AMADEUS',         icon: '🎼', basePower: 1.6e25, baseCost: 1.65e31, desc: '+16 Sp/click', imageUrl: 'https://www.kingshotguide.com/_next/image?url=%2Fheroes%2Famadeus.webp&w=2048&q=75' }
+    ];
+
+    let levels = {};
+    upgrades.forEach(u => levels[u.id] = 0);
+
+    // Helper functions unchanged (cost reduction, prestige cost, etc)
+    function getCostReductionForUpgrade(index) {
+        let reduction = 1.0;
+        for (let research of researchItems) {
+            if (research.type === 'costReduction' && research.tierIndices && research.tierIndices.includes(index)) {
+                reduction *= Math.pow(0.94, research.level);
+            }
+        }
+        return reduction;
+    }
+
+    function getNextCost(upgrade, index) {
+        const lvl = levels[upgrade.id];
+        const base = upgrade.baseCost * Math.pow(1.32, lvl);
+        const reduction = getCostReductionForUpgrade(index);
+        return Math.floor(base * reduction);
+    }
+
+    function getPrestigeCost() {
+        if (prestigeLevel >= MAX_PRESTIGE) return Infinity;
+        const baseCost = PRESTIGE_BASE_COST * Math.pow(PRESTIGE_COST_GROWTH, prestigeLevel);
+        const reduction = Math.pow(0.9, researchItems[16].level);
+        return Math.floor(baseCost * reduction);
+    }
+
+    let autoClickerInterval = null;
+    function startAutoClicker() {
+        if (autoClickerInterval) clearInterval(autoClickerInterval);
+        const autoLevel = researchItems[12].level;
+        if (autoLevel > 0) {
+            autoClickerInterval = setInterval(() => {
+                const autoPower = baseClickPower() * 0.1 * autoLevel * comboMultiplier();
+                tomato += autoPower;
+                spawnFloatingTomato('⚡ ' + formatNumber(autoPower), '#ff8811');
+                fullRefresh();
+            }, 1000);
+        }
+    }
+
+    function spawnFloatingTomato(message, color = '#ff8811') {
+        const span = document.createElement('div');
+        span.className = 'floating-corn';  // reuse class
+        span.innerText = message;
+        span.style.left = (Math.random() * 60 + 20) + '%';
+        span.style.top = '50%';
+        span.style.color = color;
+        document.body.appendChild(span);
+        setTimeout(() => span.remove(), 800);
+    }
+
+    function comboPercent() { return Math.min(combo * 2, 100); }
+    function comboMultiplier() { return 1 + comboPercent() / 100; }
+    function increaseCombo() { combo = Math.min(combo + 1, MAX_COMBO); resetComboTimer(); updateComboUI(); }
+    function resetComboTimer() { if (comboTimer) clearTimeout(comboTimer); comboTimer = setTimeout(() => { combo = 0; updateComboUI(); comboTimer = null; }, COMBO_DECAY_MS); }
+    function updateComboUI() {
+        const el = document.getElementById('comboDisplay'); if(el) el.innerText = combo;
+        const pctEl = document.getElementById('comboPercentDisplay'); if(pctEl) pctEl.innerText = `(+${comboPercent()}%)`;
+    }
+
+    function getCritChance() {
+        const baseChance = 6.11;
+        const researchBonus = (researchItems[13]?.level || 0) * 0.5;
+        return baseChance + researchBonus;
+    }
+
+    function getCritMultiplier() {
+        const r = Math.random() * 100;
+        const chance = getCritChance();
+        const researchMultBonus = (researchItems[14]?.level || 0) * 0.1;
+        if (r < 0.01) return 1000 + researchMultBonus * 1000;
+        if (r < 0.11) return 25 + researchMultBonus * 25;
+        if (r < 1.11) return 5 + researchMultBonus * 5;
+        if (r < 6.11) return 2 + researchMultBonus * 2;
+        return 1;
+    }
+
+    function spawnFloatingText(message, isCrit) {
+        const span = document.createElement('div');
+        span.className = 'floating-crit';
+        span.innerText = message;
+        span.style.left = (Math.random() * 60 + 20) + '%';
+        span.style.top = '50%';
+        if (message.includes('1000x')) span.style.color = '#ff00aa'; 
+        else if (message.includes('25x')) span.style.color = '#ff4400';
+        else if (message.includes('5x')) span.style.color = '#ff9900';
+        document.body.appendChild(span);
+        setTimeout(() => span.remove(), 800);
+    }
+
+    function addClickEffect(e) {
+        const clickArea = document.getElementById('clickButton');
+        const rect = clickArea.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const ripple = document.createElement('div');
+        ripple.className = 'ripple-effect';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        clickArea.appendChild(ripple);
+        
+        const flash = document.createElement('div');
+        flash.className = 'click-flash';
+        clickArea.appendChild(flash);
+        
+        setTimeout(() => {
+            ripple.remove();
+            flash.remove();
+        }, 500);
+    }
+
+    function isUpgradeUnlockedByTier(index) {
+        if (index < 2) return true;
+        const requiredId = upgrades[index-1].id;
+        return levels[requiredId] >= 1;
+    }
+
+    function isUpgradeVisibleByPrestige(index) {
+        const visibleSlots = Math.min(upgrades.length, 4 + 2 * prestigeLevel);
+        return index < visibleSlots;
+    }
+
+    function getPowerFor(upgrade) {
+        const lvl = levels[upgrade.id];
+        if (lvl === 0) return 0;
+        return upgrade.basePower * Math.pow(1.25, lvl - 1);
+    }
+
+    function baseClickPower() {
+        let sum = 1;
+        for (let u of upgrades) sum += getPowerFor(u);
+        return sum;
+    }
+
+    function getPrestigeMultiplier() {
+        return Math.pow(Math.SQRT2, prestigeLevel) + (researchItems[15]?.level || 0) * 0.05;
+    }
+
+    function totalClickPower() {
+        return baseClickPower() * getPrestigeMultiplier() * comboMultiplier();
+    }
+
+    function getNextResearchPointCost() {
+        return RESEARCH_POINT_BASE_COST * Math.pow(RESEARCH_POINT_COST_MULT, researchPoints);
+    }
+
+    // Buy research point
+    function buyResearchPoint() {
+        if (prestigeLevel < 1) {
+            alert('❌ Need at least 1 prestige star to buy research points!');
+            return;
+        }
+        const cost = getNextResearchPointCost();
+        if (tomato >= cost) {
+            tomato -= cost;
+            researchPoints++;
+            document.getElementById('globalCornDisplay').innerText = formatNumber(tomato);
+            document.getElementById('researchPointsDisplay').innerText = researchPoints;
+            const buyBtn = document.getElementById('buyResearchPointBtn');
+            const nextCost = getNextResearchPointCost();
+            buyBtn.innerHTML = `BUY RP (${formatNumber(nextCost)}🍅)`;
+            updateBuyRPButton();
+            saveGame();
+            spawnFloatingText('🔬 RP +1', false);
+        } else {
+            alert(`Need ${formatNumber(cost)} tomatoes!`);
+        }
+    }
+
+    function updateBuyRPButton() {
+        const btn = document.getElementById('buyResearchPointBtn');
+        if (!btn) return;
+        const nextCost = getNextResearchPointCost();
+        btn.innerHTML = `BUY RP (${formatNumber(nextCost)}🍅)`;
+        if (prestigeLevel < 1) {
+            btn.classList.add('disabled');
+            btn.title = 'Requires at least 1 prestige star';
+        } else {
+            btn.classList.remove('disabled');
+            btn.title = '';
+        }
+    }
+
+    function buyResearch(index) {
+        const research = researchItems[index];
+        if (research.level >= research.maxLevel) return;
+        const cost = research.costPerLevel[research.level];
+        if (researchPoints < cost) {
+            alert(`Need ${cost} research points!`);
+            return;
+        }
+        if (index === 17 && researchItems[12].level === 0) {
+            alert('❌ Need Auto Picker level 1 first!');
+            return;
+        }
+        researchPoints -= cost;
+        research.level++;
+        if (index === 12) startAutoClicker();
+        fullRefresh();
+        saveGame();
+        spawnFloatingText('🔬 Research complete!', false);
+    }
+
+    function renderResearch() {
+        const container = document.getElementById('researchContainer');
+        if (!container) return;
+        let html = '';
+        for (let i = 0; i <= 11; i++) {
+            const r = researchItems[i];
+            const nextCost = r.level < r.maxLevel ? r.costPerLevel[r.level] : null;
+            const currentReduction = (100 - Math.pow(94, r.level)) + '%';
+            const tierList = r.tierNames.join(' & ');
+            html += `<div class="research-card">
+                <div class="research-title">${r.name}</div>
+                <div class="research-tier-list">📋 ${tierList}</div>
+                <div class="research-level">Level ${r.level}/${r.maxLevel}</div>
+                <div class="research-desc">${r.desc}</div>
+                <div class="research-current">Current: -${(100 - Math.pow(94, r.level)).toFixed(1)}% cost</div>
+                ${r.level < r.maxLevel ? 
+                    `<div class="research-cost">Cost: ${nextCost} RP</div>
+                     <div class="research-btn" onclick="window.buyResearch(${i})">UPGRADE</div>` : 
+                    `<div class="research-max">MAX LEVEL</div>`}
+            </div>`;
+        }
+        for (let i = 12; i < researchItems.length; i++) {
+            const r = researchItems[i];
+            const nextCost = r.level < r.maxLevel ? r.costPerLevel[r.level] : null;
+            let currentBonus = '';
+            if (i === 12) currentBonus = `Current: ${r.level * 10}% of click/sec`;
+            else if (i === 13) currentBonus = `Current: ${(6.11 + r.level * 0.5).toFixed(2)}% crit chance`;
+            else if (i === 14) currentBonus = `Current: +${r.level * 0.1}x crit mult`;
+            else if (i === 15) currentBonus = `Current: +${r.level * 0.05} to prestige mult`;
+            else if (i === 16) currentBonus = `Current: -${r.level * 10}% prestige cost`;
+            else if (i === 17) currentBonus = `Current: +${r.level * 30} mins offline`;
+            html += `<div class="research-card">
+                <div class="research-title">${r.name}</div>
+                <div class="research-level">Level ${r.level}/${r.maxLevel}</div>
+                <div class="research-desc">${r.desc}</div>
+                <div class="research-current">${currentBonus}</div>
+                ${r.level < r.maxLevel ? 
+                    `<div class="research-cost">Cost: ${nextCost} RP</div>
+                     <div class="research-btn" onclick="window.buyResearch(${i})">UPGRADE</div>` : 
+                    `<div class="research-max">MAX LEVEL</div>`}
+                ${i === 17 && researchItems[12].level === 0 ? '<div style="color:red; font-weight:bold;">🔒 Requires Auto Picker lv1</div>' : ''}
+            </div>`;
+        }
+        container.innerHTML = html;
+    }
+
+    function calculateOfflineProgress() {
+        const now = Date.now();
+        const timeSinceLoad = now - pageLoadTime;
+        if (lastOfflineTime && lastOfflineTime < pageLoadTime) {
+            const diffSeconds = Math.floor((pageLoadTime - lastOfflineTime) / 1000);
+            if (diffSeconds > 5) {
+                const offlineLevel = researchItems[17].level;
+                const autoLevel = researchItems[12].level;
+                if (offlineLevel > 0 && autoLevel > 0) {
+                    const maxOfflineSeconds = offlineLevel * 30 * 60;
+                    const secondsToCollect = Math.min(diffSeconds, maxOfflineSeconds);
+                    if (secondsToCollect > 0) {
+                        const powerPerSecond = baseClickPower() * 0.1 * autoLevel;
+                        const offlineEarned = powerPerSecond * secondsToCollect;
+                        tomato += offlineEarned;
+                        document.getElementById('offlineProgressDisplay').innerHTML = 
+                            `⏰ Offline: +${formatNumber(offlineEarned)} tomatoes collected (${Math.floor(secondsToCollect/60)}m ${secondsToCollect%60}s)`;
+                        spawnFloatingText('⏰ Offline earnings!', false);
+                    }
+                }
+            }
+        }
+        lastOfflineTime = now;
+    }
+
+    // Achievements unchanged (just name changed in display)
+    const achievements = [
+        { id: 'click1', name: 'First Steps', desc: 'Click once', icon: '🖱️', condition: () => totalManualClicks >= 1 },
+        { id: 'click100', name: 'Clicker', desc: '100 clicks', icon: '🖱️', condition: () => totalManualClicks >= 100 },
+        { id: 'click1k', name: 'Serious Clicker', desc: '1,000 clicks', icon: '🖱️', condition: () => totalManualClicks >= 1000 },
+        { id: 'click10k', name: 'Tomato Maniac', desc: '10,000 clicks', icon: '🖱️', condition: () => totalManualClicks >= 10000 },
+        { id: 'click100k', name: 'Legendary Clicker', desc: '100,000 clicks', icon: '🖱️', condition: () => totalManualClicks >= 100000 },
+        { id: 'upgrade1', name: 'First Purchase', desc: 'Buy first upgrade', icon: '⬆️', condition: () => Object.values(levels).some(lvl => lvl >= 1) },
+        { id: 'upgrade3', name: 'Getting Started', desc: 'Own 3 upgrades', icon: '⬆️', condition: () => Object.values(levels).filter(lvl => lvl >= 1).length >= 3 },
+        { id: 'upgrade10', name: 'Tenth upgrade', desc: 'Own 10 upgrades', icon: '⬆️', condition: () => Object.values(levels).filter(lvl => lvl >= 1).length >= 10 },
+        { id: 'upgrade15', name: 'Upgrade collector', desc: 'Own 15 upgrades', icon: '⬆️', condition: () => Object.values(levels).filter(lvl => lvl >= 1).length >= 15 },
+        { id: 'prestige1', name: 'New Beginning', desc: 'Prestige once', icon: '✨', condition: () => prestigeLevel >= 1 },
+        { id: 'prestige3', name: 'Third Times', desc: 'Prestige 3 times', icon: '✨', condition: () => prestigeLevel >= 3 },
+        { id: 'prestige5', name: 'Star Collector', desc: 'Prestige 5 times', icon: '✨', condition: () => prestigeLevel >= 5 },
+        { id: 'prestige7', name: 'Tomato Deity', desc: 'Prestige 7 times', icon: '👑', condition: () => prestigeLevel >= 7 }, 
+        { id: 'prestige10', name: 'Transcendent', desc: 'Reach 10★', icon: '👑', condition: () => prestigeLevel >= 10 },
+        { id: 'combo25', name: 'Combo Starter', desc: 'Reach 25 combo', icon: '⚡', condition: () => combo >= 25 },
+        { id: 'combo50', name: 'Combo Master', desc: 'Reach 50 combo', icon: '⚡', condition: () => combo >= 50 },
+        { id: 'research1', name: 'Researcher', desc: 'Buy first research', icon: '🔬', condition: () => researchItems.some(r => r.level > 0) },
+        { id: 'research5', name: 'Scientist', desc: 'Own 5 research levels', icon: '🔬', condition: () => researchItems.reduce((sum, r) => sum + r.level, 0) >= 5 },
+        { id: 'research20', name: 'Professor', desc: 'Own 20 research levels', icon: '🔬', condition: () => researchItems.reduce((sum, r) => sum + r.level, 0) >= 20 },
+        { id: 'research50', name: 'Nobel Prize', desc: 'Own 50 research levels', icon: '🔬', condition: () => researchItems.reduce((sum, r) => sum + r.level, 0) >= 50 },
+        { id: 'research100', name: 'Research Master', desc: 'Own 100 research levels', icon: '🔬', condition: () => researchItems.reduce((sum, r) => sum + r.level, 0) >= 100 },
+        { id: 'crit25', name: 'Lucky!', desc: 'Get a 25x critical', icon: '🍀', condition: () => false },
+        { id: 'crit1000', name: 'ONE IN A MILLION', desc: 'Get a 1000x critical', icon: '💀', condition: () => false },
+    ];
+
+    let unlockedAchievements = [];
+
+    function checkAchievements() {
+        let changed = false;
+        achievements.forEach(ach => {
+            if (!unlockedAchievements.includes(ach.id) && ach.condition()) {
+                unlockedAchievements.push(ach.id);
+                changed = true;
+                spawnFloatingText('🏆 ' + ach.name, true);
+            }
+        });
+        if (changed) renderAchievements();
+    }
+
+    function checkCrit25() { if (!unlockedAchievements.includes('crit25')) { unlockedAchievements.push('crit25'); renderAchievements(); spawnFloatingText('🏆 Lucky!', true); } }
+    function checkCrit1000() { if (!unlockedAchievements.includes('crit1000')) { unlockedAchievements.push('crit1000'); renderAchievements(); spawnFloatingText('🏆 ONE IN A MILLION', true); } }
+
+    function renderAchievements() {
+        const container = document.getElementById('achievementsList');
+        if (!container) return;
+        let html = '';
+        achievements.forEach(ach => {
+            const unlocked = unlockedAchievements.includes(ach.id);
+            html += `<div class="achievement-entry" style="${unlocked ? '' : 'opacity:0.6;'}">
+                <span class="achievement-icon">${ach.icon}</span>
+                <span class="achievement-desc"><b>${ach.name}</b>: ${ach.desc}</span>
+                <span class="achievement-reward">${unlocked ? '✅' : '🔒'}</span>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function formatNumber(num) {
+        if (num === Infinity) return '∞';
+        if (num >= 1e30) return num.toExponential(2);
+        const suffixes = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc', 'Nn', 'Dc'];
+        let tier = 0;
+        while (num >= 1000 && tier < suffixes.length-1) { num /= 1000; tier++; }
+        let fixed = (num < 10 && num > -10) ? num.toFixed(2) : num.toFixed(1);
+        if (fixed.endsWith('.0')) fixed = fixed.slice(0, -2);
+        return fixed + ' ' + suffixes[tier];
+    }
+
+    const grid = document.getElementById('upgradeGrid');
+    function renderUpgrades() {
+        grid.innerHTML = '';
+        upgrades.forEach((up, idx) => {
+            const level = levels[up.id];
+            const cost = getNextCost(up, idx);
+            const power = getPowerFor(up);
+            const tierUnlocked = isUpgradeUnlockedByTier(idx);
+            const visible = isUpgradeVisibleByPrestige(idx);
+            let cardClass = 'upgrade-card';
+            if (!visible) cardClass += ' prestige-locked';
+            else if (!tierUnlocked) cardClass += ' locked-tier';
+            else if (tomato < cost) cardClass += ' disabled';
+
+            const card = document.createElement('div');
+            card.className = cardClass;
+            card.dataset.id = up.id;
+
+            if (!visible) {
+                card.innerHTML = `<div class="upgrade-icon">❓</div><div class="upgrade-name">????</div><div class="upgrade-level">prestige ★</div>`;
+                grid.appendChild(card); return;
+            }
+
+            let iconHtml = `<div class="upgrade-icon">${up.icon}</div>`;
+            if (up.id === 'jabel' && up.imageUrl) {
+                iconHtml = `<div class="upgrade-icon"><img src="${up.imageUrl}" alt="jabel" onerror="this.onerror=null; this.parentNode.innerHTML='👤';"></div>`;
+            } else if (up.id === 'quinnAvatar') {
+                iconHtml = `<div class="upgrade-icon"><img src="https://www.kingshotguide.com/_next/image?url=%2Fheroes%2Fquinn-avatar.webp&w=1080&q=75" alt="quinn" onerror="this.onerror=null; this.parentNode.innerHTML='🦅';"></div>`;
+            } else if (up.id === 'amadeus' && up.imageUrl) {
+                iconHtml = `<div class="upgrade-icon"><img src="${up.imageUrl}" alt="amadeus" onerror="this.onerror=null; this.parentNode.innerHTML='🎼';"></div>`;
+            }
+            
+            let powerDisplay = (level === 0) ? 'locked' : `+${formatNumber(power)}/click`;
+            let nextPower = (level === 0) ? up.basePower : up.basePower * Math.pow(1.25, level);
+            let nextPowerStr = `next +${formatNumber(nextPower)}`;
+
+            const originalCost = up.baseCost * Math.pow(1.32, level);
+            const discount = (1 - cost/originalCost) * 100;
+            const discountText = discount > 0.1 ? ` (-${discount.toFixed(0)}%)` : '';
+
+            card.innerHTML = `${iconHtml}<div class="upgrade-name">${up.name}</div><div class="upgrade-level">lvl ${level}</div><div class="upgrade-desc">${powerDisplay}</div><div class="cost-display">🍅 ${formatNumber(cost)}${discountText}</div><div class="preview-note">${nextPowerStr}</div>`;
+            
+            if (visible && tierUnlocked) {
+                card.addEventListener('click', (e) => { e.stopPropagation(); buyUpgrade(up.id, idx); });
+            }
+            grid.appendChild(card);
+        });
+    }
+
+    function buyUpgrade(id, index) {
+        const up = upgrades.find(u => u.id === id);
+        if (!up) return;
+        const cost = getNextCost(up, index);
+        if (tomato >= cost) {
+            tomato -= cost;
+            levels[id] += 1;
+            fullRefresh();
+            checkAchievements();
+            saveGame();
+        }
+    }
+
+    function performPrestige() {
+        if (prestigeLevel >= MAX_PRESTIGE) { alert('Maximum prestige (10★) reached!'); return; }
+        const cost = getPrestigeCost();
+        if (tomato < cost) { alert(`Need ${formatNumber(cost)} tomatoes`); return; }
+        tomato = 0;
+        upgrades.forEach(u => levels[u.id] = 0);
+        prestigeLevel++;
+        combo = 0; 
+        updateComboUI();
+        fullRefresh();
+        saveGame();
+        checkAchievements();
+        updateBuyRPButton();
+        alert(`✨ Prestiged to ${prestigeLevel} ★ · mult x${getPrestigeMultiplier().toFixed(3)}`);
+    }
+
+    function handleClick(e) {
+        e.preventDefault();
+        addClickEffect(e);
+        const now = Date.now();
+        if (now - lastClickTime <= COMBO_DECAY_MS + 50) increaseCombo();
+        else { combo = 1; resetComboTimer(); }
+        lastClickTime = now;
+        updateComboUI();
+
+        const pureBase = baseClickPower() * getPrestigeMultiplier();
+        const critMult = getCritMultiplier();
+        if (critMult === 25) checkCrit25();
+        if (critMult === 1000) checkCrit1000();
+        
+        let gain = pureBase * critMult * comboMultiplier();
+        tomato += gain;
+        totalManualClicks++;
+
+        if (critMult > 1) {
+            let msg = critMult >= 1000 ? '💀1000x💀' : critMult >= 25 ? '🔥25x🔥' : critMult >= 5 ? '⚡5x⚡' : '2x';
+            spawnFloatingText(msg, critMult >= 5);
+        } else {
+            spawnFloatingTomato('+' + formatNumber(gain), '#ff8811');
+        }
+        
+        checkAchievements();
+        fullRefresh();
+    }
+
+    function fullRefresh() {
+        document.getElementById('globalCornDisplay').innerText = formatNumber(tomato);
+        document.getElementById('researchPointsDisplay').innerText = researchPoints;
+        
+        const clickPow = totalClickPower();
+        document.getElementById('clickPowerStatMain').innerHTML = `👆 ${formatNumber(clickPow)} /click`;
+        document.getElementById('totalClicksStatMain').innerHTML = `🖱️ ${totalManualClicks}`;
+        
+        document.getElementById('critChanceDisplay').innerHTML = `🎲 Crit: ${getCritChance().toFixed(2)}%`;
+        document.getElementById('critMultDisplay').innerHTML = `💥 Crit x2-${(1000 + (researchItems[14]?.level || 0)*100).toFixed(0)}`;
+        
+        document.getElementById('prestigeStarsDisplay').innerHTML = `${prestigeLevel}/${MAX_PRESTIGE} ★`;
+        document.getElementById('prestigeMultDisplay').innerText = `x${Math.pow(Math.SQRT2, prestigeLevel).toFixed(3)}`;
+        document.getElementById('prestigeMultWithResearchDisplay').innerText = `x${getPrestigeMultiplier().toFixed(3)}`;
+        
+        const nextCost = getPrestigeCost();
+        const baseCost = PRESTIGE_BASE_COST * Math.pow(PRESTIGE_COST_GROWTH, prestigeLevel);
+        document.getElementById('prestigeCostDisplay').innerText = isFinite(baseCost) ? formatNumber(baseCost) : 'MAX';
+        document.getElementById('prestigeCostAfterResearchDisplay').innerText = isFinite(nextCost) ? formatNumber(nextCost) : 'MAX';
+        
+        updateBuyRPButton();
+        renderUpgrades();
+        renderResearch();
+        updateStatsPanel();
+        document.getElementById('statsClickPower').innerHTML = `⚡ click power: ${formatNumber(clickPow)}`;
+        updateComboUI();
+        renderAchievements();
+    }
+
+    function updateStatsPanel() {
+        const el = document.getElementById('statsDetail');
+        if (!el) return;
+        const clickPow = totalClickPower();
+        const totalResearchLevels = researchItems.reduce((sum, r) => sum + r.level, 0);
+        let html = `<b>🍅 TOMATO:</b> ${formatNumber(tomato)}<br>
+                    <b>🖱️ CLICKS:</b> ${totalManualClicks}<br>
+                    <b>⚡ COMBO:</b> ${combo} (${comboPercent()}%)<br>
+                    <b>✨ PRESTIGE:</b> ${prestigeLevel} ★ (x${getPrestigeMultiplier().toFixed(3)})<br>
+                    <b>🔬 RESEARCH POINTS:</b> ${researchPoints}<br>
+                    <b>🔬 RESEARCH LEVELS:</b> ${totalResearchLevels}/180<br>
+                    <b>🏆 ACHIEVEMENTS:</b> ${unlockedAchievements.length}/${achievements.length}<br>
+                    <b>⬆️ UPGRADES OWNED:</b> ${Object.values(levels).filter(lvl => lvl >= 1).length}<br><br>
+                    <b>⬆️ UPGRADE DETAILS:</b><br>`;
+        
+        upgrades.forEach((u, idx) => { 
+            if (isUpgradeVisibleByPrestige(idx) || levels[u.id] > 0) {
+                html += `&nbsp;&nbsp;${u.icon} ${u.name}: lvl ${levels[u.id]} (${formatNumber(getPowerFor(u))}/click)<br>`;
+            }
+        });
+        
+        html += `<br><b>🔁 TOTAL /CLICK:</b> ${formatNumber(clickPow)}`;
+        el.innerHTML = html;
+    }
+
+    function saveGame() {
+        const saveObj = { 
+            corn: tomato, totalManualClicks, levels, prestigeLevel, unlockedAchievements,
+            researchPoints,
+            researchLevels: researchItems.map(r => r.level),
+            lastOfflineTime,
+            version: 'tomato2.0' 
+        };
+        localStorage.setItem('tomatoResearchSave', JSON.stringify(saveObj));
+        document.getElementById('saveStatus').innerText = '✅ saved ' + new Date().toLocaleTimeString();
+    }
+
+    function loadGame() {
+        const raw = localStorage.getItem('tomatoResearchSave');
+        if (!raw) { 
+            document.getElementById('saveStatus').innerText = '❌ no save'; 
+            return; 
+        }
+        try {
+            const loaded = JSON.parse(raw);
+            tomato = loaded.corn ?? 0;
+            totalManualClicks = loaded.totalManualClicks ?? 0;
+            prestigeLevel = Math.min(loaded.prestigeLevel ?? 0, MAX_PRESTIGE);
+            researchPoints = loaded.researchPoints ?? 0;
+            
+            if (loaded.levels) {
+                upgrades.forEach(u => levels[u.id] = 0);
+                for (let [id, lvl] of Object.entries(loaded.levels)) {
+                    if (levels.hasOwnProperty(id)) levels[id] = lvl;
+                }
+            }
+            
+            if (loaded.researchLevels) {
+                loaded.researchLevels.forEach((lvl, idx) => {
+                    if (researchItems[idx]) researchItems[idx].level = lvl;
+                });
+            }
+            
+            unlockedAchievements = loaded.unlockedAchievements || [];
+            lastOfflineTime = loaded.lastOfflineTime || Date.now();
+            
+            combo = 0; 
+            updateComboUI();
+            
+            startAutoClicker();
+            
+            fullRefresh();
+            document.getElementById('saveStatus').innerText = '📀 loaded';
+        } catch (e) { 
+            console.error(e);
+            document.getElementById('saveStatus').innerText = '⚠️ error'; 
+        }
+    }
+
+    function resetGame() {
+        if (confirm('Reset all progress?')) {
+            tomato = 0; 
+            totalManualClicks = 0; 
+            prestigeLevel = 0; 
+            combo = 0;
+            researchPoints = 0;
+            upgrades.forEach(u => levels[u.id] = 0);
+            researchItems.forEach(r => r.level = 0);
+            unlockedAchievements = [];
+            lastOfflineTime = Date.now();
+            
+            if (autoClickerInterval) clearInterval(autoClickerInterval);
+            
+            fullRefresh();
+            document.getElementById('saveStatus').innerText = '♻️ reset';
+        }
+    }
+
+    function exportGame() {
+        const saveObj = { 
+            corn: tomato, totalManualClicks, levels, prestigeLevel, unlockedAchievements,
+            researchPoints,
+            researchLevels: researchItems.map(r => r.level),
+            version: 'tomatoExport' 
+        };
+        document.getElementById('importField').value = JSON.stringify(saveObj);
+        document.getElementById('saveStatus').innerText = '📤 export string ready';
+    }
+
+    function importGame() {
+        const raw = document.getElementById('importField').value.trim();
+        if (!raw) return;
+        try {
+            const loaded = JSON.parse(raw);
+            tomato = loaded.corn ?? 0;
+            totalManualClicks = loaded.totalManualClicks ?? 0;
+            prestigeLevel = Math.min(loaded.prestigeLevel ?? 0, MAX_PRESTIGE);
+            researchPoints = loaded.researchPoints ?? 0;
+            
+            if (loaded.levels) {
+                upgrades.forEach(u => levels[u.id] = 0);
+                for (let [id, lvl] of Object.entries(loaded.levels)) {
+                    if (levels.hasOwnProperty(id)) levels[id] = lvl;
+                }
+            }
+            
+            if (loaded.researchLevels) {
+                loaded.researchLevels.forEach((lvl, idx) => {
+                    if (researchItems[idx]) researchItems[idx].level = lvl;
+                });
+            }
+            
+            unlockedAchievements = loaded.unlockedAchievements || [];
+            combo = 0; 
+            updateComboUI();
+            
+            startAutoClicker();
+            
+            fullRefresh();
+            document.getElementById('saveStatus').innerText = '📦 import success';
+            saveGame();
+        } catch (e) { 
+            document.getElementById('saveStatus').innerText = '❌ invalid import'; 
+        }
+    }
+
+    setInterval(saveGame, 15000);
+
+    const mainPage = document.getElementById('pageMain');
+    const upgradePage = document.getElementById('pageUpgrade');
+    const researchPage = document.getElementById('pageResearch');
+    const prestigePage = document.getElementById('pagePrestige');
+    const achievementsPage = document.getElementById('pageAchievements');
+    const statsPage = document.getElementById('pageStats');
+    
+    const tabMain = document.getElementById('tabMain');
+    const tabUpgrade = document.getElementById('tabUpgrade');
+    const tabResearch = document.getElementById('tabResearch');
+    const tabPrestige = document.getElementById('tabPrestigePage');
+    const tabAchievements = document.getElementById('tabAchievements');
+    const tabStats = document.getElementById('tabStats');
+
+    function setActivePage(active) {
+        [mainPage, upgradePage, researchPage, prestigePage, achievementsPage, statsPage].forEach(p => p.classList.remove('active-page'));
+        [tabMain, tabUpgrade, tabResearch, tabPrestige, tabAchievements, tabStats].forEach(t => t.classList.remove('active'));
+        
+        if (active === 'main') { 
+            mainPage.classList.add('active-page'); 
+            tabMain.classList.add('active'); 
+        }
+        else if (active === 'upgrade') { 
+            upgradePage.classList.add('active-page'); 
+            tabUpgrade.classList.add('active'); 
+            renderUpgrades(); 
+        }
+        else if (active === 'research') { 
+            researchPage.classList.add('active-page'); 
+            tabResearch.classList.add('active'); 
+            renderResearch(); 
+        }
+        else if (active === 'prestige') { 
+            prestigePage.classList.add('active-page'); 
+            tabPrestige.classList.add('active'); 
+            fullRefresh(); 
+        }
+        else if (active === 'achievements') { 
+            achievementsPage.classList.add('active-page'); 
+            tabAchievements.classList.add('active'); 
+            renderAchievements(); 
+        }
+        else if (active === 'stats') { 
+            statsPage.classList.add('active-page'); 
+            tabStats.classList.add('active'); 
+            updateStatsPanel(); 
+        }
+        fullRefresh();
+    }
+
+    tabMain.addEventListener('click', () => setActivePage('main'));
+    tabUpgrade.addEventListener('click', () => setActivePage('upgrade'));
+    tabResearch.addEventListener('click', () => setActivePage('research'));
+    tabPrestige.addEventListener('click', () => setActivePage('prestige'));
+    tabAchievements.addEventListener('click', () => setActivePage('achievements'));
+    tabStats.addEventListener('click', () => setActivePage('stats'));
+
+    document.getElementById('clickButton').addEventListener('click', handleClick);
+    document.getElementById('clickButton').addEventListener('touchstart', (e) => { e.preventDefault(); handleClick(e); }, { passive: false });
+
+    document.getElementById('prestigeBtn').addEventListener('click', performPrestige);
+    document.getElementById('buyResearchPointBtn').addEventListener('click', buyResearchPoint);
+    
+    document.getElementById('saveGameBtn').addEventListener('click', saveGame);
+    document.getElementById('loadGameBtn').addEventListener('click', loadGame);
+    document.getElementById('resetGameBtn').addEventListener('click', resetGame);
+    document.getElementById('exportBtn').addEventListener('click', exportGame);
+    document.getElementById('importBtn').addEventListener('click', importGame);
+
+    window.buyResearch = buyResearch;
+
+    fullRefresh();
+    setTimeout(() => { 
+        if (localStorage.getItem('tomatoResearchSave')) {
+            loadGame();
+        }
+        calculateOfflineProgress();
+        startAutoClicker();
+    }, 100);
+})();
+</script>
+</body>
+</html>
