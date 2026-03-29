@@ -55,56 +55,80 @@
             margin: 1.5rem 0 2rem;
         }
 
-        /* circular buttons — no edge container, pure circle shape */
-        .theme-btn {
-            border: none;
-            border-radius: 50%;
-            background: #f8f6f0;
-            cursor: pointer;
-            transition: transform 0.12s ease, box-shadow 0.15s ease;
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0,0,0,0.02);
-        }
+.theme-btn {
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.15s ease;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+}
 
-        /* press effect */
-        .theme-btn:active {
-            transform: scale(0.94);
-            transition: 0.04s;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
+.theme-btn:active {
+    transform: scale(0.94);
+    transition: 0.04s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+        
+.theme-btn:focus {
+    outline: none;
+}
 
-        /* huge emoji inside circle */
-        .btn-emoji {
-            font-size: 5rem;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-            transition: transform 0.1s ease;
-            line-height: 1;
-            pointer-events: none;
-        }
+.theme-btn:focus-visible {
+    outline: 2px solid #f5bc70;
+    outline-offset: 2px;
+}
 
-        .theme-btn:hover .btn-emoji {
-            transform: scale(1.03);
-        }
+.btn-emoji {
+    font-size: 5rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    transition: transform 0.1s ease;
+    line-height: 1;
+    pointer-events: none;
+}
 
-        /* individual light background colors based on emoji — no dark grey shadows */
-        .btn-peach { background: #ffede1; box-shadow: 0 8px 18px -6px rgba(255, 160, 90, 0.2), 0 0 0 1px rgba(255, 190, 130, 0.3); }
-        .btn-apple { background: #e6f5dc; box-shadow: 0 8px 18px -6px rgba(120, 170, 70, 0.2), 0 0 0 1px rgba(150, 200, 100, 0.3); }
-        .btn-carrot { background: #fff0e0; box-shadow: 0 8px 18px -6px rgba(240, 150, 60, 0.2), 0 0 0 1px rgba(245, 170, 90, 0.3); }
-        .btn-corn { background: #fffae6; box-shadow: 0 8px 18px -6px rgba(230, 190, 70, 0.2), 0 0 0 1px rgba(235, 200, 90, 0.3); }
-        .btn-lemon { background: #fffce8; box-shadow: 0 8px 18px -6px rgba(220, 200, 40, 0.2), 0 0 0 1px rgba(230, 210, 70, 0.3); }
-        .btn-tomato { background: #ffeae5; box-shadow: 0 8px 18px -6px rgba(220, 100, 70, 0.2), 0 0 0 1px rgba(235, 120, 85, 0.3); }
+.theme-btn:hover .btn-emoji {
+    transform: scale(1.03);
+}
 
-        /* hover: slightly richer background matching emoji */
-        .btn-peach:hover { background: #ffe2d0; }
-        .btn-apple:hover { background: #dcf2cc; }
-        .btn-carrot:hover { background: #ffe5d0; }
-        .btn-corn:hover { background: #fff5d8; }
-        .btn-lemon:hover { background: #fff9d8; }
-        .btn-tomato:hover { background: #ffe0d5; }
+.btn-peach { 
+    background: linear-gradient(135deg, #ffede1, #ffd6b0);
+    box-shadow: 0 8px 18px -6px rgba(255, 160, 90, 0.25);
+}
+.btn-apple { 
+    background: linear-gradient(135deg, #e6f5dc, #c8e8aa);
+    box-shadow: 0 8px 18px -6px rgba(120, 170, 70, 0.25);
+}
+.btn-carrot { 
+    background: linear-gradient(135deg, #fff0e0, #ffcf9a);
+    box-shadow: 0 8px 18px -6px rgba(240, 150, 60, 0.25);
+}
+.btn-corn { 
+    background: linear-gradient(135deg, #fffae6, #ffe89a);
+    box-shadow: 0 8px 18px -6px rgba(230, 190, 70, 0.25);
+}
+.btn-lemon { 
+    background: linear-gradient(135deg, #fffce8, #ffec8a);
+    box-shadow: 0 8px 18px -6px rgba(220, 200, 40, 0.25);
+}
+.btn-tomato { 
+    background: linear-gradient(135deg, #ffeae5, #ffbe9a);
+    box-shadow: 0 8px 18px -6px rgba(220, 100, 70, 0.25);
+}
+        
+.btn-peach:hover { background: linear-gradient(135deg, #ffe8d8, #ffc89a); }
+.btn-apple:hover { background: linear-gradient(135deg, #dcf2cc, #b8dd90); }
+.btn-carrot:hover { background: linear-gradient(135deg, #ffe5d0, #ffc280); }
+.btn-corn:hover { background: linear-gradient(135deg, #fff5d8, #ffdd70); }
+.btn-lemon:hover { background: linear-gradient(135deg, #fff9d8, #ffe56a); }
+.btn-tomato:hover { background: linear-gradient(135deg, #ffe0d5, #ffaa7a); }
 
         .howto {
             background: #fafaf8;
