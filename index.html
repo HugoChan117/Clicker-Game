@@ -1,0 +1,320 @@
+<!-- This file is AI-generated -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>select</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* clean button selection */
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 30%, #1e3a1a, #0a2f0a);
+            font-family: 'Segoe UI', 'Poppins', system-ui, 'Inter', 'Exo 2', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* fresh leaf overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgba(200,230,120,0.08)" stroke-width="0.5"><path d="M12,2 L12,22 M2,12 L22,12 M4,4 L20,20 M4,20 L20,4" /></svg>');
+            background-repeat: repeat;
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* main hub — organic card style */
+        .hub-container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(30, 45, 20, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 4rem;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 200, 0.2);
+            padding: 2rem 2rem 1.8rem;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 210, 100, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* title minimal */
+        .title-area {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .title-area h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #f9e0a0, #ffbc6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .title-area h2 span {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 2px 4px #2f4f2f);
+        }
+
+        /* 3x2 GRID — exactly 3 columns, 2 rows */
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.8rem;
+            margin: 2rem 0 2rem;
+        }
+
+        /* GIANT EMOJI BUTTONS — only emoji, but fully clickable */
+        .fruit-btn {
+            background: linear-gradient(145deg, #fef3cf, #ffe2b5);
+            border: none;
+            border-radius: 3.5rem;
+            padding: 2rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 16px 24px -8px rgba(0, 0, 0, 0.4), inset 0 1px 0 #fff6e0;
+            width: 100%;
+            aspect-ratio: 1 / 0.9;
+            position: relative;
+            backdrop-filter: blur(2px);
+        }
+
+        /* only emoji inside — huge and centered */
+        .fruit-emoji {
+            font-size: 6rem;
+            filter: drop-shadow(4px 8px 14px rgba(0, 0, 0, 0.3));
+            transition: transform 0.15s ease;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        /* interactive feedback */
+        .fruit-btn:hover {
+            transform: translateY(-6px) scale(1.02);
+            background: linear-gradient(145deg, #fff7e8, #ffefcf);
+            box-shadow: 0 22px 28px -12px black;
+        }
+        .fruit-btn:active {
+            transform: translateY(4px) scale(0.97);
+            transition: 0.04s;
+            box-shadow: 0 8px 14px -6px black;
+        }
+
+        /* subtle glow per fruit (soft highlight on hover) */
+        .fruit-btn[data-game="peach"]:hover .fruit-emoji { text-shadow: 0 0 12px #ffb37c; }
+        .fruit-btn[data-game="apple"]:hover .fruit-emoji { text-shadow: 0 0 12px #c7f09c; }
+        .fruit-btn[data-game="carrot"]:hover .fruit-emoji { text-shadow: 0 0 12px #ffb347; }
+        .fruit-btn[data-game="corn"]:hover .fruit-emoji { text-shadow: 0 0 12px #ffe28a; }
+        .fruit-btn[data-game="lemon"]:hover .fruit-emoji { text-shadow: 0 0 12px #ffd966; }
+        .fruit-btn[data-game="tomato"]:hover .fruit-emoji { text-shadow: 0 0 12px #ff7e5e; }
+
+        /* helper section (bottom) */
+        .helper {
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            padding: 1rem 1.8rem;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border: 1px solid rgba(255, 220, 120, 0.5);
+        }
+
+        .helper-text {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #fef0cf;
+            text-shadow: 0 1px 2px #1f3a1a;
+        }
+
+        .helper-text span {
+            font-size: 1.7rem;
+            filter: drop-shadow(0 0 3px #ffbe5e);
+        }
+
+        .badge-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .info-badge {
+            background: #2c4b2ad9;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffeaad;
+            border: 1px solid #ffc96e;
+            backdrop-filter: blur(2px);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 1rem;
+            color: #cde0b5;
+            letter-spacing: 0.3px;
+        }
+
+        /* Responsive: 3x2 → on tablets still 3x2 but shrink a bit */
+        @media (max-width: 750px) {
+            .emoji-grid {
+                gap: 1.2rem;
+            }
+            .fruit-emoji {
+                font-size: 4.5rem;
+            }
+            .hub-container {
+                padding: 1.5rem;
+            }
+            .helper-text {
+                font-size: 0.9rem;
+            }
+            .helper-text span {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .emoji-grid {
+                gap: 1rem;
+            }
+            .fruit-emoji {
+                font-size: 3.5rem;
+            }
+            .fruit-btn {
+                padding: 1rem 0.5rem;
+            }
+            .helper {
+                flex-direction: column;
+                text-align: center;
+            }
+            body {
+                padding: 1rem;
+            }
+        }
+
+        /* focus accessibility */
+        .fruit-btn:focus-visible {
+            outline: 3px solid #ffbb66;
+            outline-offset: 3px;
+            transform: scale(1.01);
+        }
+    </style>
+</head>
+<body>
+<div class="hub-container">
+    <div class="title-area">
+        <h2>
+            select
+        </h2>
+    </div>
+
+    <!-- 3x2 GRID: exactly 3 columns, 2 rows — only emoji inside buttons -->
+    <div class="emoji-grid">
+        <!-- row 1 -->
+        <button class="fruit-btn" data-game="peach" data-url="https://hugochan117.github.io/Clicker-Game/peach.html">
+            <span class="fruit-emoji">🍑</span>
+        </button>
+        <button class="fruit-btn" data-game="apple" data-url="https://hugochan117.github.io/Clicker-Game/apple.html">
+            <span class="fruit-emoji">🍎</span>
+        </button>
+        <button class="fruit-btn" data-game="carrot" data-url="https://hugochan117.github.io/Clicker-Game/carrot.html">
+            <span class="fruit-emoji">🥕</span>
+        </button>
+        <!-- row 2 -->
+        <button class="fruit-btn" data-game="corn" data-url="https://hugochan117.github.io/Clicker-Game/corn.html">
+            <span class="fruit-emoji">🌽</span>
+        </button>
+        <button class="fruit-btn" data-game="lemon" data-url="https://hugochan117.github.io/Clicker-Game/lemon.html">
+            <span class="fruit-emoji">🍋</span>
+        </button>
+        <button class="fruit-btn" data-game="tomato" data-url="https://hugochan117.github.io/Clicker-Game/tomato.html">
+            <span class="fruit-emoji">🍅</span>
+        </button>
+    </div>
+
+    <!-- HELPER SECTION AT BOTTOM (descriptive) -->
+    <div class="helper">
+        <div class="helper-text">
+            <span>🧭</span> click any emoji → jump to that clicker world
+        </div>
+        <div class="badge-group">
+            <div class="info-badge">🔬 deep research</div>
+            <div class="info-badge">✨ prestige system</div>
+            <div class="info-badge">⚡ offline earnings</div>
+        </div>
+    </div>
+    <footer>
+        🍏 each game saves automatically · harvest infinite power 🍅
+    </footer>
+</div>
+
+<script>
+    (function() {
+        // select all emoji buttons (six of them)
+        const buttons = document.querySelectorAll('.fruit-btn');
+        
+        // assign redirection on click (only emoji interface)
+        buttons.forEach(btn => {
+            const targetUrl = btn.getAttribute('data-url');
+            if (targetUrl) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // optional tiny haptic feedback? just redirect
+                    window.location.href = targetUrl;
+                });
+                
+                // accessibility: keyboard support (Enter / Space)
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        window.location.href = targetUrl;
+                    }
+                });
+                
+                // set role and tabindex for better a11y
+                btn.setAttribute('role', 'button');
+                btn.setAttribute('tabindex', '0');
+            }
+        });
+        
+        // optional: add ripple effect style for modern delight (minimal)
+        const style = document.createElement('style');
+        style.textContent = `
+            .fruit-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+        `;
+        document.head.appendChild(style);
+    })();
+</script>
+</body>
+</html>
