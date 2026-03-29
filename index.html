@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>select clicker</title>
+    <title>choose clicker theme</title>
     <style>
         * {
             margin: 0;
@@ -11,221 +11,238 @@
             box-sizing: border-box;
             user-select: none;
         }
+
         body {
             min-height: 100vh;
-            background: #fefef7;
-            background-image: radial-gradient(circle at 25% 40%, rgba(200,220,150,0.15) 1.5px, transparent 1.5px);
-            background-size: 32px 32px;
+            background: #ffffff;
             font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, 'Exo 2', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
         }
-        /* main card */
-        .hub {
+
+        .picker {
             max-width: 880px;
             width: 100%;
             background: white;
-            border-radius: 3rem;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1), 0 0 0 1px #f0e7d8 inset, 0 0 0 2px #fff8f0 inset;
-            padding: 2rem 1.8rem 2rem 1.8rem;
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
             transition: all 0.2s;
         }
-        /* title tiny */
+
         .title {
             text-align: center;
             margin-bottom: 2rem;
         }
+
         .title h1 {
             font-size: 2rem;
             font-weight: 700;
-            background: linear-gradient(120deg, #3a7734, #d68b2c, #f0bc3e);
+            background: linear-gradient(135deg, #3a7a34, #d97a2c, #e6b13e);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            letter-spacing: -0.3px;
+            letter-spacing: -0.2px;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
-        .title h1 span {
-            font-size: 1.8rem;
-            background: none;
-            -webkit-text-fill-color: initial;
-        }
-        /* 3x2 grid */
-        .grid-3x2 {
+
+        .theme-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.3rem;
-            margin: 1.2rem 0 1.8rem;
+            gap: 2.5rem;
+            margin: 1.5rem 0 2rem;
         }
-        /* button base style */
-        .game-btn {
+
+        /* circular buttons — no edge container, pure circle shape */
+        .theme-btn {
             border: none;
-            border-radius: 2.2rem;
-            padding: 1.4rem 0.5rem;
+            border-radius: 50%;
+            background: #f8f6f0;
+            cursor: pointer;
+            transition: transform 0.12s ease, box-shadow 0.15s ease;
+            width: 100%;
+            aspect-ratio: 1 / 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.18s ease;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.08);
-            background: #f5f0e0;
-            width: 100%;
-            aspect-ratio: 1 / 0.85;
+            box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0,0,0,0.02);
         }
-        .game-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 rgba(0,0,0,0.05);
+
+        /* press effect */
+        .theme-btn:active {
+            transform: scale(0.94);
             transition: 0.04s;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
-        /* huge emoji only */
+
+        /* huge emoji inside circle */
         .btn-emoji {
-            font-size: 4.8rem;
-            filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.15));
-            transition: transform 0.1s;
+            font-size: 5rem;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+            transition: transform 0.1s ease;
             line-height: 1;
+            pointer-events: none;
         }
-        .game-btn:hover .btn-emoji {
-            transform: scale(1.05);
+
+        .theme-btn:hover .btn-emoji {
+            transform: scale(1.03);
         }
-        /* color themes according to emoji */
-        .btn-peach { background: #ffe0c4; box-shadow: 0 6px 0 #ddb082; }
-        .btn-apple { background: #d9f0c3; box-shadow: 0 6px 0 #8bb56a; }   /* green apple */
-        .btn-carrot { background: #ffddb0; box-shadow: 0 6px 0 #e6a35c; }
-        .btn-corn { background: #fff0b5; box-shadow: 0 6px 0 #e6c46a; }
-        .btn-lemon { background: #fff1a0; box-shadow: 0 6px 0 #e6bc4a; }
-        .btn-tomato { background: #ffceb5; box-shadow: 0 6px 0 #dd8a62; }
 
-        .btn-peach:hover { background: #ffd6b0; }
-        .btn-apple:hover { background: #c8e8aa; }
-        .btn-carrot:hover { background: #ffcf9a; }
-        .btn-corn:hover { background: #ffe89a; }
-        .btn-lemon:hover { background: #ffec8a; }
-        .btn-tomato:hover { background: #ffbe9a; }
+        /* individual light background colors based on emoji — no dark grey shadows */
+        .btn-peach { background: #ffede1; box-shadow: 0 8px 18px -6px rgba(255, 160, 90, 0.2), 0 0 0 1px rgba(255, 190, 130, 0.3); }
+        .btn-apple { background: #e6f5dc; box-shadow: 0 8px 18px -6px rgba(120, 170, 70, 0.2), 0 0 0 1px rgba(150, 200, 100, 0.3); }
+        .btn-carrot { background: #fff0e0; box-shadow: 0 8px 18px -6px rgba(240, 150, 60, 0.2), 0 0 0 1px rgba(245, 170, 90, 0.3); }
+        .btn-corn { background: #fffae6; box-shadow: 0 8px 18px -6px rgba(230, 190, 70, 0.2), 0 0 0 1px rgba(235, 200, 90, 0.3); }
+        .btn-lemon { background: #fffce8; box-shadow: 0 8px 18px -6px rgba(220, 200, 40, 0.2), 0 0 0 1px rgba(230, 210, 70, 0.3); }
+        .btn-tomato { background: #ffeae5; box-shadow: 0 8px 18px -6px rgba(220, 100, 70, 0.2), 0 0 0 1px rgba(235, 120, 85, 0.3); }
 
-        /* how to play section — clean minimal */
+        /* hover: slightly richer background matching emoji */
+        .btn-peach:hover { background: #ffe2d0; }
+        .btn-apple:hover { background: #dcf2cc; }
+        .btn-carrot:hover { background: #ffe5d0; }
+        .btn-corn:hover { background: #fff5d8; }
+        .btn-lemon:hover { background: #fff9d8; }
+        .btn-tomato:hover { background: #ffe0d5; }
+
         .howto {
-            background: #faf7f0;
+            background: #fafaf8;
             border-radius: 2rem;
-            padding: 1rem 1.4rem;
+            padding: 1rem 1.5rem;
             margin-top: 1rem;
-            border: 1px solid #efe3ce;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             gap: 0.8rem;
+            border: 1px solid #efede5;
         }
+
         .howto-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-weight: 600;
             color: #4a6e3a;
         }
+
         .howto-left span {
-            font-size: 1.9rem;
+            font-size: 1.8rem;
         }
+
         .howto-steps {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.7rem 1.2rem;
+            gap: 0.6rem 1rem;
             font-size: 0.85rem;
             font-weight: 500;
             color: #5c4a2e;
         }
+
         .step {
-            background: #fff3e0;
-            padding: 0.2rem 0.8rem;
-            border-radius: 30px;
+            background: #fff7ec;
+            padding: 0.25rem 0.9rem;
+            border-radius: 40px;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
-        /* responsive: 3x2 stays but shrink */
+
         @media (max-width: 680px) {
-            .grid-3x2 { gap: 1rem; }
-            .btn-emoji { font-size: 3.6rem; }
-            .hub { padding: 1.5rem; }
+            .theme-grid { gap: 1rem; }
+            .btn-emoji { font-size: 3.8rem; }
+            .picker { padding: 1rem; }
             .howto { flex-direction: column; align-items: flex-start; }
         }
+
         @media (max-width: 520px) {
             .btn-emoji { font-size: 2.8rem; }
-            .game-btn { padding: 0.8rem 0.2rem; }
         }
-        .game-btn:focus-visible {
+
+        .theme-btn:focus-visible {
             outline: 3px solid #f5bc70;
-            outline-offset: 2px;
+            outline-offset: 3px;
+            transform: scale(0.98);
+        }
+
+        /* no container edge whatsoever */
+        body {
+            background: #ffffff;
         }
     </style>
 </head>
 <body>
-<div class="hub">
+<div class="picker">
     <div class="title">
-        <h1>pick your clicker</h1>
+        <h1>choose clicker theme</h1>
     </div>
 
-    <!-- 3 columns x 2 rows = six emoji buttons -->
-    <div class="grid-3x2">
+    <!-- 3x2 grid: six round buttons, each with exact link -->
+    <div class="theme-grid">
         <!-- peach -->
-        <button class="game-btn btn-peach" data-url="https://clicker-game.neineig2012.workers.dev/peach">
+        <button class="theme-btn btn-peach" data-url="https://clicker-game.neineig2012.workers.dev/peach">
             <span class="btn-emoji">🍑</span>
         </button>
         <!-- apple -->
-        <button class="game-btn btn-apple" data-url="https://clicker-game.neineig2012.workers.dev/apple">
+        <button class="theme-btn btn-apple" data-url="https://clicker-game.neineig2012.workers.dev/apple">
             <span class="btn-emoji">🍏</span>
         </button>
         <!-- carrot -->
-        <button class="game-btn btn-carrot" data-url="https://clicker-game.neineig2012.workers.dev/carrot">
+        <button class="theme-btn btn-carrot" data-url="https://clicker-game.neineig2012.workers.dev/carrot">
             <span class="btn-emoji">🥕</span>
         </button>
         <!-- corn -->
-        <button class="game-btn btn-corn" data-url="https://clicker-game.neineig2012.workers.dev/corn">
+        <button class="theme-btn btn-corn" data-url="https://clicker-game.neineig2012.workers.dev/corn">
             <span class="btn-emoji">🌽</span>
         </button>
         <!-- lemon -->
-        <button class="game-btn btn-lemon" data-url="https://clicker-game.neineig2012.workers.dev/lemon">
+        <button class="theme-btn btn-lemon" data-url="https://clicker-game.neineig2012.workers.dev/lemon">
             <span class="btn-emoji">🍋</span>
         </button>
         <!-- tomato -->
-        <button class="game-btn btn-tomato" data-url="https://clicker-game.neineig2012.workers.dev/tomato">
+        <button class="theme-btn btn-tomato" data-url="https://clicker-game.neineig2012.workers.dev/tomato">
             <span class="btn-emoji">🍅</span>
         </button>
     </div>
 
-    <!-- HOW TO PLAY (no footer, no extra helper) -->
+    <!-- minimalist how-to block (kept clean) -->
     <div class="howto">
         <div class="howto-left">
-            <span>📖</span> how to play
+            <span>🎮</span> quick guide
         </div>
         <div class="howto-steps">
-            <div class="step">🍎 tap any fruit button → launch clicker</div>
-            <div class="step">🖱️ click the giant crop button to earn</div>
-            <div class="step">⬆️ buy upgrades & research points</div>
-            <div class="step">✨ prestige for permanent multipliers</div>
+            <div class="step">🍎 tap circle → launch clicker</div>
+            <div class="step">🖱️ click giant crop → earn</div>
+            <div class="step">⬆️ buy upgrades & research</div>
+            <div class="step">✨ prestige → permanent boost</div>
         </div>
     </div>
 </div>
 
 <script>
     (function() {
-        const buttons = document.querySelectorAll('.game-btn');
-        buttons.forEach(btn => {
-            const url = btn.getAttribute('data-url');
-            if (url) {
-                btn.addEventListener('click', (e) => {
+        // get all theme buttons
+        const btns = document.querySelectorAll('.theme-btn');
+        
+        btns.forEach(btn => {
+            const targetUrl = btn.getAttribute('data-url');
+            if (targetUrl) {
+                // click navigation with exact link
+                const handleNavigation = (e) => {
                     e.preventDefault();
-                    window.location.href = url;
-                });
+                    window.location.href = targetUrl;
+                };
+                
+                btn.addEventListener('click', handleNavigation);
                 btn.setAttribute('role', 'button');
                 btn.setAttribute('tabindex', '0');
+                
+                // keyboard support (Enter / Space)
                 btn.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        window.location.href = url;
+                        window.location.href = targetUrl;
                     }
                 });
             }
