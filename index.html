@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>select clicker</title>
+    <title>pick clicker theme</title>
     <style>
         * {
             margin: 0;
@@ -12,10 +11,11 @@
             box-sizing: border-box;
             user-select: none;
         }
+
         body {
             min-height: 100vh;
             background: #fefef7;
-            background-image: radial-gradient(circle at 25% 40%, rgba(200,220,150,0.15) 1.5px, transparent 1.5px);
+            background-image: radial-gradient(circle at 25% 40%, rgba(200, 220, 150, 0.2) 1.5px, transparent 1.5px);
             background-size: 32px 32px;
             font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, 'Exo 2', sans-serif;
             display: flex;
@@ -23,25 +23,26 @@
             justify-content: center;
             padding: 1.5rem;
         }
-        /* main card */
+
         .hub {
-            max-width: 880px;
+            max-width: 960px;
             width: 100%;
-            background: white;
+            background: rgba(255, 255, 245, 0.98);
             border-radius: 3rem;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1), 0 0 0 1px #f0e7d8 inset, 0 0 0 2px #fff8f0 inset;
+            box-shadow: 0 25px 45px -16px rgba(0, 0, 0, 0.2), 0 0 0 1px #f0e7d8 inset, 0 0 0 2px #fffef7 inset;
             padding: 2rem 1.8rem 2rem 1.8rem;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
         }
-        /* title tiny */
+
         .title {
             text-align: center;
             margin-bottom: 2rem;
         }
+
         .title h1 {
             font-size: 2rem;
             font-weight: 700;
-            background: linear-gradient(120deg, #3a7734, #d68b2c, #f0bc3e);
+            background: linear-gradient(135deg, #3a7734, #d68b2c, #f0bc3e);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
@@ -50,55 +51,63 @@
             align-items: center;
             gap: 10px;
         }
+
         .title h1 span {
             font-size: 1.8rem;
             background: none;
             -webkit-text-fill-color: initial;
+            display: inline-block;
         }
-        /* 3x2 grid */
+
         .grid-3x2 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.3rem;
-            margin: 1.2rem 0 1.8rem;
+            gap: 1.4rem;
+            margin: 1.6rem 0 2rem;
         }
-        /* button base style */
+
         .game-btn {
             border: none;
-            border-radius: 2.2rem;
-            padding: 1.4rem 0.5rem;
+            padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.18s ease;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.08);
+            transition: transform 0.1s ease, box-shadow 0.12s ease, background 0.1s;
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.08);
             background: #f5f0e0;
             width: 100%;
-            aspect-ratio: 1 / 0.85;
+            aspect-ratio: 1 / 0.9;
+            position: relative;
         }
+
         .game-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 rgba(0,0,0,0.05);
+            transform: translateY(4px);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.06);
             transition: 0.04s;
         }
-        /* huge emoji only */
+
         .btn-emoji {
-            font-size: 4.8rem;
-            filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.15));
-            transition: transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             line-height: 1;
+            transition: font-size 0.1s ease-out;
+            filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.2));
+            will-change: font-size;
         }
+
         .game-btn:hover .btn-emoji {
-            transform: scale(1.05);
+            transform: scale(1.02);
+            transition: transform 0.12s;
         }
-        /* color themes according to emoji */
-        .btn-peach { background: #ffe0c4; box-shadow: 0 6px 0 #ddb082; }
-        .btn-apple { background: #d9f0c3; box-shadow: 0 6px 0 #8bb56a; }   /* green apple */
-        .btn-carrot { background: #ffddb0; box-shadow: 0 6px 0 #e6a35c; }
-        .btn-corn { background: #fff0b5; box-shadow: 0 6px 0 #e6c46a; }
-        .btn-lemon { background: #fff1a0; box-shadow: 0 6px 0 #e6bc4a; }
-        .btn-tomato { background: #ffceb5; box-shadow: 0 6px 0 #dd8a62; }
+
+        .btn-peach { background: #ffe0c4; box-shadow: 0 8px 0 #ddb082; }
+        .btn-apple { background: #d9f0c3; box-shadow: 0 8px 0 #8bb56a; }
+        .btn-carrot { background: #ffddb0; box-shadow: 0 8px 0 #e6a35c; }
+        .btn-corn { background: #fff0b5; box-shadow: 0 8px 0 #e6c46a; }
+        .btn-lemon { background: #fff1a0; box-shadow: 0 8px 0 #e6bc4a; }
+        .btn-tomato { background: #ffceb5; box-shadow: 0 8px 0 #dd8a62; }
 
         .btn-peach:hover { background: #ffd6b0; }
         .btn-apple:hover { background: #c8e8aa; }
@@ -107,29 +116,33 @@
         .btn-lemon:hover { background: #ffec8a; }
         .btn-tomato:hover { background: #ffbe9a; }
 
-        /* how to play section — clean minimal */
         .howto {
             background: #faf7f0;
             border-radius: 2rem;
-            padding: 1rem 1.4rem;
-            margin-top: 1rem;
+            padding: 1rem 1.6rem;
+            margin-top: 0.8rem;
             border: 1px solid #efe3ce;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             gap: 0.8rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
         }
+
         .howto-left {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-weight: 600;
+            font-weight: 700;
             color: #4a6e3a;
+            font-size: 1rem;
         }
+
         .howto-left span {
             font-size: 1.9rem;
         }
+
         .howto-steps {
             display: flex;
             flex-wrap: wrap;
@@ -138,75 +151,97 @@
             font-weight: 500;
             color: #5c4a2e;
         }
+
         .step {
             background: #fff3e0;
-            padding: 0.2rem 0.8rem;
-            border-radius: 30px;
+            padding: 0.25rem 0.9rem;
+            border-radius: 40px;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            font-size: 0.8rem;
         }
-        /* responsive: 3x2 stays but shrink */
-        @media (max-width: 680px) {
-            .grid-3x2 { gap: 1rem; }
-            .btn-emoji { font-size: 3.6rem; }
-            .hub { padding: 1.5rem; }
-            .howto { flex-direction: column; align-items: flex-start; }
+
+        @media (max-width: 780px) {
+            .hub {
+                padding: 1.6rem;
+            }
+            .grid-3x2 {
+                gap: 1rem;
+            }
+            .howto-steps .step {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.7rem;
+            }
         }
-        @media (max-width: 520px) {
-            .btn-emoji { font-size: 2.8rem; }
-            .game-btn { padding: 0.8rem 0.2rem; }
+
+        @media (max-width: 580px) {
+            .grid-3x2 {
+                gap: 0.9rem;
+            }
+            .title h1 {
+                font-size: 1.6rem;
+            }
+            .howto-left {
+                font-size: 0.9rem;
+            }
+            .howto-left span {
+                font-size: 1.5rem;
+            }
+            .step {
+                font-size: 0.7rem;
+            }
         }
+
         .game-btn:focus-visible {
             outline: 3px solid #f5bc70;
-            outline-offset: 2px;
+            outline-offset: 4px;
+            transform: scale(0.98);
+        }
+
+        .game-btn {
+            transition: transform 0.08s linear, box-shadow 0.12s, background 0.1s;
         }
     </style>
 </head>
 <body>
 <div class="hub">
     <div class="title">
-        <h1>pick clicker theme</h1>
+        <h1>
+            <span>✨</span> pick clicker theme <span>🍒</span>
+        </h1>
     </div>
 
-    <!-- 3 columns x 2 rows = six emoji buttons -->
     <div class="grid-3x2">
-        <!-- peach -->
         <button class="game-btn btn-peach" data-url="https://clicker-game.neineig2012.workers.dev/peach">
-            <span class="btn-emoji">🍑</span>
+            <span class="btn-emoji" data-emoji="🍑">🍑</span>
         </button>
-        <!-- apple -->
         <button class="game-btn btn-apple" data-url="https://clicker-game.neineig2012.workers.dev/apple">
-            <span class="btn-emoji">🍏</span>
+            <span class="btn-emoji" data-emoji="🍏">🍏</span>
         </button>
-        <!-- carrot -->
         <button class="game-btn btn-carrot" data-url="https://clicker-game.neineig2012.workers.dev/carrot">
-            <span class="btn-emoji">🥕</span>
+            <span class="btn-emoji" data-emoji="🥕">🥕</span>
         </button>
-        <!-- corn -->
         <button class="game-btn btn-corn" data-url="https://clicker-game.neineig2012.workers.dev/corn">
-            <span class="btn-emoji">🌽</span>
+            <span class="btn-emoji" data-emoji="🌽">🌽</span>
         </button>
-        <!-- lemon -->
         <button class="game-btn btn-lemon" data-url="https://clicker-game.neineig2012.workers.dev/lemon">
-            <span class="btn-emoji">🍋</span>
+            <span class="btn-emoji" data-emoji="🍋">🍋</span>
         </button>
-        <!-- tomato -->
         <button class="game-btn btn-tomato" data-url="https://clicker-game.neineig2012.workers.dev/tomato">
-            <span class="btn-emoji">🍅</span>
+            <span class="btn-emoji" data-emoji="🍅">🍅</span>
         </button>
     </div>
 
-    <!-- HOW TO PLAY (no footer, no extra helper) -->
     <div class="howto">
         <div class="howto-left">
-            <span>📖</span> how to play
+            <span>🧑‍🌾</span> how to play
         </div>
         <div class="howto-steps">
-            <div class="step">🍎 tap any fruit button → launch clicker</div>
-            <div class="step">🖱️ click the giant crop button to earn</div>
+            <div class="step">🍎 tap any fruit → launch clicker</div>
+            <div class="step">🖱️ click giant crop → earn coins</div>
             <div class="step">⬆️ buy upgrades & research points</div>
-            <div class="step">✨ prestige for permanent multipliers</div>
+            <div class="step">🌟 prestige for permanent multipliers</div>
         </div>
     </div>
 </div>
@@ -214,6 +249,91 @@
 <script>
     (function() {
         const buttons = document.querySelectorAll('.game-btn');
+        const emojiSpans = new Map();
+        const resizeObservers = [];
+        
+        function updateEmojiSize(btn, emojiSpan) {
+            if (!btn || !emojiSpan) return;
+            const btnWidth = btn.clientWidth;
+            if (btnWidth <= 0) return;
+            
+            let desiredSize = btnWidth * 0.5;
+            const minSize = 28;
+            const maxSize = 86;
+            let finalSize = Math.min(maxSize, Math.max(minSize, desiredSize));
+            
+            emojiSpan.style.fontSize = finalSize + 'px';
+            emojiSpan.style.lineHeight = '1';
+            emojiSpan.style.display = 'inline-flex';
+        }
+        
+        function updateButtonRadius(btn) {
+            if (!btn) return;
+            const btnHeight = btn.clientHeight;
+            if (btnHeight <= 0) return;
+            const radiusValue = btnHeight / 3;
+            btn.style.borderRadius = radiusValue + 'px';
+        }
+        
+        function updateBoth(btn, emojiSpan) {
+            updateEmojiSize(btn, emojiSpan);
+            updateButtonRadius(btn);
+        }
+        
+        buttons.forEach(btn => {
+            const emojiSpan = btn.querySelector('.btn-emoji');
+            if (!emojiSpan) return;
+            emojiSpans.set(btn, emojiSpan);
+            
+            const updateFn = () => {
+                if (btn.isConnected) {
+                    updateBoth(btn, emojiSpan);
+                }
+            };
+            
+            if (window.ResizeObserver) {
+                const ro = new ResizeObserver((entries) => {
+                    for (let entry of entries) {
+                        if (entry.target === btn) {
+                            updateBoth(btn, emojiSpan);
+                        }
+                    }
+                });
+                ro.observe(btn);
+                resizeObservers.push(ro);
+            }
+            
+            window.addEventListener('resize', () => {
+                requestAnimationFrame(() => {
+                    if (btn.isConnected) updateBoth(btn, emojiSpan);
+                });
+            });
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    updateBoth(btn, emojiSpan);
+                });
+            } else {
+                updateBoth(btn, emojiSpan);
+            }
+        });
+        
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                buttons.forEach(btn => {
+                    const span = emojiSpans.get(btn);
+                    if (span && btn.isConnected) updateBoth(btn, span);
+                });
+            }, 30);
+        });
+        
+        window.addEventListener('load', () => {
+            buttons.forEach(btn => {
+                const span = emojiSpans.get(btn);
+                if (span && btn.isConnected) updateBoth(btn, span);
+            });
+        });
+        
         buttons.forEach(btn => {
             const url = btn.getAttribute('data-url');
             if (url) {
@@ -230,6 +350,43 @@
                     }
                 });
             }
+        });
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            .game-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: border-radius 0.08s ease-out;
+            }
+            .btn-emoji {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                transition: font-size 0.08s ease-out;
+                transform-origin: center;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        setTimeout(() => {
+            buttons.forEach(btn => {
+                const span = emojiSpans.get(btn);
+                if (span && btn.isConnected) updateBoth(btn, span);
+            });
+        }, 80);
+        
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            if (resizeTimer) clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                buttons.forEach(btn => {
+                    const span = emojiSpans.get(btn);
+                    if (span && btn.isConnected) updateBoth(btn, span);
+                });
+            }, 50);
         });
     })();
 </script>
