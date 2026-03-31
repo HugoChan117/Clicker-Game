@@ -2,393 +2,200 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>pick clicker theme</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
-
-        body {
-            min-height: 100vh;
-            background: #fefef7;
-            background-image: radial-gradient(circle at 25% 40%, rgba(200, 220, 150, 0.2) 1.5px, transparent 1.5px);
-            background-size: 32px 32px;
-            font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, 'Exo 2', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-        }
-
-        .hub {
-            max-width: 960px;
-            width: 100%;
-            background: rgba(255, 255, 245, 0.98);
-            border-radius: 3rem;
-            box-shadow: 0 25px 45px -16px rgba(0, 0, 0, 0.2), 0 0 0 1px #f0e7d8 inset, 0 0 0 2px #fffef7 inset;
-            padding: 2rem 1.8rem 2rem 1.8rem;
-            transition: all 0.25s ease;
-        }
-
-        .title {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .title h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #3a7734, #d68b2c, #f0bc3e);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: -0.3px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .title h1 span {
-            font-size: 1.8rem;
-            background: none;
-            -webkit-text-fill-color: initial;
-            display: inline-block;
-        }
-
-        .grid-3x2 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.4rem;
-            margin: 1.6rem 0 2rem;
-        }
-
-        .game-btn {
-            border: none;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.1s ease, box-shadow 0.12s ease, background 0.1s;
-            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.08);
-            background: #f5f0e0;
-            width: 100%;
-            aspect-ratio: 1 / 0.9;
-            position: relative;
-        }
-
-        .game-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.06);
-            transition: 0.04s;
-        }
-
-        .btn-emoji {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            transition: font-size 0.1s ease-out;
-            filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.2));
-            will-change: font-size;
-        }
-
-        .game-btn:hover .btn-emoji {
-            transform: scale(1.02);
-            transition: transform 0.12s;
-        }
-
-        .btn-peach { background: #ffe0c4; box-shadow: 0 8px 0 #ddb082; }
-        .btn-apple { background: #d9f0c3; box-shadow: 0 8px 0 #8bb56a; }
-        .btn-carrot { background: #ffddb0; box-shadow: 0 8px 0 #e6a35c; }
-        .btn-corn { background: #fff0b5; box-shadow: 0 8px 0 #e6c46a; }
-        .btn-lemon { background: #fff1a0; box-shadow: 0 8px 0 #e6bc4a; }
-        .btn-tomato { background: #ffceb5; box-shadow: 0 8px 0 #dd8a62; }
-
-        .btn-peach:hover { background: #ffd6b0; }
-        .btn-apple:hover { background: #c8e8aa; }
-        .btn-carrot:hover { background: #ffcf9a; }
-        .btn-corn:hover { background: #ffe89a; }
-        .btn-lemon:hover { background: #ffec8a; }
-        .btn-tomato:hover { background: #ffbe9a; }
-
-        .howto {
-            background: #faf7f0;
-            border-radius: 2rem;
-            padding: 1rem 1.6rem;
-            margin-top: 0.8rem;
-            border: 1px solid #efe3ce;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.8rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-        }
-
-        .howto-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            color: #4a6e3a;
-            font-size: 1rem;
-        }
-
-        .howto-left span {
-            font-size: 1.9rem;
-        }
-
-        .howto-steps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.7rem 1.2rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #5c4a2e;
-        }
-
-        .step {
-            background: #fff3e0;
-            padding: 0.25rem 0.9rem;
-            border-radius: 40px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 780px) {
-            .hub {
-                padding: 1.6rem;
-            }
-            .grid-3x2 {
-                gap: 1rem;
-            }
-            .howto-steps .step {
-                font-size: 0.75rem;
-                padding: 0.2rem 0.7rem;
-            }
-        }
-
-        @media (max-width: 580px) {
-            .grid-3x2 {
-                gap: 0.9rem;
-            }
-            .title h1 {
-                font-size: 1.6rem;
-            }
-            .howto-left {
-                font-size: 0.9rem;
-            }
-            .howto-left span {
-                font-size: 1.5rem;
-            }
-            .step {
-                font-size: 0.7rem;
-            }
-        }
-
-        .game-btn:focus-visible {
-            outline: 3px solid #f5bc70;
-            outline-offset: 4px;
-            transform: scale(0.98);
-        }
-
-        .game-btn {
-            transition: transform 0.08s linear, box-shadow 0.12s, background 0.1s;
-        }
+        *{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-tap-highlight-color:transparent;}
+        body{min-height:100vh;background:#fef9ef;background-image:radial-gradient(circle at 20% 35%,rgba(210,180,110,0.18)2px,transparent 2px),radial-gradient(circle at 75% 70%,rgba(160,200,100,0.12)1.5px,transparent 1.5px);background-size:44px 44px,28px 28px;font-family:system-ui,'Segoe UI','Inter',-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+        .transition-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at center,#fff2df,#ffd9a5);z-index:9999;opacity:0;visibility:hidden;transition:opacity 0.4s cubic-bezier(0.2,0.9,0.3,1.1),visibility 0s linear 0.4s;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+        .transition-overlay.active{opacity:1;visibility:visible;transition:opacity 0.4s cubic-bezier(0.2,0.9,0.3,1.1),visibility 0s linear 0s;}
+        .loading-container{text-align:center;transform:scale(0.8);opacity:0;transition:transform 0.35s cubic-bezier(0.2,0.9,0.4,1.2),opacity 0.3s ease;filter:drop-shadow(0 8px 20px rgba(0,0,0,0.2));}
+        .transition-overlay.active .loading-container{transform:scale(1);opacity:1;}
+        .loading-emoji{font-size:5.5rem;display:inline-block;animation:bounceEmoji 0.7s cubic-bezier(0.34,1.2,0.64,1) infinite alternate;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.2));}
+        .loading-text{margin-top:1.2rem;font-size:1rem;font-weight:500;color:#8b5a2b;letter-spacing:0.5px;background:rgba(255,245,220,0.7);padding:0.4rem 1.2rem;border-radius:60px;backdrop-filter:blur(4px);display:inline-block;text-transform:lowercase;}
+        @keyframes bounceEmoji{0%{transform:translateY(0px) scale(1);}100%{transform:translateY(-18px) scale(1.08);}}
+        .hub{max-width:980px;width:100%;background:rgba(255,253,245,0.97);border-radius:3.5rem;box-shadow:0 32px 56px -20px rgba(0,0,0,0.25),0 0 0 1px #f5e7d4 inset,0 0 0 2px #fffef8 inset;padding:2rem 2rem 2.2rem 2rem;position:relative;}
+        .title{text-align:center;margin-bottom:2rem;}
+        .title h1{font-size:2.4rem;font-weight:800;background:linear-gradient(135deg,#367a2f,#cc8230,#f5bc4e);background-clip:text;-webkit-background-clip:text;color:transparent;letter-spacing:-0.5px;display:inline-flex;align-items:center;gap:14px;}
+        .title h1 span{font-size:2.1rem;background:none;-webkit-text-fill-color:initial;}
+        .grid-3x2{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin:1.8rem 0 0;}
+        .game-btn{border:none;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.18s cubic-bezier(0.18,0.89,0.32,1.28),box-shadow 0.18s ease,background 0.15s;box-shadow:0 10px 0 rgba(0,0,0,0.1);width:100%;aspect-ratio:1/0.85;position:relative;border-radius:28px;background-clip:padding-box;-webkit-tap-highlight-color:transparent;outline:none;}
+        .game-btn:active{transform:translateY(5px) scale(0.97);box-shadow:0 4px 0 rgba(0,0,0,0.08);transition:transform 0.06s linear,box-shadow 0.08s;}
+        .game-btn:focus{outline:none;}
+        .btn-emoji{display:inline-flex;align-items:center;justify-content:center;line-height:1;filter:drop-shadow(2px 6px 12px rgba(0,0,0,0.2));transition:transform 0.18s cubic-bezier(0.2,0.9,0.4,1.2),font-size 0.08s;will-change:font-size;pointer-events:none;}
+        .game-btn:hover .btn-emoji{transform:scale(1.05);}
+        .btn-peach{background:#ffe3cd;box-shadow:0 10px 0 #e0af84;}
+        .btn-apple{background:#ddf3cc;box-shadow:0 10px 0 #97be73;}
+        .btn-carrot{background:#ffe2bc;box-shadow:0 10px 0 #eaa967;}
+        .btn-corn{background:#fff3c9;box-shadow:0 10px 0 #edcf7a;}
+        .btn-lemon{background:#fff4b0;box-shadow:0 10px 0 #eac459;}
+        .btn-tomato{background:#ffdac8;box-shadow:0 10px 0 #e3946e;}
+        .btn-peach:hover{background:#ffdabb;}
+        .btn-apple:hover{background:#cceeb0;}
+        .btn-carrot:hover{background:#ffd6aa;}
+        .btn-corn:hover{background:#ffefb0;}
+        .btn-lemon:hover{background:#ffef98;}
+        .btn-tomato:hover{background:#ffceb4;}
+        @media (max-width:760px){.hub{padding:1.5rem}.grid-3x2{gap:1.2rem}.title h1{font-size:1.9rem}.title h1 span{font-size:1.7rem}}
+        @media (max-width:550px){.grid-3x2{gap:0.9rem}.title h1{font-size:1.6rem}.hub{padding:1.2rem}}
+        .game-btn::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 20%,rgba(255,255,210,0.5)0%,rgba(255,255,255,0)80%);opacity:0;transition:opacity 0.2s;pointer-events:none;border-radius:inherit;}
+        .game-btn:hover::after{opacity:0.3;}
+        .hub::after{content:"🍃";position:absolute;bottom:20px;right:25px;font-size:28px;opacity:0.2;pointer-events:none;transform:rotate(-10deg);}
     </style>
 </head>
 <body>
-<div class="hub">
-    <div class="title">
-        <h1>
-            <span>✨</span> pick clicker theme <span>🍒</span>
-        </h1>
-    </div>
-
-    <div class="grid-3x2">
-        <button class="game-btn btn-peach" data-url="https://clicker-game.neineig2012.workers.dev/peach">
-            <span class="btn-emoji" data-emoji="🍑">🍑</span>
-        </button>
-        <button class="game-btn btn-apple" data-url="https://clicker-game.neineig2012.workers.dev/apple">
-            <span class="btn-emoji" data-emoji="🍏">🍏</span>
-        </button>
-        <button class="game-btn btn-carrot" data-url="https://clicker-game.neineig2012.workers.dev/carrot">
-            <span class="btn-emoji" data-emoji="🥕">🥕</span>
-        </button>
-        <button class="game-btn btn-corn" data-url="https://clicker-game.neineig2012.workers.dev/corn">
-            <span class="btn-emoji" data-emoji="🌽">🌽</span>
-        </button>
-        <button class="game-btn btn-lemon" data-url="https://clicker-game.neineig2012.workers.dev/lemon">
-            <span class="btn-emoji" data-emoji="🍋">🍋</span>
-        </button>
-        <button class="game-btn btn-tomato" data-url="https://clicker-game.neineig2012.workers.dev/tomato">
-            <span class="btn-emoji" data-emoji="🍅">🍅</span>
-        </button>
-    </div>
-
-    <div class="howto">
-        <div class="howto-left">
-            <span>🧑‍🌾</span> how to play
-        </div>
-        <div class="howto-steps">
-            <div class="step">🍎 tap any fruit → launch clicker</div>
-            <div class="step">🖱️ click giant crop → earn coins</div>
-            <div class="step">⬆️ buy upgrades & research points</div>
-            <div class="step">🌟 prestige for permanent multipliers</div>
-        </div>
-    </div>
-</div>
-
+<div class="transition-overlay" id="overlay"><div class="loading-container"><div class="loading-emoji" id="loadEmoji">🍑</div><div class="loading-text">loading...</div></div></div>
+<div class="hub"><div class="title"><h1><span>✨</span> pick clicker theme <span>🍒</span></h1></div><div class="grid-3x2"><button class="game-btn btn-peach" data-url="https://clicker-game.neineig2012.workers.dev/peach" data-emoji="🍑"><span class="btn-emoji">🍑</span></button><button class="game-btn btn-apple" data-url="https://clicker-game.neineig2012.workers.dev/apple" data-emoji="🍏"><span class="btn-emoji">🍏</span></button><button class="game-btn btn-carrot" data-url="https://clicker-game.neineig2012.workers.dev/carrot" data-emoji="🥕"><span class="btn-emoji">🥕</span></button><button class="game-btn btn-corn" data-url="https://clicker-game.neineig2012.workers.dev/corn" data-emoji="🌽"><span class="btn-emoji">🌽</span></button><button class="game-btn btn-lemon" data-url="https://clicker-game.neineig2012.workers.dev/lemon" data-emoji="🍋"><span class="btn-emoji">🍋</span></button><button class="game-btn btn-tomato" data-url="https://clicker-game.neineig2012.workers.dev/tomato" data-emoji="🍅"><span class="btn-emoji">🍅</span></button></div></div>
 <script>
-    (function() {
-        const buttons = document.querySelectorAll('.game-btn');
-        const emojiSpans = new Map();
-        const resizeObservers = [];
-        
-        function updateEmojiSize(btn, emojiSpan) {
-            if (!btn || !emojiSpan) return;
-            const btnWidth = btn.clientWidth;
-            if (btnWidth <= 0) return;
-            
-            let desiredSize = btnWidth * 0.5;
-            const minSize = 28;
-            const maxSize = 86;
-            let finalSize = Math.min(maxSize, Math.max(minSize, desiredSize));
-            
-            emojiSpan.style.fontSize = finalSize + 'px';
-            emojiSpan.style.lineHeight = '1';
-            emojiSpan.style.display = 'inline-flex';
-        }
-        
-        function updateButtonRadius(btn) {
-            if (!btn) return;
-            const btnHeight = btn.clientHeight;
-            if (btnHeight <= 0) return;
-            const radiusValue = btnHeight / 3;
-            btn.style.borderRadius = radiusValue + 'px';
-        }
-        
-        function updateBoth(btn, emojiSpan) {
-            updateEmojiSize(btn, emojiSpan);
-            updateButtonRadius(btn);
-        }
-        
-        buttons.forEach(btn => {
-            const emojiSpan = btn.querySelector('.btn-emoji');
-            if (!emojiSpan) return;
-            emojiSpans.set(btn, emojiSpan);
-            
-            const updateFn = () => {
-                if (btn.isConnected) {
-                    updateBoth(btn, emojiSpan);
-                }
-            };
-            
-            if (window.ResizeObserver) {
-                const ro = new ResizeObserver((entries) => {
-                    for (let entry of entries) {
-                        if (entry.target === btn) {
-                            updateBoth(btn, emojiSpan);
-                        }
-                    }
-                });
+(function(){
+    const overlay=document.getElementById('overlay');
+    const loadEmojiSpan=document.getElementById('loadEmoji');
+    let isTransitioning=false;
+    let audioCtx=null;
+    let soundEnabled=false;
+    function initAudio(){
+        if(audioCtx)return;
+        try{
+            audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+            soundEnabled=true;
+        }catch(e){soundEnabled=false;}
+    }
+    function playClickSound(){
+        if(!soundEnabled||!audioCtx)return;
+        try{
+            const now=audioCtx.currentTime;
+            const osc=audioCtx.createOscillator();
+            const gain=audioCtx.createGain();
+            osc.type='sine';
+            osc.frequency.value=880;
+            gain.gain.value=0.12;
+            gain.gain.exponentialRampToValueAtTime(0.0001,now+0.2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(now+0.18);
+            const osc2=audioCtx.createOscillator();
+            const gain2=audioCtx.createGain();
+            osc2.type='triangle';
+            osc2.frequency.value=660;
+            gain2.gain.value=0.08;
+            gain2.gain.exponentialRampToValueAtTime(0.0001,now+0.2);
+            osc2.connect(gain2);
+            gain2.connect(audioCtx.destination);
+            osc2.start();
+            osc2.stop(now+0.16);
+        }catch(e){}
+    }
+    const style=document.createElement('style');
+    style.textContent=`.game-btn{display:flex;align-items:center;justify-content:center;transition:border-radius 0.1s,transform 0.18s cubic-bezier(0.18,0.89,0.32,1.28),box-shadow 0.18s;}.btn-emoji{display:inline-flex;align-items:center;justify-content:center;transition:font-size 0.08s,transform 0.18s;}`;
+    document.head.appendChild(style);
+    const btns=Array.from(document.querySelectorAll('.game-btn'));
+    const emojiMap=new Map();
+    function updateSize(btn,span){
+        if(!btn||!span)return;
+        const w=btn.clientWidth;
+        if(w<=0)return;
+        let fs=Math.min(92,Math.max(32,w*0.48));
+        span.style.fontSize=fs+'px';
+        span.style.lineHeight='1';
+        let h=btn.clientHeight;
+        if(h>0)btn.style.borderRadius=Math.min(h/2.8,42)+'px';
+    }
+    function refresh(btn,span){updateSize(btn,span);}
+    btns.forEach(btn=>{
+        let span=btn.querySelector('.btn-emoji');
+        if(span){
+            emojiMap.set(btn,span);
+            if(window.ResizeObserver){
+                let ro=new ResizeObserver(()=>{if(btn.isConnected)refresh(btn,span);});
                 ro.observe(btn);
-                resizeObservers.push(ro);
             }
-            
-            window.addEventListener('resize', () => {
-                requestAnimationFrame(() => {
-                    if (btn.isConnected) updateBoth(btn, emojiSpan);
-                });
-            });
-            
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', () => {
-                    updateBoth(btn, emojiSpan);
-                });
-            } else {
-                updateBoth(btn, emojiSpan);
+            refresh(btn,span);
+        }
+    });
+    window.addEventListener('resize',()=>{requestAnimationFrame(()=>{btns.forEach(b=>{let s=emojiMap.get(b);if(s&&b.isConnected)refresh(b,s);});});});
+    setTimeout(()=>{btns.forEach(b=>{let s=emojiMap.get(b);if(s&&b.isConnected)refresh(b,s);});},100);
+    document.body.addEventListener('touchstart',()=>{if(!audioCtx)initAudio();},{once:true,passive:true});
+    document.body.addEventListener('click',()=>{if(!audioCtx)initAudio();},{once:true});
+    btns.forEach(oldBtn=>{
+        const url=oldBtn.getAttribute('data-url');
+        if(!url)return;
+        const themeEmoji=oldBtn.getAttribute('data-emoji')||'🍑';
+        const newBtn=oldBtn.cloneNode(true);
+        oldBtn.parentNode.replaceChild(newBtn,oldBtn);
+        const newSpan=newBtn.querySelector('.btn-emoji');
+        if(newSpan){
+            const idx=btns.indexOf(oldBtn);
+            if(idx!==-1)btns[idx]=newBtn;
+            emojiMap.delete(oldBtn);
+            emojiMap.set(newBtn,newSpan);
+            refresh(newBtn,newSpan);
+            if(window.ResizeObserver){
+                let ro=new ResizeObserver(()=>{if(newBtn.isConnected)refresh(newBtn,newSpan);});
+                ro.observe(newBtn);
             }
-        });
-        
-        window.addEventListener('orientationchange', () => {
-            setTimeout(() => {
-                buttons.forEach(btn => {
-                    const span = emojiSpans.get(btn);
-                    if (span && btn.isConnected) updateBoth(btn, span);
-                });
-            }, 30);
-        });
-        
-        window.addEventListener('load', () => {
-            buttons.forEach(btn => {
-                const span = emojiSpans.get(btn);
-                if (span && btn.isConnected) updateBoth(btn, span);
-            });
-        });
-        
-        buttons.forEach(btn => {
-            const url = btn.getAttribute('data-url');
-            if (url) {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.location.href = url;
-                });
-                btn.setAttribute('role', 'button');
-                btn.setAttribute('tabindex', '0');
-                btn.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        window.location.href = url;
-                    }
-                });
+        }
+        newBtn.addEventListener('click',(e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            if(isTransitioning)return;
+            if(!audioCtx)initAudio();
+            playClickSound();
+            isTransitioning=true;
+            if(loadEmojiSpan)loadEmojiSpan.innerText=themeEmoji;
+            if(overlay){
+                overlay.classList.add('active');
+                const container=overlay.querySelector('.loading-container');
+                if(container){
+                    container.style.animation='none';
+                    container.offsetHeight;
+                    container.style.animation='';
+                }
             }
-        });
-        
-        const style = document.createElement('style');
-        style.textContent = `
-            .game-btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: border-radius 0.08s ease-out;
-            }
-            .btn-emoji {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                transition: font-size 0.08s ease-out;
-                transform-origin: center;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        setTimeout(() => {
-            buttons.forEach(btn => {
-                const span = emojiSpans.get(btn);
-                if (span && btn.isConnected) updateBoth(btn, span);
-            });
-        }, 80);
-        
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            if (resizeTimer) clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                buttons.forEach(btn => {
-                    const span = emojiSpans.get(btn);
-                    if (span && btn.isConnected) updateBoth(btn, span);
+            newBtn.style.transform='translateY(5px) scale(0.96)';
+            newBtn.style.boxShadow='0 3px 0 rgba(0,0,0,0.1)';
+            setTimeout(()=>{if(newBtn){newBtn.style.transform='';newBtn.style.boxShadow='';}},120);
+            const rect=newBtn.getBoundingClientRect();
+            const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+            for(let i=0;i<12;i++){
+                let p=document.createElement('div');
+                p.innerText=themeEmoji;
+                p.style.position='fixed';
+                p.style.left=cx+'px';
+                p.style.top=cy+'px';
+                p.style.fontSize='26px';
+                p.style.pointerEvents='none';
+                p.style.zIndex='10000';
+                p.style.opacity='0.9';
+                p.style.transform='translate(-50%,-50%)';
+                p.style.transition='all 0.55s cubic-bezier(0.2,0.9,0.5,1.2)';
+                document.body.appendChild(p);
+                let ang=Math.random()*Math.PI*2;
+                let dist=45+Math.random()*70;
+                let dx=Math.cos(ang)*dist,dy=Math.sin(ang)*dist-20;
+                requestAnimationFrame(()=>{
+                    p.style.transform=`translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+                    p.style.opacity='0';
+                    p.style.fontSize=`${18+Math.random()*18}px`;
                 });
-            }, 50);
+                setTimeout(()=>p.remove(),600);
+            }
+            setTimeout(()=>{window.location.href=url;},420);
+            setTimeout(()=>{if(isTransitioning)window.location.href=url;},1000);
         });
-    })();
+        newBtn.setAttribute('role','button');
+        newBtn.setAttribute('tabindex','0');
+        newBtn.addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();newBtn.click();}});
+    });
+    const howto=document.querySelector('.howto');if(howto)howto.remove();
+    const footers=document.querySelectorAll('.footer,.credit,.attribution');footers.forEach(f=>f.remove());
+    window.addEventListener('pageshow',()=>{isTransitioning=false;if(overlay)overlay.classList.remove('active');});
+    if(document.readyState==='loading'){
+        document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{btns.forEach(b=>{let s=emojiMap.get(b);if(s&&b.isConnected)refresh(b,s);});},30);});
+    }else{
+        setTimeout(()=>{btns.forEach(b=>{let s=emojiMap.get(b);if(s&&b.isConnected)refresh(b,s);});},30);
+    }
+})();
 </script>
 </body>
 </html>
