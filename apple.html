@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>🍏 GREEN APPLE CLICKER - RESEARCH EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
 
         * {
@@ -404,7 +405,7 @@
 </head>
 <body>
 <div class="full-game">
-    <div class="global-title"><h1>🍏 GREEN APPLE CLICKER - RESEARCH</h1></div>
+    <div class="global-title"><h1>🍏 APPLE CLICKER</h1></div>
 
     <div class="page-tabs">
         <button class="tab-btn active" id="tabMain">🍏 MAIN</button>
@@ -556,13 +557,13 @@
         { id: 'voidEngine', name: 'VOID ENGINE', icon: '🌀', basePower: 2000000000000000, baseCost: 32700000000000000000, desc: '+2Qa/click' },
         { id: 'starForge', name: 'STAR FORGE', icon: '⭐', basePower: 25000000000000000, baseCost: 655000000000000000000, desc: '+25Qa/click' },
         { id: 'cosmicWhale', name: 'COSMIC WHALE', icon: '🐋', basePower: 300000000000000000, baseCost: 13100000000000000000000, desc: '+300Qa/click' },
-        { id: 'jabel', name: 'JABEL', icon: '👤', basePower: 3600000000000000000, baseCost: 262000000000000000000000, desc: '+3.6Qi/click', imageUrl: 'https://kingshotdata.com/wp-content/uploads/2025/03/jabel.webp' },
+        { id: 'jabel', name: 'JABEL', icon: '👤', basePower: 3600000000000000000, baseCost: 262000000000000000000000, desc: '+3.6Qi/click' },
         { id: 'cosmicNexus', name: 'COSMIC NEXUS', icon: '🌐', basePower: 50000000000000000000, baseCost: 5240000000000000000000000, desc: '+50 Qi/click' },
         { id: 'divineCorn', name: 'DIVINE CORN', icon: '👑', basePower: 650000000000000000000, baseCost: 104850000000000000000000000, desc: '+650 Qi/click' },
         { id: 'cosmicOverlord', name: 'COSMIC OVERLORD', icon: '👁️', basePower: 8000000000000000000000, baseCost: 2090000000000000000000000000, desc: '+8 Sx/click' },
         { id: 'cornGod', name: 'CORN GOD', icon: '🗿', basePower: 105000000000000000000000, baseCost: 41800000000000000000000000000, desc: '+105 Sx/click' },
         { id: 'etherealCorn', name: 'ETHEREAL CORN', icon: '🌀', basePower: 1.30e24, baseCost: 8.25e29, desc: '+1.30 Sp/click' },
-        { id: 'amadeus', name: 'AMADEUS', icon: '🎼', basePower: 1.6e25, baseCost: 1.65e31, desc: '+16 Sp/click', imageUrl: 'https://www.kingshotguide.com/_next/image?url=%2Fheroes%2Famadeus.webp&w=2048&q=75' }
+        { id: 'amadeus', name: 'AMADEUS', icon: '🎼', basePower: 1.6e25, baseCost: 1.65e31, desc: '+16 Sp/click' }
     ];
     let levels = {}; upgrades.forEach(u => levels[u.id] = 0);
     function getCostReductionForUpgrade(index) { let r=1; researchItems.forEach(ri=>{if(ri.type==='costReduction' && ri.tierIndices?.includes(index)) r*=Math.pow(0.94, ri.level);}); return r; }
