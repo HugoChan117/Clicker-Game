@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🍅 TOMATO CLICKER - RESEARCH EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
 
         * {
@@ -398,7 +399,7 @@
 </head>
 <body>
 <div class="full-game">
-    <div class="global-title"><h1>🍅 TOMATO CLICKER - RESEARCH</h1></div>
+    <div class="global-title"><h1>🍅 TOMATO CLICKER</h1></div>
 
     <div class="page-tabs">
         <button class="tab-btn active" id="tabMain">🍅 MAIN</button>
@@ -440,7 +441,6 @@
         </div>
     </div>
 
-    <!-- UPGRADE PAGE (indices 11,17,23 intact: QUINN, JABEL, AMADEUS) -->
     <div id="pageUpgrade" class="page">
         <div class="shop-grid" id="upgradeGrid"></div>
     </div>
@@ -725,22 +725,19 @@
         { id: 'galacticGarden',name: 'GALACTIC GARDEN',icon: '🌌', basePower: 450000000,  baseCost: 512000000000,   desc: '+450M/click' },
         { id: 'voidBlender', name: 'VOID BLENDER', icon: '👾', basePower: 5600000000,   baseCost: 10240000000000,   desc: '+5.6B/click' },
         { id: 'cosmicHopper',name: 'COSMIC HOPPER', icon: '🛸', basePower: 72000000000,  baseCost: 204800000000000,  desc: '+72B/click' },
-        // index 11: QUINN (kept)
         { id: 'quinnAvatar', name: 'QUINN', icon: '🦅', basePower: 900000000000, baseCost: 4096000000000000, desc: '+900B/click' },
         { id: 'stellarHarvester', name: 'STELLAR HARVESTER', icon: '🌠', basePower: 12000000000000, baseCost: 81920000000000000, desc: '+12T/click' },
         { id: 'cosmicReaper',    name: 'COSMIC REAPER',    icon: '☄️', basePower: 150000000000000, baseCost: 1630000000000000000, desc: '+150T/click' },
         { id: 'voidEngine', name: 'VOID ENGINE', icon: '🌀', basePower: 2000000000000000, baseCost: 32700000000000000000, desc: '+2Qa/click' },
         { id: 'starForge',  name: 'STAR FORGE',  icon: '⭐', basePower: 25000000000000000, baseCost: 655000000000000000000, desc: '+25Qa/click' },
         { id: 'cosmicWhale', name: 'COSMIC WHALE', icon: '🐋', basePower: 300000000000000000, baseCost: 13100000000000000000000, desc: '+300Qa/click' },
-        // index 17: JABEL (kept)
-        { id: 'jabel',       name: 'JABEL',       icon: '👤', basePower: 3600000000000000000, baseCost: 262000000000000000000000, desc: '+3.6Qi/click', imageUrl: 'https://kingshotdata.com/wp-content/uploads/2025/03/jabel.webp' },
+        { id: 'jabel',       name: 'JABEL',       icon: '👤', basePower: 3600000000000000000, baseCost: 262000000000000000000000, desc: '+3.6Qi/click', },
         { id: 'cosmicNexus', name: 'COSMIC NEXUS', icon: '🌐', basePower: 50000000000000000000, baseCost: 5240000000000000000000000, desc: '+50 Qi/click' },
         { id: 'divineTomato',name: 'DIVINE TOMATO',icon: '👑', basePower: 650000000000000000000, baseCost: 104850000000000000000000000, desc: '+650 Qi/click' },
         { id: 'cosmicOverlord', name: 'COSMIC OVERLORD', icon: '👁️', basePower: 8000000000000000000000, baseCost: 2090000000000000000000000000, desc: '+8 Sx/click' },
         { id: 'tomatoGod',      name: 'TOMATO GOD',      icon: '🗿', basePower: 105000000000000000000000, baseCost: 41800000000000000000000000000, desc: '+105 Sx/click' },
         { id: 'etherealTomato', name: 'ETHEREAL TOMATO', icon: '🌀', basePower: 1.30e24, baseCost: 8.25e29, desc: '+1.30 Sp/click' },
-        // index 23: AMADEUS (kept)
-        { id: 'amadeus',        name: 'AMADEUS',         icon: '🎼', basePower: 1.6e25, baseCost: 1.65e31, desc: '+16 Sp/click', imageUrl: 'https://www.kingshotguide.com/_next/image?url=%2Fheroes%2Famadeus.webp&w=2048&q=75' }
+        { id: 'amadeus',        name: 'AMADEUS',         icon: '🎼', basePower: 1.6e25, baseCost: 1.65e31, desc: '+16 Sp/click' }
     ];
 
     let levels = {};
