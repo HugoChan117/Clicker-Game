@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🥕 CARROT CLICKER - RESEARCH EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
 
         * {
@@ -400,7 +401,7 @@
 </head>
 <body>
 <div class="full-game">
-    <div class="global-title"><h1>🥕 CARROT CLICKER - RESEARCH</h1></div>
+    <div class="global-title"><h1>🥕 CARROT CLICKER</h1></div>
 
     <div class="page-tabs">
         <button class="tab-btn active" id="tabMain">🥕 MAIN</button>
@@ -717,30 +718,30 @@
 
     // ----- UPGRADES (24) - Renamed but keeping same costs/powers, indices 11,17,23 unchanged names
     const upgrades = [
-        { id: 'carrotBunch', name: 'BUNCH',       icon: '🥕', basePower: 1,        baseCost: 20,       desc: '+1/click' }, // index 0
-        { id: 'hoe',        name: 'HOE',       icon: '⛏️', basePower: 12,       baseCost: 400,      desc: '+12/click' }, // index 1
-        { id: 'sprinkler',  name: 'SPRINKLER', icon: '💧', basePower: 140,      baseCost: 8000,     desc: '+140/click' }, // index 2
-        { id: 'tractor',    name: 'TRACTOR',   icon: '🚜', basePower: 1700,     baseCost: 160000,   desc: '+1700/click' }, // index 3
-        { id: 'combine',    name: 'COMBINE',   icon: '⚙️', basePower: 20000,    baseCost: 3200000,  desc: '+20k/click' }, // index 4
-        { id: 'nanoFarm',   name: 'NANO-FARM', icon: '🧬', basePower: 240000,   baseCost: 64000000, desc: '+240k/click' }, // index 5
-        { id: 'quantumSilo', name: 'QUANTUM SILO', icon: '🔮', basePower: 2900000,    baseCost: 1280000000,     desc: '+2.9M/click' }, // index 6
-        { id: 'fusionField', name: 'FUSION FIELD', icon: '⚡', basePower: 35000000,   baseCost: 25600000000,    desc: '+35M/click' }, // index 7
-        { id: 'galacticFarm',name: 'GALACTIC FARM',icon: '🌌', basePower: 450000000,  baseCost: 512000000000,   desc: '+450M/click' }, // index 8
-        { id: 'voidReaper',  name: 'VOID REAPER', icon: '👾', basePower: 5600000000,   baseCost: 10240000000000,   desc: '+5.6B/click' }, // index 9
-        { id: 'cosmicHopper',name: 'COSMIC HOPPER', icon: '🛸', basePower: 72000000000,  baseCost: 204800000000000,  desc: '+72B/click' }, // index 10
-        { id: 'quinnAvatar', name: 'QUINN', icon: '🦅', basePower: 900000000000, baseCost: 4096000000000000, desc: '+900B/click' }, // index 11 *** KEPT ORIGINAL NAME ***
-        { id: 'stellarHarvester', name: 'STELLAR HARVESTER', icon: '🌠', basePower: 12000000000000, baseCost: 81920000000000000, desc: '+12T/click' }, // index 12
-        { id: 'cosmicReaper',    name: 'COSMIC REAPER',    icon: '☄️', basePower: 150000000000000, baseCost: 1630000000000000000, desc: '+150T/click' }, // index 13
-        { id: 'voidEngine', name: 'VOID ENGINE', icon: '🌀', basePower: 2000000000000000, baseCost: 32700000000000000000, desc: '+2Qa/click' }, // index 14
-        { id: 'starForge',  name: 'STAR FORGE',  icon: '⭐', basePower: 25000000000000000, baseCost: 655000000000000000000, desc: '+25Qa/click' }, // index 15
-        { id: 'cosmicWhale', name: 'COSMIC WHALE', icon: '🐋', basePower: 300000000000000000, baseCost: 13100000000000000000000, desc: '+300Qa/click' }, // index 16
-        { id: 'jabel',       name: 'JABEL',       icon: '👤', basePower: 3600000000000000000, baseCost: 262000000000000000000000, desc: '+3.6Qi/click', imageUrl: 'https://kingshotdata.com/wp-content/uploads/2025/03/jabel.webp' }, // index 17 *** KEPT ORIGINAL NAME ***
-        { id: 'cosmicNexus', name: 'COSMIC NEXUS', icon: '🌐', basePower: 50000000000000000000, baseCost: 5240000000000000000000000, desc: '+50 Qi/click' }, // index 18
-        { id: 'divineCarrot',  name: 'DIVINE CARROT',  icon: '👑', basePower: 650000000000000000000, baseCost: 104850000000000000000000000, desc: '+650 Qi/click' }, // index 19
-        { id: 'cosmicOverlord', name: 'COSMIC OVERLORD', icon: '👁️', basePower: 8000000000000000000000, baseCost: 2090000000000000000000000000, desc: '+8 Sx/click' }, // index 20
-        { id: 'carrotGod',        name: 'CARROT GOD',        icon: '🗿', basePower: 105000000000000000000000, baseCost: 41800000000000000000000000000, desc: '+105 Sx/click' }, // index 21
-        { id: 'etherealCorn',   name: 'ETHEREAL CORN',   icon: '🌀', basePower: 1.30e24, baseCost: 8.25e29, desc: '+1.30 Sp/click' }, // index 22 *** KEPT ORIGINAL NAME ***
-        { id: 'amadeus',        name: 'AMADEUS',         icon: '🎼', basePower: 1.6e25, baseCost: 1.65e31, desc: '+16 Sp/click', imageUrl: 'https://www.kingshotguide.com/_next/image?url=%2Fheroes%2Famadeus.webp&w=2048&q=75' } // index 23 *** KEPT ORIGINAL NAME ***
+        { id: 'carrotBunch', name: 'BUNCH',       icon: '🥕', basePower: 1,        baseCost: 20,       desc: '+1/click' }, 
+        { id: 'hoe',        name: 'HOE',       icon: '⛏️', basePower: 12,       baseCost: 400,      desc: '+12/click' }, 
+        { id: 'sprinkler',  name: 'SPRINKLER', icon: '💧', basePower: 140,      baseCost: 8000,     desc: '+140/click' }, 
+        { id: 'tractor',    name: 'TRACTOR',   icon: '🚜', basePower: 1700,     baseCost: 160000,   desc: '+1700/click' }, 
+        { id: 'combine',    name: 'COMBINE',   icon: '⚙️', basePower: 20000,    baseCost: 3200000,  desc: '+20k/click' }, 
+        { id: 'nanoFarm',   name: 'NANO-FARM', icon: '🧬', basePower: 240000,   baseCost: 64000000, desc: '+240k/click' },
+        { id: 'quantumSilo', name: 'QUANTUM SILO', icon: '🔮', basePower: 2900000,    baseCost: 1280000000,     desc: '+2.9M/click' }, 
+        { id: 'fusionField', name: 'FUSION FIELD', icon: '⚡', basePower: 35000000,   baseCost: 25600000000,    desc: '+35M/click' }, 
+        { id: 'galacticFarm',name: 'GALACTIC FARM',icon: '🌌', basePower: 450000000,  baseCost: 512000000000,   desc: '+450M/click' }, 
+        { id: 'voidReaper',  name: 'VOID REAPER', icon: '👾', basePower: 5600000000,   baseCost: 10240000000000,   desc: '+5.6B/click' }, 
+        { id: 'cosmicHopper',name: 'COSMIC HOPPER', icon: '🛸', basePower: 72000000000,  baseCost: 204800000000000,  desc: '+72B/click' }, 
+        { id: 'quinnAvatar', name: 'QUINN', icon: '🦅', basePower: 900000000000, baseCost: 4096000000000000, desc: '+900B/click' }, 
+        { id: 'stellarHarvester', name: 'STELLAR HARVESTER', icon: '🌠', basePower: 12000000000000, baseCost: 81920000000000000, desc: '+12T/click' }, 
+        { id: 'cosmicReaper',    name: 'COSMIC REAPER',    icon: '☄️', basePower: 150000000000000, baseCost: 1630000000000000000, desc: '+150T/click' }, 
+        { id: 'voidEngine', name: 'VOID ENGINE', icon: '🌀', basePower: 2000000000000000, baseCost: 32700000000000000000, desc: '+2Qa/click' }, 
+        { id: 'starForge',  name: 'STAR FORGE',  icon: '⭐', basePower: 25000000000000000, baseCost: 655000000000000000000, desc: '+25Qa/click' }, 
+        { id: 'cosmicWhale', name: 'COSMIC WHALE', icon: '🐋', basePower: 300000000000000000, baseCost: 13100000000000000000000, desc: '+300Qa/click' }, 
+        { id: 'jabel',       name: 'JABEL',       icon: '👤', basePower: 3600000000000000000, baseCost: 262000000000000000000000, desc: '+3.6Qi/click' }, 
+        { id: 'cosmicNexus', name: 'COSMIC NEXUS', icon: '🌐', basePower: 50000000000000000000, baseCost: 5240000000000000000000000, desc: '+50 Qi/click' }, 
+        { id: 'divineCarrot',  name: 'DIVINE CARROT',  icon: '👑', basePower: 650000000000000000000, baseCost: 104850000000000000000000000, desc: '+650 Qi/click' }, 
+        { id: 'cosmicOverlord', name: 'COSMIC OVERLORD', icon: '👁️', basePower: 8000000000000000000000, baseCost: 2090000000000000000000000000, desc: '+8 Sx/click' }, 
+        { id: 'carrotGod',        name: 'CARROT GOD',        icon: '🗿', basePower: 105000000000000000000000, baseCost: 41800000000000000000000000000, desc: '+105 Sx/click' }, 
+        { id: 'etherealCorn',   name: 'ETHEREAL CORN',   icon: '🌀', basePower: 1.30e24, baseCost: 8.25e29, desc: '+1.30 Sp/click' },
+        { id: 'amadeus',        name: 'AMADEUS',         icon: '🎼', basePower: 1.6e25, baseCost: 1.65e31, desc: '+16 Sp/click', } 
     ];
 
     let levels = {};
