@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🫐 BERRY CLICKER - JUICY EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            font-family: 'Exo 2', 'Barlow', 'Segoe UI', Roboto, system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            background: linear-gradient(25deg, #2e1b3a 0%, #6a2c6e 45%, #9b4b6e 100%);
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(45deg, rgba(156, 66, 245, 0.05) 0px, rgba(200, 120, 255, 0.08) 50px, transparent 100px);
+            pointer-events: none;
+            animation: drift 22s linear infinite;
+            z-index: 0;
+        }
+        @keyframes drift {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(3%) translateY(2%); }
+        }
+        .full-game {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1500px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(0px);
+            border-radius: 70px 70px 30px 30px;
+            background: rgba(70, 40, 85, 0.4);
+            padding: 12px 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        .global-title h1 {
+            font-weight: bold;
+            font-size: 4.8rem;
+            letter-spacing: 6px;
+            color: #d98cff;
+            text-shadow: 5px 5px 0 #7a3e8a, 8px 8px 0 #4a235a, 12px 12px 10px #2e1a3a;
+            word-break: break-word;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #e6b3ff, #b84c8c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 0 #6a2e7a;
+            margin-bottom: 5px;
+            transition: 0.2s;
+            filter: drop-shadow(0 0 15px #c56eff);
+            animation: titleGlow 2s infinite alternate;
+        }
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 8px #d48eff); }
+            100% { filter: drop-shadow(0 0 25px #e5a0ff); }
+        }
+        .page-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 8px 0 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: #c77ddf;
+            border: 3px solid #f3ceff;
+            color: #3a1f4a;
+            font-weight: bold;
+            font-size: 1.3rem;
+            padding: 8px 18px;
+            border-radius: 50px;
+            box-shadow: 0 6px 0 #7b4293, 0 8px 16px #2a1a32;
+            cursor: pointer;
+            transition: 0.08s;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            backdrop-filter: blur(4px);
+        }
+        .tab-btn.active {
+            background: #e8aaff;
+            transform: translateY(4px) scale(1.02);
+            box-shadow: 0 2px 0 #9a4fb3, 0 12px 20px #ce9eff;
+            border-color: #f5ccff;
+        }
+        .tab-btn.research-tab {
+            background: #ab5fca;
+            border-color: #e0a5ff;
+            color: #fbe6ff;
+        }
+        .page { display: none; width: 100%; flex:1; flex-direction: column; }
+        .page.active-page { display: flex; }
+        .global-resource {
+            background: #6b3d7ee0;
+            backdrop-filter: blur(8px);
+            border-radius: 50px;
+            padding: 8px 20px;
+            margin: 0 0 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 3px solid #d98cff;
+            box-shadow: inset 0 -3px 0 #a85dca, 0 8px 0 #592e70, 0 12px 20px black;
+            color: #ffe6ff;
+            font-weight: bold;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 0 #471e5a;
+            background-image: linear-gradient(145deg, #b15fcf, #7d3c97);
+        }
+        .global-resource .resource-icon { font-size: 2.5rem; background: #9246b3; padding: 5px 30px; border-radius: 40px; border: 3px solid #e5a0ff; }
+        .global-resource .resource-value {
+            background: #4a2660;
+            padding: 6px 30px;
+            border-radius: 4rem;
+            border: 3px solid #e5a0ff;
+            font-size: 2.5rem;
+            background-image: radial-gradient(circle at 30% 35%, #bf6ee6, #823ea3);
+        }
+        .research-points-bar {
+            background: #784a93dd;
+            border-radius: 50px;
+            padding: 8px 25px;
+            margin: 0 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 3px solid #d67eff;
+            box-shadow: 0 6px 0 #9a4fb3, 0 8px 16px #2e1a3a;
+            color: #fae6ff;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .research-points-bar .rp-icon {
+            background: #aa62cb;
+            padding: 5px 25px;
+            border-radius: 40px;
+            border: 2px solid #e0a5ff;
+        }
+        .buy-rp-btn {
+            background: #d98cff;
+            border: 3px solid #fff0ff;
+            padding: 5px 20px;
+            border-radius: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #b45ad6;
+            transition: 0.05s;
+        }
+        .buy-rp-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #b45ad6;
+        }
+        .buy-rp-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(0.8);
+        }
+        .main-click-area { display: flex; flex-direction: column; align-items: center; justify-content: center; flex:1; margin: 10px 0 20px; }
+        .click-area {
+            background: radial-gradient(circle at 40% 30%, #e09eff, #b452d6);
+            width: 320px; height: 320px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 22px 0 #963fc2, 0 40px 40px #351d44, inset 0 -8px 20px #f2c2ff;
+            border: 10px solid #ffe3ff;
+            transition: transform 0.06s, box-shadow 0.1s;
+            cursor: pointer;
+            font-size: 4.2rem; font-weight: bold; color: #461f5a; text-shadow: 6px 8px 0 #e6a5ff, 8px 10px 0 #2c1a3a;
+            margin: 10px 0 20px; position: relative; overflow: hidden;
+            animation: pulse-glow 2.2s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 22px 0 #963fc2, 0 40px 40px #351d44, inset 0 -8px 20px #f2c2ff, 0 0 10px #d48eff; }
+            100% { box-shadow: 0 22px 0 #963fc2, 0 45px 50px #351d44, inset 0 -8px 25px #ffe0ff, 0 0 35px #e9aaff; }
+        }
+        .click-area::after {
+            content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%;
+            background: radial-gradient(circle, #fad6ff 10%, transparent 70%); opacity: 0.4; transform: rotate(30deg);
+        }
+        .click-area:active {
+            transform: translateY(16px) scale(1.08);
+            box-shadow: 0 6px 0 #b455da, 0 35px 35px #351d44, 0 0 60px #f0acff;
+            transition: transform 0.03s;
+        }
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(230, 170, 255, 0.8) 0%, rgba(200, 100, 255, 0.3) 50%, transparent 70%);
+            transform: scale(0);
+            animation: ripple-animation 0.5s ease-out;
+            pointer-events: none;
+            width: 100px;
+            height: 100px;
+            margin-left: -50px;
+            margin-top: -50px;
+        }
+        @keyframes ripple-animation {
+            from { transform: scale(0); opacity: 1; }
+            to { transform: scale(4); opacity: 0; }
+        }
+        .click-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(210, 130, 255, 0.6);
+            animation: flash 0.2s ease-out;
+            pointer-events: none;
+            border-radius: 50%;
+        }
+        @keyframes flash {
+            0% { opacity: 0.8; }
+            100% { opacity: 0; }
+        }
+        .inline-stats {
+            font-size: 1.8rem; background: #dba9f0dd; border-radius: 70px; padding: 16px 30px;
+            border: 4px solid #e3aaff; display: flex; justify-content: center; gap: 40px;
+            color: #3e1f52; font-weight: bold; flex-wrap: wrap; box-shadow: 0 8px 0 #aa67c7;
+        }
+        .inline-stats span { background: #984bb9e0; color: #fff0ff; padding: 8px 30px; border-radius: 70px; border: 3px solid #e5a0ff; font-size: 1.8rem;}
+        .combo-meter {
+            background: #8a4baddd; border-radius: 70px; padding: 8px 30px; border: 4px solid #d98cff;
+            font-size: 2.2rem; font-weight: bold; color: #ffecff; display: flex; align-items: center;
+            gap: 20px; box-shadow: 0 8px 0 #b568d6, 0 0 20px #da8eff; margin: 5px 0 15px; backdrop-filter: blur(3px);
+        }
+        .research-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: #bc84d6e0;
+            border-radius: 50px;
+            border: 4px solid #d98cff;
+            margin: 15px 0;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .research-card {
+            background: linear-gradient(145deg, #eac6ff, #cd8bf0);
+            border-radius: 30px;
+            padding: 20px;
+            border: 3px solid #ffe6ff;
+            box-shadow: 0 8px 0 #b25ad4, 0 10px 20px #2e1a3a;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .research-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4a2660;
+            text-shadow: 2px 2px 0 #e3aaff;
+            border-bottom: 2px solid #c467ec;
+            padding-bottom: 5px;
+        }
+        .research-tier-list {
+            font-size: 1.2rem;
+            background: #bc6add;
+            color: #ffe6ff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .research-level {
+            font-size: 1.4rem;
+            background: #bc6add;
+            color: #fff0ff;
+            padding: 5px 15px;
+            border-radius: 40px;
+            display: inline-block;
+            align-self: flex-start;
+        }
+        .research-desc {
+            font-size: 1.2rem;
+            color: #2e1a3a;
+        }
+        .research-current {
+            font-size: 1.3rem;
+            background: #d28cf0;
+            color: #fff0ff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .research-cost {
+            font-size: 1.5rem;
+            background: #d28cf0;
+            color: #fff0ff;
+            padding: 8px 15px;
+            border-radius: 40px;
+            text-align: center;
+            border: 2px solid #e5a0ff;
+        }
+        .research-btn {
+            background: #d98cff;
+            border: 3px solid #fff0ff;
+            padding: 10px;
+            border-radius: 40px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #b45ad6;
+            transition: 0.05s;
+        }
+        .research-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 1px 0 #b45ad6;
+        }
+        .research-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(0.8);
+        }
+        .research-max {
+            background: #c07be2;
+            color: #ffe6ff;
+            padding: 10px;
+            border-radius: 40px;
+            text-align: center;
+            font-size: 1.4rem;
+            border: 2px solid #e5a0ff;
+        }
+        .achievements-panel { background: #bc7ed9e0; border-radius: 50px; padding: 20px; margin:15px 0; border:4px solid #e0a5ff; max-height:300px; overflow-y:auto; }
+        .achievement-entry { background: #aa62cb; color:#ffe6ff; padding:8px 15px; margin:6px 0; border-radius:30px; display:flex; align-items:center; gap:12px; font-size:1.3rem; border:2px solid #e0a5ff;}
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 15px; margin: 20px 0; }
+        .upgrade-card { background: linear-gradient(160deg, #f1d5ff, #d594f5); border-radius: 30px 30px 25px 25px; padding: 16px 4px 12px; border: 4px solid #ffe6ff; box-shadow: 0 10px 0 #b25ad4, 0 10px 20px #2a1a32; transition:0.08s; color:#471f5c; display:flex; flex-direction:column; align-items:center; position:relative; font-size:0.95rem;}
+        .upgrade-card.disabled { opacity:0.4; filter:grayscale(0.8); pointer-events:none; box-shadow:0 6px 0 #b56ad6; transform:translateY(6px);}
+        .upgrade-card.locked-tier { opacity:0.2; filter:grayscale(1); pointer-events:none;}
+        .upgrade-card.prestige-locked { opacity:0.7; filter:grayscale(0.9); background:#b679d3; pointer-events:none;}
+        .upgrade-icon { font-size: 2.8rem; }
+        .upgrade-name { font-size:1.1rem; background:#ac64cce0; border-radius:30px; color:#fff0ff; padding:4px 12px; margin:5px 0; font-weight:bold; text-transform:uppercase; }
+        .cost-display { background:#9e53bf; color:#fff0ff; padding:4px 15px; border-radius:40px; font-size:1.2rem; border:3px solid #e5a0ff; margin:6px 0; }
+        .prestige-page-panel { background: #d494f0; border-radius: 70px; padding: 30px; border: 5px solid #f3ceff; box-shadow: 0 16px 0 #b45ad6, 0 15px 35px #2e1a3a;}
+        .prestige-card { background: #bd78dce0; color: #fff0ff; padding: 30px; border-radius: 70px; font-size: 2rem; display:flex; flex-direction:column; align-items:center; gap:15px; border:4px solid #e0a5ff;}
+        .prestige-big-btn { background: #f0acff; border:5px solid #fff0ff; padding:20px 60px; border-radius: 70px; font-weight:bold; font-size:2.5rem; box-shadow:0 12px 0 #b45ad6,0 12px 25px black; cursor:pointer; }
+        .prestige-big-btn:active { transform:translateY(10px); box-shadow:0 5px 0 #b45ad6; }
+        .prestige-big-btn.disabled { opacity:0.5; pointer-events:none; }
+        .corn-btn { background:#d98cff; border:4px solid #fff0ff; padding:12px 30px; border-radius:70px; font-weight:bold; font-size:1.5rem; box-shadow:0 8px 0 #b45ad6; cursor:pointer; margin:0 5px;}
+        .corn-btn:active { transform:translateY(5px); box-shadow:0 3px 0 #b45ad6;}
+        .corn-btn.reset { background:#cf8cf0; }
+        .floating-crit { position:fixed; font-weight:bold; color:#e6aaff; text-shadow:0 0 20px #c45eff,0 0 30px #da8eff; pointer-events:none; font-size:3.2rem; z-index:9999; animation:floatUp 0.9s ease-out forwards; white-space:nowrap;}
+        @keyframes floatUp {
+            0% { opacity:1; transform:translateY(0) scale(1); }
+            100% { opacity:0; transform:translateY(-150px) scale(1.8); }
+        }
+        .floating-corn {
+            position:fixed; font-weight:bold; color:#e6aaff; text-shadow:0 0 15px #d98cff; pointer-events:none; font-size:2.5rem; z-index:9999; animation:cornFloat 1s ease-out forwards;
+        }
+        @keyframes cornFloat {
+            0% { opacity:1; transform:translateY(0) rotate(0deg); }
+            100% { opacity:0; transform:translateY(-120px) rotate(20deg); }
+        }
+        .import-export-panel { display:flex; gap:10px; margin:15px 0; flex-wrap:wrap; justify-content:center;}
+        .import-export-panel input { background:#8a4bade0; border:3px solid #e0a5ff; border-radius:70px; padding:12px 20px; font-size:1.2rem; color:#fff0ff; width:300px;}
+        .star-compact { font-size:2.2rem; background:#b56ad6; padding:8px 25px; border-radius:50px; border:2px solid #e0a5ff; letter-spacing:2px;}
+        .extra-stat { font-size:2rem; background:#f0d0ff; padding:18px; border-radius:70px; margin-top:20px; border:3px solid #eac6ff;}
+        .offline-progress { background:#c986ea; color:#ffe6ff; padding:15px; border-radius:50px; margin:10px 0; text-align:center; font-size:1.5rem; border:3px solid #e0a5ff; }
+        footer { font-size:1.2rem; color:#f5ceff; text-shadow:2px 2px 0 #4a2660;}
+    </style>
+</head>
+<body>
+<div class="full-game">
+    <div class="global-title"><h1>🫐 BERRY CLICKER</h1></div>
+    <div class="page-tabs">
+        <button class="tab-btn active" id="tabMain">🫐 MAIN</button>
+        <button class="tab-btn" id="tabUpgrade">⬆️ UPGRADE</button>
+        <button class="tab-btn research-tab" id="tabResearch">🔬 RESEARCH</button>
+        <button class="tab-btn" id="tabPrestigePage">✨ PRESTIGE</button>
+        <button class="tab-btn" id="tabAchievements">🏆 ACHIEVE</button>
+        <button class="tab-btn" id="tabStats">📊 SETTINGS</button>
+    </div>
+    <div class="global-resource">
+        <span class="resource-icon">🫐</span>
+        <span class="resource-value" id="globalCornDisplay">0</span>
+    </div>
+    <div class="research-points-bar">
+        <span class="rp-icon">🔬 RESEARCH POINTS: <span id="researchPointsDisplay">0</span></span>
+        <span class="buy-rp-btn" id="buyResearchPointBtn">BUY RP (1M🫐)</span>
+    </div>
+    <div id="pageMain" class="page active-page">
+        <div class="main-click-area">
+            <div class="combo-meter"><span>⚡ INFERNO COMBO</span><span class="combo-value" id="comboDisplay">0</span><span id="comboPercentDisplay">(+0%)</span></div>
+            <div class="click-area" id="clickButton">🫐<br>BERRY</div>
+            <div class="inline-stats"><span id="clickPowerStatMain">👆 1.0 /click</span><span id="totalClicksStatMain">🖱️ 0</span></div>
+            <div class="inline-stats" style="margin-top:10px;"><span id="critChanceDisplay">🎲 Crit: 6.11%</span><span id="critMultDisplay">💥 Crit x2-1000</span></div>
+        </div>
+    </div>
+    <div id="pageUpgrade" class="page"><div class="shop-grid" id="upgradeGrid"></div></div>
+    <div id="pageResearch" class="page"><div class="research-container" id="researchContainer"></div></div>
+    <div id="pagePrestige" class="page"><div class="prestige-page-panel"><div class="prestige-card"><div class="star-compact" id="prestigeStarsDisplay">0/10 ★</div><div style="font-size:2rem;">Base multiplier: <span id="prestigeMultDisplay">x1.000</span></div><div style="font-size:1.8rem;">With research: <span id="prestigeMultWithResearchDisplay">x1.000</span></div><div style="font-size:1.8rem;">next cost: <span id="prestigeCostDisplay">3.0M</span> 🫐</div><div style="font-size:1.8rem;">Cost after research: <span id="prestigeCostAfterResearchDisplay">3.0M</span> 🫐</div><button class="prestige-big-btn" id="prestigeBtn">✨ PRESTIGE ✨</button><div style="font-size:1.5rem;">√2 per star, max 10★ · 2 upgrades per star</div></div></div></div>
+    <div id="pageAchievements" class="page"><div class="settings-panel" style="background:#c681e6e0; border-radius:50px; padding:20px;"><h2 style="font-size:2.5rem; color:#e0a5ff;">🏆 ACHIEVEMENTS</h2><div class="achievements-panel" id="achievementsList">loading...</div></div></div>
+    <div id="pageStats" class="page"><div class="settings-panel" style="background:#e2b5f7e0; border-radius:50px; padding:25px;"><div class="totals-list" id="statsDetail">loading stats ...</div><div class="offline-progress" id="offlineProgressDisplay">⏰ Offline: 0 mins collected</div><div class="import-export-panel"><input type="text" id="importField" placeholder="paste save string" /><button class="corn-btn" id="exportBtn">📤 EXPORT</button><button class="corn-btn" id="importBtn">📥 IMPORT</button></div><div><button class="corn-btn" id="saveGameBtn">💾 SAVE</button><button class="corn-btn" id="loadGameBtn">📂 LOAD</button><button class="corn-btn reset" id="resetGameBtn">⚠️ RESET</button></div><div class="storage-info" id="saveStatus">📀 ready</div><div class="extra-stat" id="statsClickPower">⚡ click power: 0</div></div></div>
+</div>
+<script>
+(function(){
+let researchPoints=0;
+const RESEARCH_POINT_BASE_COST=1e6;
+const RESEARCH_POINT_COST_MULT=1.6;
+const researchItems=[
+{id:'costRed1',name:'🫐 TIER 1 COST REDUCTION',desc:'Reduces cost of BERRY PICK and JAM JAR',tierIndices:[0,1],tierNames:['BERRY PICK','JAM JAR'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed2',name:'🫐 TIER 2 COST REDUCTION',desc:'Reduces cost of JUICER and BLENDER',tierIndices:[2,3],tierNames:['JUICER','BLENDER'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed3',name:'🫐 TIER 3 COST REDUCTION',desc:'Reduces cost of BERRY PATCH and ORCHARD',tierIndices:[4,5],tierNames:['BERRY PATCH','ORCHARD'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed4',name:'🫐 TIER 4 COST REDUCTION',desc:'Reduces cost of QUANTUM BUSH and MIST FIELD',tierIndices:[6,7],tierNames:['QUANTUM BUSH','MIST FIELD'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed5',name:'🫐 TIER 5 COST REDUCTION',desc:'Reduces cost of GALACTIC GROVE and VOID HARVEST',tierIndices:[8,9],tierNames:['GALACTIC GROVE','VOID HARVEST'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed6',name:'🫐 TIER 6 COST REDUCTION',desc:'Reduces cost of COSMIC JUICER and BERRY QUEEN',tierIndices:[10,11],tierNames:['COSMIC JUICER','BERRY QUEEN'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed7',name:'🫐 TIER 7 COST REDUCTION',desc:'Reduces cost of STELLAR HARVEST and BERRY REAPER',tierIndices:[12,13],tierNames:['STELLAR HARVEST','BERRY REAPER'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed8',name:'🫐 TIER 8 COST REDUCTION',desc:'Reduces cost of BERRY ENGINE and STAR JAM',tierIndices:[14,15],tierNames:['BERRY ENGINE','STAR JAM'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed9',name:'🫐 TIER 9 COST REDUCTION',desc:'Reduces cost of COSMIC BERRY and JABERRY',tierIndices:[16,17],tierNames:['COSMIC BERRY','JABERRY'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed10',name:'🫐 TIER 10 COST REDUCTION',desc:'Reduces cost of BERRY NEXUS and DIVINE BERRY',tierIndices:[18,19],tierNames:['BERRY NEXUS','DIVINE BERRY'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed11',name:'🫐 TIER 11 COST REDUCTION',desc:'Reduces cost of BERRY OVERLORD and BERRY GOD',tierIndices:[20,21],tierNames:['BERRY OVERLORD','BERRY GOD'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'costRed12',name:'🫐 TIER 12 COST REDUCTION',desc:'Reduces cost of ETHEREAL BERRY and AMADEUS',tierIndices:[22,23],tierNames:['ETHEREAL BERRY','AMADEUS'],type:'costReduction',maxLevel:10,costPerLevel:[1,2,3,4,5,6,7,8,9,10],level:0},
+{id:'autoClicker',name:'⚡ AUTO CLICKER',desc:'Generates 10% of click power per second idle',type:'autoClicker',maxLevel:10,costPerLevel:[2,3,5,7,10,13,17,22,28,35],level:0},
+{id:'critChance',name:'🍀 CRIT CHANCE',desc:'+0.5% crit chance per level (max +5%)',type:'critChance',maxLevel:10,costPerLevel:[2,3,5,7,10,13,17,22,28,35],level:0},
+{id:'critMult',name:'💥 CRIT MULTIPLIER',desc:'+0.1x to all crit multipliers per level',type:'critMult',maxLevel:10,costPerLevel:[2,3,5,7,10,13,17,22,28,35],level:0},
+{id:'prestigeBonus',name:'✨ PRESTIGE BONUS',desc:'+0.05 to prestige multiplier per level',type:'prestigeBonus',maxLevel:10,costPerLevel:[2,3,5,7,10,13,17,22,28,35],level:0},
+{id:'prestigeCostRed',name:'💰 PRESTIGE COST REDUCTION',desc:'-10% prestige cost per level',type:'prestigeCostReduction',maxLevel:10,costPerLevel:[2,3,5,7,10,13,17,22,28,35],level:0},
+{id:'offlineLength',name:'⏰ OFFLINE TIME',desc:'+30 minutes offline earnings (requires Auto Clicker lv1)',type:'offlineLength',maxLevel:10,costPerLevel:[2,3,5,7,10,13,17,22,28,35],level:0}
+];
+let prestigeLevel=0;
+const MAX_PRESTIGE=10;
+const PRESTIGE_BASE_COST=3e6;
+const PRESTIGE_COST_GROWTH=400;
+let corn=0,totalManualClicks=0,lastOfflineTime=Date.now(),pageLoadTime=Date.now();
+let combo=0,MAX_COMBO=50,COMBO_DECAY_MS=350,comboTimer=null,lastClickTime=0;
+const upgrades=[
+{id:'berryPick',name:'BERRY PICK',icon:'🫐',basePower:1,baseCost:20,desc:'+1/click'},
+{id:'jamJar',name:'JAM JAR',icon:'🥫',basePower:12,baseCost:400,desc:'+12/click'},
+{id:'juicer',name:'JUICER',icon:'🍹',basePower:140,baseCost:8000,desc:'+140/click'},
+{id:'blender',name:'BLENDER',icon:'🥤',basePower:1700,baseCost:160000,desc:'+1700/click'},
+{id:'berryPatch',name:'BERRY PATCH',icon:'🌿',basePower:20000,baseCost:3200000,desc:'+20k/click'},
+{id:'orchard',name:'ORCHARD',icon:'🌳',basePower:240000,baseCost:64000000,desc:'+240k/click'},
+{id:'quantumBush',name:'QUANTUM BUSH',icon:'🔮',basePower:2900000,baseCost:1280000000,desc:'+2.9M/click'},
+{id:'mistField',name:'MIST FIELD',icon:'💨',basePower:35000000,baseCost:25600000000,desc:'+35M/click'},
+{id:'galacticGrove',name:'GALACTIC GROVE',icon:'🌌',basePower:450000000,baseCost:512000000000,desc:'+450M/click'},
+{id:'voidHarvest',name:'VOID HARVEST',icon:'👾',basePower:5600000000,baseCost:10240000000000,desc:'+5.6B/click'},
+{id:'cosmicJuicer',name:'COSMIC JUICER',icon:'🛸',basePower:72000000000,baseCost:204800000000000,desc:'+72B/click'},
+{id:'berryQueen',name:'BERRY QUEEN',icon:'👑',basePower:900000000000,baseCost:4096000000000000,desc:'+900B/click'},
+{id:'stellarHarvest',name:'STELLAR HARVEST',icon:'🌠',basePower:12000000000000,baseCost:81920000000000000,desc:'+12T/click'},
+{id:'berryReaper',name:'BERRY REAPER',icon:'☄️',basePower:150000000000000,baseCost:1630000000000000000,desc:'+150T/click'},
+{id:'berryEngine',name:'BERRY ENGINE',icon:'🌀',basePower:2000000000000000,baseCost:32700000000000000000,desc:'+2Qa/click'},
+{id:'starJam',name:'STAR JAM',icon:'⭐',basePower:25000000000000000,baseCost:655000000000000000000,desc:'+25Qa/click'},
+{id:'cosmicBerry',name:'COSMIC BERRY',icon:'🐋',basePower:300000000000000000,baseCost:13100000000000000000000,desc:'+300Qa/click'},
+{id:'jaberry',name:'JABERRY',icon:'👤',basePower:3600000000000000000,baseCost:262000000000000000000000,desc:'+3.6Qi/click'},
+{id:'berryNexus',name:'BERRY NEXUS',icon:'🌐',basePower:50000000000000000000,baseCost:5240000000000000000000000,desc:'+50 Qi/click'},
+{id:'divineBerry',name:'DIVINE BERRY',icon:'✨',basePower:650000000000000000000,baseCost:104850000000000000000000000,desc:'+650 Qi/click'},
+{id:'berryOverlord',name:'BERRY OVERLORD',icon:'👁️',basePower:8000000000000000000000,baseCost:2090000000000000000000000000,desc:'+8 Sx/click'},
+{id:'berryGod',name:'BERRY GOD',icon:'🗿',basePower:105000000000000000000000,baseCost:41800000000000000000000000000,desc:'+105 Sx/click'},
+{id:'etherealBerry',name:'ETHEREAL BERRY',icon:'🌀',basePower:1.30e24,baseCost:8.25e29,desc:'+1.30 Sp/click'},
+{id:'amadeus',name:'AMADEUS',icon:'🎼',basePower:1.6e25,baseCost:1.65e31,desc:'+16 Sp/click'}
+];
+let levels={}; upgrades.forEach(u=>levels[u.id]=0);
+function getCostReductionForUpgrade(index){let r=1;for(let res of researchItems)if(res.type==='costReduction'&&res.tierIndices&&res.tierIndices.includes(index))r*=Math.pow(0.94,res.level);return r;}
+function getNextCost(upgrade,index){let lvl=levels[upgrade.id];let base=upgrade.baseCost*Math.pow(1.32,lvl);let reduction=getCostReductionForUpgrade(index);return Math.floor(base*reduction);}
+function getPrestigeCost(){if(prestigeLevel>=MAX_PRESTIGE)return Infinity;let baseCost=PRESTIGE_BASE_COST*Math.pow(PRESTIGE_COST_GROWTH,prestigeLevel);let reduction=Math.pow(0.9,researchItems[16].level);return Math.floor(baseCost*reduction);}
+let autoClickerInterval=null;
+function startAutoClicker(){if(autoClickerInterval)clearInterval(autoClickerInterval);let autoLevel=researchItems[12].level;if(autoLevel>0)autoClickerInterval=setInterval(()=>{let autoPower=baseClickPower()*0.1*autoLevel*comboMultiplier();corn+=autoPower;spawnFloatingCorn('⚡ '+formatNumber(autoPower),'#e6aaff');fullRefresh();},1000);}
+function spawnFloatingCorn(msg,col){let d=document.createElement('div');d.className='floating-corn';d.innerText=msg;d.style.left=(Math.random()*60+20)+'%';d.style.top='50%';d.style.color=col;document.body.appendChild(d);setTimeout(()=>d.remove(),800);}
+function comboPercent(){return Math.min(combo*2,100);}
+function comboMultiplier(){return 1+comboPercent()/100;}
+function increaseCombo(){combo=Math.min(combo+1,MAX_COMBO);resetComboTimer();updateComboUI();}
+function resetComboTimer(){if(comboTimer)clearTimeout(comboTimer);comboTimer=setTimeout(()=>{combo=0;updateComboUI();comboTimer=null;},COMBO_DECAY_MS);}
+function updateComboUI(){let el=document.getElementById('comboDisplay');if(el)el.innerText=combo;let pct=document.getElementById('comboPercentDisplay');if(pct)pct.innerText=`(+${comboPercent()}%)`;}
+function getCritChance(){let base=6.11;let bonus=(researchItems[13]?.level||0)*0.5;return base+bonus;}
+function getCritMultiplier(){let r=Math.random()*100;let chance=getCritChance();let bonus=(researchItems[14]?.level||0)*0.1;if(r<0.01)return 1000+bonus*1000;if(r<0.11)return 25+bonus*25;if(r<1.11)return 5+bonus*5;if(r<6.11)return 2+bonus*2;return 1;}
+function spawnFloatingText(msg,isCrit){let d=document.createElement('div');d.className='floating-crit';d.innerText=msg;d.style.left=(Math.random()*60+20)+'%';d.style.top='50%';document.body.appendChild(d);setTimeout(()=>d.remove(),800);}
+function addClickEffect(e){let area=document.getElementById('clickButton');let rect=area.getBoundingClientRect();let x=e.clientX-rect.left,y=e.clientY-rect.top;let rip=document.createElement('div');rip.className='ripple-effect';rip.style.left=x+'px';rip.style.top=y+'px';area.appendChild(rip);let flash=document.createElement('div');flash.className='click-flash';area.appendChild(flash);setTimeout(()=>{rip.remove();flash.remove();},500);}
+function isUpgradeUnlockedByTier(idx){if(idx<2)return true;let requiredId=upgrades[idx-1].id;return levels[requiredId]>=1;}
+function isUpgradeVisibleByPrestige(idx){return idx<4+2*prestigeLevel;}
+function getPowerFor(up){let lvl=levels[up.id];if(lvl===0)return 0;return up.basePower*Math.pow(1.25,lvl-1);}
+function baseClickPower(){let sum=1;for(let u of upgrades)sum+=getPowerFor(u);return sum;}
+function getPrestigeMultiplier(){return Math.pow(Math.SQRT2,prestigeLevel)+(researchItems[15]?.level||0)*0.05;}
+function totalClickPower(){return baseClickPower()*getPrestigeMultiplier()*comboMultiplier();}
+function getNextResearchPointCost(){return RESEARCH_POINT_BASE_COST*Math.pow(RESEARCH_POINT_COST_MULT,researchPoints);}
+function buyResearchPoint(){if(prestigeLevel<1){alert('❌ Need at least 1 prestige star to buy research points!');return;}let cost=getNextResearchPointCost();if(corn>=cost){corn-=cost;researchPoints++;document.getElementById('globalCornDisplay').innerText=formatNumber(corn);document.getElementById('researchPointsDisplay').innerText=researchPoints;let btn=document.getElementById('buyResearchPointBtn');btn.innerHTML=`BUY RP (${formatNumber(getNextResearchPointCost())}🫐)`;updateBuyRPButton();saveGame();spawnFloatingText('🔬 RP +1',false);}else alert(`Need ${formatNumber(cost)} berries!`);}
+function updateBuyRPButton(){let btn=document.getElementById('buyResearchPointBtn');if(!btn)return;btn.innerHTML=`BUY RP (${formatNumber(getNextResearchPointCost())}🫐)`;if(prestigeLevel<1){btn.classList.add('disabled');btn.title='Requires at least 1 prestige star';}else{btn.classList.remove('disabled');btn.title='';}}
+function buyResearch(idx){let r=researchItems[idx];if(r.level>=r.maxLevel)return;let cost=r.costPerLevel[r.level];if(researchPoints<cost){alert(`Need ${cost} research points!`);return;}if(idx===17&&researchItems[12].level===0){alert('❌ Need Auto Clicker level 1 first!');return;}researchPoints-=cost;r.level++;if(idx===12)startAutoClicker();fullRefresh();saveGame();spawnFloatingText('🔬 Research complete!',false);}
+function renderResearch(){let cont=document.getElementById('researchContainer');if(!cont)return;let html='';for(let i=0;i<=11;i++){let r=researchItems[i];let nextCost=r.level<r.maxLevel?r.costPerLevel[r.level]:null;html+=`<div class="research-card"><div class="research-title">${r.name}</div><div class="research-tier-list">📋 ${r.tierNames.join(' & ')}</div><div class="research-level">Level ${r.level}/${r.maxLevel}</div><div class="research-desc">${r.desc}</div><div class="research-current">Current: -${(100-Math.pow(94,r.level)).toFixed(1)}% cost</div>${r.level<r.maxLevel?`<div class="research-cost">Cost: ${nextCost} RP</div><div class="research-btn" onclick="window.buyResearch(${i})">UPGRADE</div>`:`<div class="research-max">MAX LEVEL</div>`}</div>`;}for(let i=12;i<researchItems.length;i++){let r=researchItems[i];let nextCost=r.level<r.maxLevel?r.costPerLevel[r.level]:null;let cur='';if(i===12)cur=`Current: ${r.level*10}% of click/sec`;else if(i===13)cur=`Current: ${(6.11+r.level*0.5).toFixed(2)}% crit chance`;else if(i===14)cur=`Current: +${r.level*0.1}x crit mult`;else if(i===15)cur=`Current: +${r.level*0.05} to prestige mult`;else if(i===16)cur=`Current: -${r.level*10}% prestige cost`;else if(i===17)cur=`Current: +${r.level*30} mins offline`;html+=`<div class="research-card"><div class="research-title">${r.name}</div><div class="research-level">Level ${r.level}/${r.maxLevel}</div><div class="research-desc">${r.desc}</div><div class="research-current">${cur}</div>${r.level<r.maxLevel?`<div class="research-cost">Cost: ${nextCost} RP</div><div class="research-btn" onclick="window.buyResearch(${i})">UPGRADE</div>`:`<div class="research-max">MAX LEVEL</div>`}${i===17&&researchItems[12].level===0?'<div style="color:red; font-weight:bold;">🔒 Requires Auto Clicker lv1</div>':''}</div>`;}cont.innerHTML=html;}
+function calculateOfflineProgress(){let now=Date.now();let timeSinceLoad=now-pageLoadTime;if(lastOfflineTime&&lastOfflineTime<pageLoadTime){let diffSeconds=Math.floor((pageLoadTime-lastOfflineTime)/1000);if(diffSeconds>5){let offlineLevel=researchItems[17].level;let autoLevel=researchItems[12].level;if(offlineLevel>0&&autoLevel>0){let maxOfflineSeconds=offlineLevel*30*60;let secondsToCollect=Math.min(diffSeconds,maxOfflineSeconds);if(secondsToCollect>0){let powerPerSecond=baseClickPower()*0.1*autoLevel;let offlineEarned=powerPerSecond*secondsToCollect;corn+=offlineEarned;document.getElementById('offlineProgressDisplay').innerHTML=`⏰ Offline: +${formatNumber(offlineEarned)} berries collected (${Math.floor(secondsToCollect/60)}m ${secondsToCollect%60}s)`;spawnFloatingText('⏰ Offline earnings!',false);}}}lastOfflineTime=now;}}
+let achievements=[{id:'click1',name:'First Steps',desc:'Click once',icon:'🖱️',condition:()=>totalManualClicks>=1},{id:'click100',name:'Clicker',desc:'100 clicks',icon:'🖱️',condition:()=>totalManualClicks>=100},{id:'click1k',name:'Serious Clicker',desc:'1,000 clicks',icon:'🖱️',condition:()=>totalManualClicks>=1000},{id:'click10k',name:'Berry Maniac',desc:'10,000 clicks',icon:'🖱️',condition:()=>totalManualClicks>=10000},{id:'click100k',name:'Legendary Clicker',desc:'100,000 clicks',icon:'🖱️',condition:()=>totalManualClicks>=100000},{id:'upgrade1',name:'First Purchase',desc:'Buy first upgrade',icon:'⬆️',condition:()=>Object.values(levels).some(lvl=>lvl>=1)},{id:'upgrade3',name:'Getting Started',desc:'Own 3 upgrades',icon:'⬆️',condition:()=>Object.values(levels).filter(lvl=>lvl>=1).length>=3},{id:'upgrade10',name:'Tenth upgrade',desc:'Own 10 upgrades',icon:'⬆️',condition:()=>Object.values(levels).filter(lvl=>lvl>=1).length>=10},{id:'upgrade15',name:'Upgrade collector',desc:'Own 15 upgrades',icon:'⬆️',condition:()=>Object.values(levels).filter(lvl=>lvl>=1).length>=15},{id:'prestige1',name:'New Beginning',desc:'Prestige once',icon:'✨',condition:()=>prestigeLevel>=1},{id:'prestige3',name:'Third Times',desc:'Prestige 3 times',icon:'✨',condition:()=>prestigeLevel>=3},{id:'prestige5',name:'Star Collector',desc:'Prestige 5 times',icon:'✨',condition:()=>prestigeLevel>=5},{id:'prestige7',name:'Berry Deity',desc:'Prestige 7 times',icon:'👑',condition:()=>prestigeLevel>=7},{id:'prestige10',name:'Transcendent',desc:'Reach 10★',icon:'👑',condition:()=>prestigeLevel>=10},{id:'combo25',name:'Combo Starter',desc:'Reach 25 combo',icon:'⚡',condition:()=>combo>=25},{id:'combo50',name:'Combo Master',desc:'Reach 50 combo',icon:'⚡',condition:()=>combo>=50},{id:'research1',name:'Researcher',desc:'Buy first research',icon:'🔬',condition:()=>researchItems.some(r=>r.level>0)},{id:'research5',name:'Scientist',desc:'Own 5 research levels',icon:'🔬',condition:()=>researchItems.reduce((s,r)=>s+r.level,0)>=5},{id:'research20',name:'Professor',desc:'Own 20 research levels',icon:'🔬',condition:()=>researchItems.reduce((s,r)=>s+r.level,0)>=20},{id:'research50',name:'Nobel Prize',desc:'Own 50 research levels',icon:'🔬',condition:()=>researchItems.reduce((s,r)=>s+r.level,0)>=50},{id:'research100',name:'Research Master',desc:'Own 100 research levels',icon:'🔬',condition:()=>researchItems.reduce((s,r)=>s+r.level,0)>=100},{id:'crit25',name:'Lucky!',desc:'Get a 25x critical',icon:'🍀',condition:()=>false},{id:'crit1000',name:'ONE IN A MILLION',desc:'Get a 1000x critical',icon:'💀',condition:()=>false}];
+let unlockedAchievements=[];
+function checkAchievements(){let changed=false;achievements.forEach(ach=>{if(!unlockedAchievements.includes(ach.id)&&ach.condition()){unlockedAchievements.push(ach.id);changed=true;spawnFloatingText('🏆 '+ach.name,true);}});if(changed)renderAchievements();}
+function checkCrit25(){if(!unlockedAchievements.includes('crit25')){unlockedAchievements.push('crit25');renderAchievements();spawnFloatingText('🏆 Lucky!',true);}}
+function checkCrit1000(){if(!unlockedAchievements.includes('crit1000')){unlockedAchievements.push('crit1000');renderAchievements();spawnFloatingText('🏆 ONE IN A MILLION',true);}}
+function renderAchievements(){let cont=document.getElementById('achievementsList');if(!cont)return;let html='';achievements.forEach(ach=>{let unlocked=unlockedAchievements.includes(ach.id);html+=`<div class="achievement-entry" style="${unlocked?'':'opacity:0.6;'}"><span class="achievement-icon">${ach.icon}</span><span class="achievement-desc"><b>${ach.name}</b>: ${ach.desc}</span><span class="achievement-reward">${unlocked?'✅':'🔒'}</span></div>`;});cont.innerHTML=html;}
+function formatNumber(num){if(num===Infinity)return '∞';if(num>=1e30)return num.toExponential(2);let suf=['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','Nn','Dc'];let t=0;while(num>=1000&&t<suf.length-1){num/=1000;t++;}let fixed=(num<10&&num>-10)?num.toFixed(2):num.toFixed(1);if(fixed.endsWith('.0'))fixed=fixed.slice(0,-2);return fixed+' '+suf[t];}
+let upgradeGrid=document.getElementById('upgradeGrid');
+function renderUpgrades(){upgradeGrid.innerHTML='';upgrades.forEach((up,idx)=>{let lvl=levels[up.id];let cost=getNextCost(up,idx);let power=getPowerFor(up);let tierUnlocked=isUpgradeUnlockedByTier(idx);let visible=isUpgradeVisibleByPrestige(idx);let cardClass='upgrade-card';if(!visible)cardClass+=' prestige-locked';else if(!tierUnlocked)cardClass+=' locked-tier';else if(corn<cost)cardClass+=' disabled';let card=document.createElement('div');card.className=cardClass;card.dataset.id=up.id;if(!visible){card.innerHTML=`<div class="upgrade-icon">❓</div><div class="upgrade-name">????</div><div class="upgrade-level">prestige ★</div>`;upgradeGrid.appendChild(card);return;}let iconHtml=`<div class="upgrade-icon">${up.icon}</div>`;let powerDisplay=(lvl===0)?'locked':`+${formatNumber(power)}/click`;let nextPower=(lvl===0)?up.basePower:up.basePower*Math.pow(1.25,lvl);let nextPowerStr=`next +${formatNumber(nextPower)}`;let originalCost=up.baseCost*Math.pow(1.32,lvl);let discount=(1-cost/originalCost)*100;let discountText=discount>0.1?` (-${discount.toFixed(0)}%)`:'';card.innerHTML=`${iconHtml}<div class="upgrade-name">${up.name}</div><div class="upgrade-level">lvl ${lvl}</div><div class="upgrade-desc">${powerDisplay}</div><div class="cost-display">🫐 ${formatNumber(cost)}${discountText}</div><div class="preview-note">${nextPowerStr}</div>`;if(visible&&tierUnlocked)card.addEventListener('click',(e)=>{e.stopPropagation();buyUpgrade(up.id,idx);});upgradeGrid.appendChild(card);});}
+function buyUpgrade(id,idx){let up=upgrades.find(u=>u.id===id);if(!up)return;let cost=getNextCost(up,idx);if(corn>=cost){corn-=cost;levels[id]+=1;fullRefresh();checkAchievements();saveGame();}}
+function performPrestige(){if(prestigeLevel>=MAX_PRESTIGE){alert('Maximum prestige (10★) reached!');return;}let cost=getPrestigeCost();if(corn<cost){alert(`Need ${formatNumber(cost)} berries`);return;}corn=0;upgrades.forEach(u=>levels[u.id]=0);prestigeLevel++;combo=0;updateComboUI();fullRefresh();saveGame();checkAchievements();updateBuyRPButton();alert(`✨ Prestiged to ${prestigeLevel} ★ · mult x${getPrestigeMultiplier().toFixed(3)}`);}
+function handleClick(e){e.preventDefault();addClickEffect(e);let now=Date.now();if(now-lastClickTime<=COMBO_DECAY_MS+50)increaseCombo();else{combo=1;resetComboTimer();}lastClickTime=now;updateComboUI();let pureBase=baseClickPower()*getPrestigeMultiplier();let critMult=getCritMultiplier();if(critMult===25)checkCrit25();if(critMult===1000)checkCrit1000();let gain=pureBase*critMult*comboMultiplier();corn+=gain;totalManualClicks++;if(critMult>1){let msg=critMult>=1000?'💀1000x💀':critMult>=25?'🔥25x🔥':critMult>=5?'⚡5x⚡':'2x';spawnFloatingText(msg,critMult>=5);}else{spawnFloatingCorn('+'+formatNumber(gain),'#e6aaff');}checkAchievements();fullRefresh();}
+function fullRefresh(){document.getElementById('globalCornDisplay').innerText=formatNumber(corn);document.getElementById('researchPointsDisplay').innerText=researchPoints;let clickPow=totalClickPower();document.getElementById('clickPowerStatMain').innerHTML=`👆 ${formatNumber(clickPow)} /click`;document.getElementById('totalClicksStatMain').innerHTML=`🖱️ ${totalManualClicks}`;document.getElementById('critChanceDisplay').innerHTML=`🎲 Crit: ${getCritChance().toFixed(2)}%`;document.getElementById('critMultDisplay').innerHTML=`💥 Crit x2-${(1000+(researchItems[14]?.level||0)*100).toFixed(0)}`;document.getElementById('prestigeStarsDisplay').innerHTML=`${prestigeLevel}/${MAX_PRESTIGE} ★`;document.getElementById('prestigeMultDisplay').innerText=`x${Math.pow(Math.SQRT2,prestigeLevel).toFixed(3)}`;document.getElementById('prestigeMultWithResearchDisplay').innerText=`x${getPrestigeMultiplier().toFixed(3)}`;let nextCost=getPrestigeCost();let baseCost=PRESTIGE_BASE_COST*Math.pow(PRESTIGE_COST_GROWTH,prestigeLevel);document.getElementById('prestigeCostDisplay').innerText=isFinite(baseCost)?formatNumber(baseCost):'MAX';document.getElementById('prestigeCostAfterResearchDisplay').innerText=isFinite(nextCost)?formatNumber(nextCost):'MAX';updateBuyRPButton();renderUpgrades();renderResearch();let statDiv=document.getElementById('statsDetail');if(statDiv){let totalResLevels=researchItems.reduce((s,r)=>s+r.level,0);statDiv.innerHTML=`<b>🫐 BERRIES:</b> ${formatNumber(corn)}<br><b>🖱️ CLICKS:</b> ${totalManualClicks}<br><b>⚡ COMBO:</b> ${combo} (${comboPercent()}%)<br><b>✨ PRESTIGE:</b> ${prestigeLevel} ★ (x${getPrestigeMultiplier().toFixed(3)})<br><b>🔬 RESEARCH POINTS:</b> ${researchPoints}<br><b>🔬 RESEARCH LEVELS:</b> ${totalResLevels}/180<br><b>🏆 ACHIEVEMENTS:</b> ${unlockedAchievements.length}/${achievements.length}<br><b>⬆️ UPGRADES OWNED:</b> ${Object.values(levels).filter(l=>l>=1).length}<br><br><b>⬆️ UPGRADE DETAILS:</b><br>`;upgrades.forEach((u,idx)=>{if(isUpgradeVisibleByPrestige(idx)||levels[u.id]>0)statDiv.innerHTML+=`&nbsp;&nbsp;${u.icon} ${u.name}: lvl ${levels[u.id]} (${formatNumber(getPowerFor(u))}/click)<br>`;});statDiv.innerHTML+=`<br><b>🔁 TOTAL /CLICK:</b> ${formatNumber(clickPow)}`;}document.getElementById('statsClickPower').innerHTML=`⚡ click power: ${formatNumber(clickPow)}`;updateComboUI();renderAchievements();}
+function saveGame(){let saveObj={corn,totalManualClicks,levels,prestigeLevel,unlockedAchievements,researchPoints,researchLevels:researchItems.map(r=>r.level),lastOfflineTime,version:'berry2.0'};localStorage.setItem('berryResearchSave',JSON.stringify(saveObj));document.getElementById('saveStatus').innerText='✅ saved '+new Date().toLocaleTimeString();}
+function loadGame(){let raw=localStorage.getItem('berryResearchSave');if(!raw){document.getElementById('saveStatus').innerText='❌ no save';return;}try{let loaded=JSON.parse(raw);corn=loaded.corn??0;totalManualClicks=loaded.totalManualClicks??0;prestigeLevel=Math.min(loaded.prestigeLevel??0,MAX_PRESTIGE);researchPoints=loaded.researchPoints??0;if(loaded.levels){upgrades.forEach(u=>levels[u.id]=0);for(let[id,lvl]of Object.entries(loaded.levels))if(levels.hasOwnProperty(id))levels[id]=lvl;}if(loaded.researchLevels)loaded.researchLevels.forEach((lvl,idx)=>{if(researchItems[idx])researchItems[idx].level=lvl;});unlockedAchievements=loaded.unlockedAchievements||[];lastOfflineTime=loaded.lastOfflineTime||Date.now();combo=0;updateComboUI();startAutoClicker();fullRefresh();document.getElementById('saveStatus').innerText='📀 loaded';}catch(e){document.getElementById('saveStatus').innerText='⚠️ error';}}
+function resetGame(){if(confirm('Reset all progress?')){corn=0;totalManualClicks=0;prestigeLevel=0;combo=0;researchPoints=0;upgrades.forEach(u=>levels[u.id]=0);researchItems.forEach(r=>r.level=0);unlockedAchievements=[];lastOfflineTime=Date.now();if(autoClickerInterval)clearInterval(autoClickerInterval);fullRefresh();document.getElementById('saveStatus').innerText='♻️ reset';}}
+function exportGame(){let saveObj={corn,totalManualClicks,levels,prestigeLevel,unlockedAchievements,researchPoints,researchLevels:researchItems.map(r=>r.level),version:'berryExport'};document.getElementById('importField').value=JSON.stringify(saveObj);document.getElementById('saveStatus').innerText='📤 export string ready';}
+function importGame(){let raw=document.getElementById('importField').value.trim();if(!raw)return;try{let loaded=JSON.parse(raw);corn=loaded.corn??0;totalManualClicks=loaded.totalManualClicks??0;prestigeLevel=Math.min(loaded.prestigeLevel??0,MAX_PRESTIGE);researchPoints=loaded.researchPoints??0;if(loaded.levels){upgrades.forEach(u=>levels[u.id]=0);for(let[id,lvl]of Object.entries(loaded.levels))if(levels.hasOwnProperty(id))levels[id]=lvl;}if(loaded.researchLevels)loaded.researchLevels.forEach((lvl,idx)=>{if(researchItems[idx])researchItems[idx].level=lvl;});unlockedAchievements=loaded.unlockedAchievements||[];combo=0;updateComboUI();startAutoClicker();fullRefresh();document.getElementById('saveStatus').innerText='📦 import success';saveGame();}catch(e){document.getElementById('saveStatus').innerText='❌ invalid import';}}
+setInterval(saveGame,15000);
+let mainPage=document.getElementById('pageMain'),upgradePage=document.getElementById('pageUpgrade'),researchPage=document.getElementById('pageResearch'),prestigePage=document.getElementById('pagePrestige'),achievementsPage=document.getElementById('pageAchievements'),statsPage=document.getElementById('pageStats');
+let tabMain=document.getElementById('tabMain'),tabUpgrade=document.getElementById('tabUpgrade'),tabResearch=document.getElementById('tabResearch'),tabPrestige=document.getElementById('tabPrestigePage'),tabAchievements=document.getElementById('tabAchievements'),tabStats=document.getElementById('tabStats');
+function setActivePage(active){[mainPage,upgradePage,researchPage,prestigePage,achievementsPage,statsPage].forEach(p=>p.classList.remove('active-page'));[tabMain,tabUpgrade,tabResearch,tabPrestige,tabAchievements,tabStats].forEach(t=>t.classList.remove('active'));if(active==='main'){mainPage.classList.add('active-page');tabMain.classList.add('active');}else if(active==='upgrade'){upgradePage.classList.add('active-page');tabUpgrade.classList.add('active');renderUpgrades();}else if(active==='research'){researchPage.classList.add('active-page');tabResearch.classList.add('active');renderResearch();}else if(active==='prestige'){prestigePage.classList.add('active-page');tabPrestige.classList.add('active');fullRefresh();}else if(active==='achievements'){achievementsPage.classList.add('active-page');tabAchievements.classList.add('active');renderAchievements();}else if(active==='stats'){statsPage.classList.add('active-page');tabStats.classList.add('active');}fullRefresh();}
+tabMain.addEventListener('click',()=>setActivePage('main'));tabUpgrade.addEventListener('click',()=>setActivePage('upgrade'));tabResearch.addEventListener('click',()=>setActivePage('research'));tabPrestige.addEventListener('click',()=>setActivePage('prestige'));tabAchievements.addEventListener('click',()=>setActivePage('achievements'));tabStats.addEventListener('click',()=>setActivePage('stats'));
+document.getElementById('clickButton').addEventListener('click',handleClick);document.getElementById('clickButton').addEventListener('touchstart',(e)=>{e.preventDefault();handleClick(e);},{passive:false});
+document.getElementById('prestigeBtn').addEventListener('click',performPrestige);document.getElementById('buyResearchPointBtn').addEventListener('click',buyResearchPoint);
+document.getElementById('saveGameBtn').addEventListener('click',saveGame);document.getElementById('loadGameBtn').addEventListener('click',loadGame);document.getElementById('resetGameBtn').addEventListener('click',resetGame);document.getElementById('exportBtn').addEventListener('click',exportGame);document.getElementById('importBtn').addEventListener('click',importGame);
+window.buyResearch=buyResearch;
+fullRefresh();setTimeout(()=>{if(localStorage.getItem('berryResearchSave'))loadGame();calculateOfflineProgress();startAutoClicker();},100);
+})();
+</script>
+</body>
+</html>
