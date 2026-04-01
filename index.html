@@ -14,11 +14,12 @@
         .loading-emoji{font-size:5.5rem;display:inline-block;animation:bounceEmoji 0.7s cubic-bezier(0.34,1.2,0.64,1) infinite alternate;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.2));}
         .loading-text{margin-top:1.2rem;font-size:1rem;font-weight:500;color:#8b5a2b;letter-spacing:0.5px;background:rgba(255,245,220,0.7);padding:0.4rem 1.2rem;border-radius:60px;backdrop-filter:blur(4px);display:inline-block;text-transform:lowercase;}
         @keyframes bounceEmoji{0%{transform:translateY(0px) scale(1);}100%{transform:translateY(-18px) scale(1.08);}}
-        .hub{max-width:980px;width:100%;background:rgba(255,253,245,0.97);border-radius:3.5rem;box-shadow:0 32px 56px -20px rgba(0,0,0,0.25),0 0 0 1px #f5e7d4 inset,0 0 0 2px #fffef8 inset;padding:2rem 2rem 2.2rem 2rem;position:relative;}
+        .hub{max-width:1080px;width:100%;background:rgba(255,253,245,0.97);border-radius:3.5rem;box-shadow:0 32px 56px -20px rgba(0,0,0,0.25),0 0 0 1px #f5e7d4 inset,0 0 0 2px #fffef8 inset;padding:2rem 2rem 2.2rem 2rem;position:relative;}
         .title{text-align:center;margin-bottom:2rem;}
         .title h1{font-size:2.4rem;font-weight:800;background:linear-gradient(135deg,#367a2f,#cc8230,#f5bc4e);background-clip:text;-webkit-background-clip:text;color:transparent;letter-spacing:-0.5px;display:inline-flex;align-items:center;gap:14px;}
         .title h1 span{font-size:2.1rem;background:none;-webkit-text-fill-color:initial;}
-        .grid-3x2{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin:1.8rem 0 0;}
+        /* 3x3 grid - was 3x2, now extended to 3x3 */
+        .grid-3x3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin:1.8rem 0 0;}
         .game-btn{border:none;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.18s cubic-bezier(0.18,0.89,0.32,1.28),box-shadow 0.18s ease,background 0.15s;box-shadow:0 10px 0 rgba(0,0,0,0.1);width:100%;aspect-ratio:1/0.85;position:relative;border-radius:28px;background-clip:padding-box;-webkit-tap-highlight-color:transparent;outline:none;}
         .game-btn:active{transform:translateY(5px) scale(0.97);box-shadow:0 4px 0 rgba(0,0,0,0.08);transition:transform 0.06s linear,box-shadow 0.08s;}
         .game-btn:focus{outline:none;}
@@ -30,14 +31,20 @@
         .btn-corn{background:#fff3c9;box-shadow:0 10px 0 #edcf7a;}
         .btn-lemon{background:#fff4b0;box-shadow:0 10px 0 #eac459;}
         .btn-tomato{background:#ffdac8;box-shadow:0 10px 0 #e3946e;}
+        .btn-orange{background:#ffe0b5;box-shadow:0 10px 0 #dd9f5c;}
+        .btn-grape{background:#e7d4f5;box-shadow:0 10px 0 #b384c9;}
+        .btn-berry{background:#cfe3ff;box-shadow:0 10px 0 #8aaad9;}
+        .btn-orange:hover{background:#ffd29c;}
+        .btn-berry:hover{background:#bed4fc;}
+        .btn-grape:hover{background:#dac1ec;}
         .btn-peach:hover{background:#ffdabb;}
         .btn-apple:hover{background:#cceeb0;}
         .btn-carrot:hover{background:#ffd6aa;}
         .btn-corn:hover{background:#ffefb0;}
         .btn-lemon:hover{background:#ffef98;}
         .btn-tomato:hover{background:#ffceb4;}
-        @media (max-width:760px){.hub{padding:1.5rem}.grid-3x2{gap:1.2rem}.title h1{font-size:1.9rem}.title h1 span{font-size:1.7rem}}
-        @media (max-width:550px){.grid-3x2{gap:0.9rem}.title h1{font-size:1.6rem}.hub{padding:1.2rem}}
+        @media (max-width:760px){.hub{padding:1.5rem}.grid-3x3{gap:1.2rem}.title h1{font-size:1.9rem}.title h1 span{font-size:1.7rem}}
+        @media (max-width:550px){.grid-3x3{gap:0.9rem}.title h1{font-size:1.6rem}.hub{padding:1.2rem}}
         .game-btn::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 20%,rgba(255,255,210,0.5)0%,rgba(255,255,255,0)80%);opacity:0;transition:opacity 0.2s;pointer-events:none;border-radius:inherit;}
         .game-btn:hover::after{opacity:0.3;}
         .hub::after{content:"🍃";position:absolute;bottom:20px;right:25px;font-size:28px;opacity:0.2;pointer-events:none;transform:rotate(-10deg);}
@@ -45,7 +52,24 @@
 </head>
 <body>
 <div class="transition-overlay" id="overlay"><div class="loading-container"><div class="loading-emoji" id="loadEmoji">🍑</div><div class="loading-text">loading...</div></div></div>
-<div class="hub"><div class="title"><h1><span>✨</span> pick clicker theme <span>🍒</span></h1></div><div class="grid-3x2"><button class="game-btn btn-peach" data-url="https://clicker-game.neineig2012.workers.dev/peach" data-emoji="🍑"><span class="btn-emoji">🍑</span></button><button class="game-btn btn-apple" data-url="https://clicker-game.neineig2012.workers.dev/apple" data-emoji="🍏"><span class="btn-emoji">🍏</span></button><button class="game-btn btn-carrot" data-url="https://clicker-game.neineig2012.workers.dev/carrot" data-emoji="🥕"><span class="btn-emoji">🥕</span></button><button class="game-btn btn-corn" data-url="https://clicker-game.neineig2012.workers.dev/corn" data-emoji="🌽"><span class="btn-emoji">🌽</span></button><button class="game-btn btn-lemon" data-url="https://clicker-game.neineig2012.workers.dev/lemon" data-emoji="🍋"><span class="btn-emoji">🍋</span></button><button class="game-btn btn-tomato" data-url="https://clicker-game.neineig2012.workers.dev/tomato" data-emoji="🍅"><span class="btn-emoji">🍅</span></button></div></div>
+<div class="hub">
+    <div class="title">
+        <h1>pick clicker theme</h1>
+    </div>
+    
+    <div class="grid-3x3">
+        <button class="game-btn btn-peach" data-url="https://clicker-game.neineig2012.workers.dev/peach" data-emoji="🍑"><span class="btn-emoji">🍑</span></button>
+        <button class="game-btn btn-apple" data-url="https://clicker-game.neineig2012.workers.dev/apple" data-emoji="🍏"><span class="btn-emoji">🍏</span></button>
+        <button class="game-btn btn-carrot" data-url="https://clicker-game.neineig2012.workers.dev/carrot" data-emoji="🥕"><span class="btn-emoji">🥕</span></button>
+        <button class="game-btn btn-corn" data-url="https://clicker-game.neineig2012.workers.dev/corn" data-emoji="🌽"><span class="btn-emoji">🌽</span></button>
+        <button class="game-btn btn-lemon" data-url="https://clicker-game.neineig2012.workers.dev/lemon" data-emoji="🍋"><span class="btn-emoji">🍋</span></button>
+        <button class="game-btn btn-tomato" data-url="https://clicker-game.neineig2012.workers.dev/tomato" data-emoji="🍅"><span class="btn-emoji">🍅</span></button>
+        <button class="game-btn btn-orange" data-url="https://clicker-game.neineig2012.workers.dev/orange" data-emoji="🍊"><span class="btn-emoji">🍊</span></button>
+        <button class="game-btn btn-grape" data-url="https://clicker-game.neineig2012.workers.dev/grape" data-emoji="🍇"><span class="btn-emoji">🍇</span></button>
+        <button class="game-btn btn-berry" data-url="https://clicker-game.neineig2012.workers.dev/berry" data-emoji="🫐"><span class="btn-emoji">🫐</span></button>
+    </div>
+    
+</div>
 <script>
 (function(){
     const overlay=document.getElementById('overlay');
@@ -117,6 +141,7 @@
     setTimeout(()=>{btns.forEach(b=>{let s=emojiMap.get(b);if(s&&b.isConnected)refresh(b,s);});},100);
     document.body.addEventListener('touchstart',()=>{if(!audioCtx)initAudio();},{once:true,passive:true});
     document.body.addEventListener('click',()=>{if(!audioCtx)initAudio();},{once:true});
+    // Reattach dynamic behaviors for each button (preserve all features, ensure clone handling & burst emoji)
     btns.forEach(oldBtn=>{
         const url=oldBtn.getAttribute('data-url');
         if(!url)return;
@@ -152,11 +177,13 @@
                     container.style.animation='';
                 }
             }
+
             newBtn.style.transform='translateY(5px) scale(0.96)';
             newBtn.style.boxShadow='0 3px 0 rgba(0,0,0,0.1)';
             setTimeout(()=>{if(newBtn){newBtn.style.transform='';newBtn.style.boxShadow='';}},120);
             const rect=newBtn.getBoundingClientRect();
             const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+            // burst particle effect using theme emoji
             for(let i=0;i<12;i++){
                 let p=document.createElement('div');
                 p.innerText=themeEmoji;
@@ -180,6 +207,7 @@
                 });
                 setTimeout(()=>p.remove(),600);
             }
+
             setTimeout(()=>{window.location.href=url;},420);
             setTimeout(()=>{if(isTransitioning)window.location.href=url;},1000);
         });
