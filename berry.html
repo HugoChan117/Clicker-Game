@@ -17,7 +17,7 @@
             min-height: 100vh;
             width: 100vw;
             overflow-x: hidden;
-            background: linear-gradient(25deg, #2e1b3a 0%, #6a2c6e 45%, #9b4b6e 100%);
+            background: linear-gradient(25deg, #1e1b3a 0%, #3a2c6e 45%, #5b4b6e 100%);
             display: flex;
             flex-direction: column;
             padding: 12px;
@@ -55,22 +55,22 @@
             font-weight: bold;
             font-size: 4.8rem;
             letter-spacing: 6px;
-            color: #d98cff;
-            text-shadow: 5px 5px 0 #7a3e8a, 8px 8px 0 #4a235a, 12px 12px 10px #2e1a3a;
+            color: #798cff;
+            text-shadow: 5px 5px 0 #3a3e8a, 8px 8px 0 #2a235a, 12px 12px 10px #1e1a3a;
             word-break: break-word;
             line-height: 1.1;
-            background: linear-gradient(135deg, #e6b3ff, #b84c8c);
+            background: linear-gradient(135deg, #86b3ff, #884c8c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 0 #6a2e7a;
+            text-shadow: 2px 2px 0 #3a2e7a;
             margin-bottom: 5px;
             transition: 0.2s;
-            filter: drop-shadow(0 0 15px #c56eff);
+            filter: drop-shadow(0 0 15px #856eff);
             animation: titleGlow 2s infinite alternate;
         }
         @keyframes titleGlow {
-            0% { filter: drop-shadow(0 0 8px #d48eff); }
-            100% { filter: drop-shadow(0 0 25px #e5a0ff); }
+            0% { filter: drop-shadow(0 0 8px #848eff); }
+            100% { filter: drop-shadow(0 0 25px #85a0ff); }
         }
         .page-tabs {
             display: flex;
@@ -80,14 +80,14 @@
             flex-wrap: wrap;
         }
         .tab-btn {
-            background: #c77ddf;
-            border: 3px solid #f3ceff;
-            color: #3a1f4a;
+            background: #777ddf;
+            border: 3px solid #83ceff;
+            color: #1a1f4a;
             font-weight: bold;
             font-size: 1.3rem;
             padding: 8px 18px;
             border-radius: 50px;
-            box-shadow: 0 6px 0 #7b4293, 0 8px 16px #2a1a32;
+            box-shadow: 0 6px 0 #3b4293, 0 8px 16px #1a1a32;
             cursor: pointer;
             transition: 0.08s;
             text-transform: uppercase;
@@ -95,20 +95,20 @@
             backdrop-filter: blur(4px);
         }
         .tab-btn.active {
-            background: #e8aaff;
+            background: #78aaff;
             transform: translateY(4px) scale(1.02);
-            box-shadow: 0 2px 0 #9a4fb3, 0 12px 20px #ce9eff;
-            border-color: #f5ccff;
+            box-shadow: 0 2px 0 #9a4fb3, 0 12px 20px #6e9eff;
+            border-color: #85ccff;
         }
         .tab-btn.research-tab {
-            background: #ab5fca;
-            border-color: #e0a5ff;
-            color: #fbe6ff;
+            background: #5b5fca;
+            border-color: #70a5ff;
+            color: #8be6ff;
         }
         .page { display: none; width: 100%; flex:1; flex-direction: column; }
         .page.active-page { display: flex; }
         .global-resource {
-            background: #6b3d7ee0;
+            background: #4b3d7ee0;
             backdrop-filter: blur(8px);
             border-radius: 50px;
             padding: 8px 20px;
@@ -116,56 +116,56 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border: 3px solid #d98cff;
-            box-shadow: inset 0 -3px 0 #a85dca, 0 8px 0 #592e70, 0 12px 20px black;
-            color: #ffe6ff;
+            border: 3px solid #898cff;
+            box-shadow: inset 0 -3px 0 #685dca, 0 8px 0 #292e70, 0 12px 20px black;
+            color: #8fe6ff;
             font-weight: bold;
             font-size: 2.2rem;
-            text-shadow: 2px 2px 0 #471e5a;
-            background-image: linear-gradient(145deg, #b15fcf, #7d3c97);
+            text-shadow: 2px 2px 0 #271e5a;
+            background-image: linear-gradient(145deg, #815fcf, #3d3c97);
         }
-        .global-resource .resource-icon { font-size: 2.5rem; background: #9246b3; padding: 5px 30px; border-radius: 40px; border: 3px solid #e5a0ff; }
+        .global-resource .resource-icon { font-size: 2.5rem; background: #5246b3; padding: 5px 30px; border-radius: 40px; border: 3px solid #e5a0ff; }
         .global-resource .resource-value {
-            background: #4a2660;
+            background: #2a2660;
             padding: 6px 30px;
             border-radius: 4rem;
-            border: 3px solid #e5a0ff;
+            border: 3px solid #85a0ff;
             font-size: 2.5rem;
-            background-image: radial-gradient(circle at 30% 35%, #bf6ee6, #823ea3);
+            background-image: radial-gradient(circle at 30% 35%, #7f6ee6, #423ea3);
         }
         .research-points-bar {
-            background: #784a93dd;
+            background: #384a93dd;
             border-radius: 50px;
             padding: 8px 25px;
             margin: 0 0 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border: 3px solid #d67eff;
-            box-shadow: 0 6px 0 #9a4fb3, 0 8px 16px #2e1a3a;
-            color: #fae6ff;
+            border: 3px solid #767eff;
+            box-shadow: 0 6px 0 #5a4fb3, 0 8px 16px #1e1a3a;
+            color: #8ae6ff;
             font-size: 2rem;
             font-weight: bold;
         }
         .research-points-bar .rp-icon {
-            background: #aa62cb;
+            background: #6a62cb;
             padding: 5px 25px;
             border-radius: 40px;
-            border: 2px solid #e0a5ff;
+            border: 2px solid #70a5ff;
         }
         .buy-rp-btn {
-            background: #d98cff;
-            border: 3px solid #fff0ff;
+            background: #798cff;
+            border: 3px solid #f0f0ff;
             padding: 5px 20px;
             border-radius: 40px;
             font-size: 1.5rem;
             cursor: pointer;
-            box-shadow: 0 4px 0 #b45ad6;
+            box-shadow: 0 4px 0 #745ad6;
             transition: 0.05s;
         }
         .buy-rp-btn:active {
             transform: translateY(4px);
-            box-shadow: 0 1px 0 #b45ad6;
+            box-shadow: 0 1px 0 #745ad6;
         }
         .buy-rp-btn.disabled {
             opacity: 0.5;
@@ -174,15 +174,15 @@
         }
         .main-click-area { display: flex; flex-direction: column; align-items: center; justify-content: center; flex:1; margin: 10px 0 20px; }
         .click-area {
-            background: radial-gradient(circle at 40% 30%, #e09eff, #b452d6);
+            background: radial-gradient(circle at 40% 30%, #609eff, #5452d6);
             width: 320px; height: 320px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 22px 0 #963fc2, 0 40px 40px #351d44, inset 0 -8px 20px #f2c2ff;
-            border: 10px solid #ffe3ff;
+            box-shadow: 0 22px 0 #463fc2, 0 40px 40px #151d44, inset 0 -8px 20px #d2c2ff;
+            border: 10px solid #efe3ff;
             transition: transform 0.06s, box-shadow 0.1s;
             cursor: pointer;
-            font-size: 4.2rem; font-weight: bold; color: #461f5a; text-shadow: 6px 8px 0 #e6a5ff, 8px 10px 0 #2c1a3a;
+            font-size: 4.2rem; font-weight: bold; color: #261f5a; text-shadow: 6px 8px 0 #c6a5ff, 8px 10px 0 #1c1a3a;
             margin: 10px 0 20px; position: relative; overflow: hidden;
             animation: pulse-glow 2.2s infinite alternate;
         }
