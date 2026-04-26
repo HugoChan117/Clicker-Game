@@ -85,10 +85,39 @@ function playClickSound(){
     setTimeout(()=>{btns.forEach(b=>{let s=emojiMap.get(b);if(s&&b.isConnected)refresh(b,s);});},100);
     document.body.addEventListener('touchstart',()=>{if(!audioCtx)initAudio();},{once:true,passive:true});
     document.body.addEventListener('click',()=>{if(!audioCtx)initAudio();},{once:true});
+    
+    // Function to check if URL is reachable
+    async function isUrlReachable(url, timeout = 3000) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+            const response = await fetch(url, {
+                method: 'HEAD',
+                mode: 'no-cors',
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+    
+    // Modified navigation function with 404 fallback
+    async function navigateToUrl(originalUrl, fallbackUrl, callback) {
+        const isReachable = await isUrlReachable(originalUrl);
+        const targetUrl = isReachable ? originalUrl : fallbackUrl;
+        if (callback) callback(targetUrl, isReachable);
+        setTimeout(() => {
+            window.location.href = targetUrl;
+        }, 420);
+    }
+    
     // Reattach dynamic behaviors for each button (preserve all features, ensure clone handling & burst emoji)
     btns.forEach(oldBtn=>{
         const url=oldBtn.getAttribute('data-url');
         if(!url)return;
+        const fallbackUrl = 'https://clicker-game.neineig2012.workers.dev/404';
         const themeEmoji=oldBtn.getAttribute('data-emoji')||'🍑';
         const newBtn=oldBtn.cloneNode(true);
         oldBtn.parentNode.replaceChild(newBtn,oldBtn);
@@ -152,8 +181,18 @@ function playClickSound(){
                 setTimeout(()=>p.remove(),600);
             }
 
-            setTimeout(()=>{window.location.href=url;},420);
-            setTimeout(()=>{if(isTransitioning)window.location.href=url;},1000);
+            // Check URL reachability before navigating
+            navigateToUrl(url, fallbackUrl, (targetUrl, isOriginalReachable) => {
+                // If site wasn't found, show different emoji briefly?
+                if(!isOriginalReachable && loadEmojiSpan) {
+                    loadEmojiSpan.innerText = '⚠️';
+                    setTimeout(() => {
+                        if(loadEmojiSpan) loadEmojiSpan.innerText = themeEmoji;
+                    }, 200);
+                }
+            });
+            
+            setTimeout(()=>{if(isTransitioning)window.location.href=fallbackUrl;},1000);
         });
         newBtn.setAttribute('role','button');
         newBtn.setAttribute('tabindex','0');
