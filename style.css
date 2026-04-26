@@ -11,8 +11,7 @@
         .title{text-align:center;margin-bottom:2rem;}
         .title h1{font-size:2.4rem;font-weight:800;background:linear-gradient(135deg,#367a2f,#cc8230,#f5bc4e);background-clip:text;-webkit-background-clip:text;color:transparent;letter-spacing:-0.5px;display:inline-flex;align-items:center;gap:14px;}
         .title h1 span{font-size:2.1rem;background:none;-webkit-text-fill-color:initial;}
-        /* 3x3 grid - was 3x2, now extended to 3x3 */
-        .grid-3x3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin:1.8rem 0 0;}
+        .grid-4x3{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6rem;margin:1.8rem 0 0;}
         .game-btn{border:none;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.18s cubic-bezier(0.18,0.89,0.32,1.28),box-shadow 0.18s ease,background 0.15s;box-shadow:0 10px 0 rgba(0,0,0,0.1);width:100%;aspect-ratio:1/0.85;position:relative;border-radius:28px;background-clip:padding-box;-webkit-tap-highlight-color:transparent;outline:none;}
         .game-btn:active{transform:translateY(5px) scale(0.97);box-shadow:0 4px 0 rgba(0,0,0,0.08);transition:transform 0.06s linear,box-shadow 0.08s;}
         .game-btn:focus{outline:none;}
@@ -27,6 +26,9 @@
         .btn-orange{background:#ffe0b5;box-shadow:0 10px 0 #dd9f5c;}
         .btn-grape{background:#e7d4f5;box-shadow:0 10px 0 #b384c9;}
         .btn-berry{background:#cfe3ff;box-shadow:0 10px 0 #8aaad9;}
+        .btn-strawberry{background:#ffe0e8;box-shadow:0 10px 0 #e6a0b5;}
+        .btn-cherry{background:#ffdbdb;box-shadow:0 10px 0 #dd8a8a;}
+        .btn-mango{background:#fff0cf;box-shadow:0 10px 0 #f5bc70;}
         .btn-orange:hover{background:#ffd29c;}
         .btn-berry:hover{background:#bed4fc;}
         .btn-grape:hover{background:#dac1ec;}
@@ -36,6 +38,9 @@
         .btn-corn:hover{background:#ffefb0;}
         .btn-lemon:hover{background:#ffef98;}
         .btn-tomato:hover{background:#ffceb4;}
+        .btn-strawberry:hover{background:#ffd4df;}
+        .btn-cherry:hover{background:#ffcece;}
+        .btn-mango:hover{background:#ffe9bb;}
         @media (max-width:760px){.hub{padding:1.5rem}.grid-3x3{gap:1.2rem}.title h1{font-size:1.9rem}.title h1 span{font-size:1.7rem}}
         @media (max-width:550px){.grid-3x3{gap:0.9rem}.title h1{font-size:1.6rem}.hub{padding:1.2rem}}
         .game-btn::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 20%,rgba(255,255,210,0.5)0%,rgba(255,255,255,0)80%);opacity:0;transition:opacity 0.2s;pointer-events:none;border-radius:inherit;}
